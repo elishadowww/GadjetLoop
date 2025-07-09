@@ -127,9 +127,11 @@ function getProducts($pdo, $filters = [], $page = 1, $per_page = 12) {
 
     // Pagination
     $offset = ($page - 1) * $per_page;
-    $sql .= " LIMIT ? OFFSET ?";
-    $params[] = $per_page;
-    $params[] = $offset;
+     $sql .= " LIMIT " . (int)$per_page . " OFFSET " . (int)$offset;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll();
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
@@ -155,6 +157,7 @@ function getProductById($pdo, $product_id) {
 }
 
 function getFeaturedProducts($pdo, $limit = 8) {
+    $limit = (int)$limit; 
     $stmt = $pdo->prepare("
         SELECT p.*, c.name as category_name,
         AVG(r.rating) as average_rating,
@@ -168,9 +171,9 @@ function getFeaturedProducts($pdo, $limit = 8) {
         WHERE p.is_featured = 1 AND p.is_active = 1
         GROUP BY p.id
         ORDER BY p.created_at DESC
-        LIMIT ?
+        LIMIT $limit
     ");
-    $stmt->execute([$limit]);
+    $stmt->execute();
     return $stmt->fetchAll();
 }
 

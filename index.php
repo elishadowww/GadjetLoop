@@ -29,9 +29,10 @@ $categories = getCategories($pdo);
                 <a href="products.php" class="btn btn-primary">Shop Now</a>
             </div>
             <div class="hero-image">
-                <img src="images/hero-gadgets.jpg" alt="Latest Gadgets">
+                <img src="images/gadjet.png" alt="Latest Gadgets">
             </div>
         </section>
+
 
         <!-- Categories Section -->
         <section class="categories">

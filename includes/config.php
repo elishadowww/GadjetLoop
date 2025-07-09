@@ -7,7 +7,7 @@ define('DB_PASS', '');
 
 // Site configuration
 define('SITE_NAME', 'GadgetLoop');
-define('SITE_URL', 'http://localhost/gadgetloop');
+define('SITE_URL', 'http://localhost/gadjetloop');
 define('UPLOAD_PATH', 'uploads/');
 define('MAX_LOGIN_ATTEMPTS', 3);
 define('LOGIN_BLOCK_TIME', 900); // 15 minutes
