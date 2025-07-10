@@ -1,0 +1,379 @@
+/* About Page Styles */
+
+/* Hero Section */
+.about-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.about-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.about-hero p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Company Story */
+.company-story {
+    padding: 4rem 0;
+    background: white;
+}
+
+.story-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.story-text h2 {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+}
+
+.story-text p {
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.story-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Mission & Vision */
+.mission-vision {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.mission-vision-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.mission-card,
+.vision-card,
+.values-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.mission-card:hover,
+.vision-card:hover,
+.values-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.mission-card h3,
+.vision-card h3,
+.values-card h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.mission-card p,
+.vision-card p,
+.values-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Why Choose Us */
+.why-choose-us {
+    padding: 4rem 0;
+    background: white;
+}
+
+.why-choose-us h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.feature-item:hover {
+    background-color: #f8f9fa;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-item h4 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.feature-item p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Team Section */
+.team-section {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.team-section h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.team-member {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.member-photo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #e9ecef;
+}
+
+.member-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-member h4 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+}
+
+.team-member>p {
+    color: #007bff;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.member-bio {
+    display: none;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.member-bio p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Statistics */
+.statistics {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 2rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Call to Action */
+.cta-section {
+    padding: 4rem 0;
+    background: white;
+    text-align: center;
+}
+
+.cta-content h2 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+.cta-content p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .about-hero p {
+        font-size: 1rem;
+    }
+
+    .story-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .story-text h2 {
+        font-size: 2rem;
+    }
+
+    .mission-vision-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-buttons .btn {
+        width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero {
+        padding: 2rem 0;
+    }
+
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+
+    .company-story,
+    .mission-vision,
+    .why-choose-us,
+    .team-section,
+    .statistics,
+    .cta-section {
+        padding: 2rem 0;
+    }
+
+    .mission-card,
+    .vision-card,
+    .values-card {
+        padding: 1.5rem;
+    }
+
+    .team-member {
+        padding: 1.5rem;
+    }
+
+    .member-photo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
