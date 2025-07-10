@@ -340,12 +340,31 @@ if (!empty($filters['category'])) {
             
             // Mobile filter toggle
             $('.filter-toggle').on('click', function() {
+                $('.view-toggle button').removeClass('active');
+                $(this).addClass('active');
                 $('.filters-sidebar').toggleClass('active');
+            });
+            
+            // Handle sort changes
+            $('#sort-select').on('change', function() {
+                const currentUrl = new URL(window.location);
+                currentUrl.searchParams.set('sort', $(this).val());
+                window.location.href = currentUrl.toString();
+            });
+            
+            // Handle filter changes
+            $('.filter-form input, .filter-form select').on('change', function() {
+                $(this).closest('form').submit();
             });
         });
         
         function applyFilters() {
             $('.filter-form').submit();
+        }
+        
+        function toggleProductView(view) {
+            $('.product-grid').removeClass('grid-view list-view').addClass(view + '-view');
+            localStorage.setItem('product-view', view);
         }
     </script>
 </body>

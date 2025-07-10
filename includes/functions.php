@@ -35,17 +35,12 @@ function loginUser($pdo, $email, $password) {
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    // Debug logging (remove in production)
-    error_log("Login attempt for: " . $email);
-    error_log("User found: " . ($user ? 'Yes' : 'No'));
-    if ($user) {
-        error_log("Password verification: " . (verifyPassword($password, $user['password']) ? 'Success' : 'Failed'));
-    }
 
     if ($user && verifyPassword($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_role'] = $user['role'];
         $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
+        $_SESSION['user_email'] = $user['email'];
         
         // Clear login attempts
         clearLoginAttempts($pdo, $email);
@@ -162,7 +157,6 @@ function getProductById($pdo, $product_id) {
 }
 
 function getFeaturedProducts($pdo, $limit = 8) {
-    // Ensure $limit is a safe integer
     $limit = (int)$limit;
     if ($limit < 1) $limit = 8;
 

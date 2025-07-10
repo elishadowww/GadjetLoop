@@ -34,11 +34,10 @@ if ($_POST) {
             }
             
             // Redirect based on role
-            $redirect = isAdmin() ? 'admin/dashboard.php' : 'index.php';
-            
-            // For members, redirect to member dashboard if it exists, otherwise to home
-            if (!isAdmin()) {
-                $redirect = file_exists('member/dashboard.php') ? 'member/dashboard.php' : 'index.php';
+            if (isAdmin()) {
+                $redirect = 'admin/dashboard.php';
+            } else {
+                $redirect = 'member/dashboard.php';
             }
             
             header('Location: ' . $redirect);
