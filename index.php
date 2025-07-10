@@ -41,7 +41,7 @@ $categories = getCategories($pdo);
                 <div class="category-grid">
                     <?php foreach ($categories as $category): ?>
                     <div class="category-card">
-                        <img src="uploads/categories/<?php echo htmlspecialchars($category['image']); ?>" 
+                        <img src="images/categories/<?php echo htmlspecialchars($category['image']); ?>" 
                              alt="<?php echo htmlspecialchars($category['name']); ?>">
                         <h3><?php echo htmlspecialchars($category['name']); ?></h3>
                         <a href="products.php?category=<?php echo $category['id']; ?>" class="btn btn-secondary">Browse</a>
@@ -59,7 +59,7 @@ $categories = getCategories($pdo);
                     <?php foreach ($featured_products as $product): ?>
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="uploads/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
+                            <img src="images/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
                                  alt="<?php echo htmlspecialchars($product['name']); ?>">
                             <?php if ($product['discount_percentage'] > 0): ?>
                             <span class="discount-badge"><?php echo $product['discount_percentage']; ?>% OFF</span>

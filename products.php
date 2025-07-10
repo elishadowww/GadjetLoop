@@ -232,7 +232,7 @@ if (!empty($filters['category'])) {
                             <div class="product-card">
                                 <div class="product-image">
                                     <a href="product-detail.php?id=<?php echo $product['id']; ?>">
-                                        <img src="uploads/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
+                                        <img src="images/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
                                              alt="<?php echo htmlspecialchars($product['name']); ?>">
                                     </a>
                                     <?php if ($product['discount_percentage'] > 0): ?>
