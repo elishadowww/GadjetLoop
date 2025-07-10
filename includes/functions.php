@@ -35,6 +35,13 @@ function loginUser($pdo, $email, $password) {
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
+    // Debug logging (remove in production)
+    error_log("Login attempt for: " . $email);
+    error_log("User found: " . ($user ? 'Yes' : 'No'));
+    if ($user) {
+        error_log("Password verification: " . (verifyPassword($password, $user['password']) ? 'Success' : 'Failed'));
+    }
+
     if ($user && verifyPassword($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_role'] = $user['role'];
@@ -126,12 +133,10 @@ function getProducts($pdo, $filters = [], $page = 1, $per_page = 12) {
     }
 
     // Pagination
-    $offset = ($page - 1) * $per_page;
-     $sql .= " LIMIT " . (int)$per_page . " OFFSET " . (int)$offset;
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-    return $stmt->fetchAll();
+       $offset = ($page - 1) * $per_page;
+    $per_page = (int)$per_page;
+    $offset = (int)$offset;
+    $sql .= " LIMIT $per_page OFFSET $offset";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
@@ -157,7 +162,10 @@ function getProductById($pdo, $product_id) {
 }
 
 function getFeaturedProducts($pdo, $limit = 8) {
-    $limit = (int)$limit; 
+    // Ensure $limit is a safe integer
+    $limit = (int)$limit;
+    if ($limit < 1) $limit = 8;
+
     $stmt = $pdo->prepare("
         SELECT p.*, c.name as category_name,
         AVG(r.rating) as average_rating,
