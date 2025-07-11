@@ -22,9 +22,9 @@
                         <div class="dropdown">
                             <button class="dropdown-btn">Account ▼</button>
                             <div class="dropdown-content">
-                                <a href="member/profile.php">Profile</a>
-                                <a href="member/orders.php">Orders</a>
-                                <a href="member/wishlist.php">Wishlist</a>
+                                <a href="<?php echo isAdmin() ? 'admin' : 'member'; ?>/profile.php">Profile</a>
+                                <a href="<?php echo isAdmin() ? 'admin' : 'member'; ?>/orders.php">Orders</a>
+                                <a href="<?php echo isAdmin() ? 'admin' : 'member'; ?>/wishlist.php">Wishlist</a>
                                 <?php if (isAdmin()): ?>
                                     <a href="admin/dashboard.php">Admin Panel</a>
                                 <?php endif; ?>

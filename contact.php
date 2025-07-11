@@ -302,10 +302,8 @@ if ($_POST) {
                 }
             });
             
-            // Initialize FAQ - show first item
-            $('.faq-item:first').addClass('active');
-            $('.faq-item:first p').show();
-            $('.faq-item:not(:first) p').hide();
+            // Initialize FAQ - hide all answers
+            $('.faq-item p').hide();
             
             // Character counter for message
             $('#message').on('input', function() {

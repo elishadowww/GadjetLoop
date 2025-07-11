@@ -14,7 +14,7 @@ $(document).ready(function () {
         }
     });
 
-    // Handle dropdown menus
+    // Handle dropdown menusa
     $('.dropdown').on('mouseenter', function () {
         $(this).find('.dropdown-content').fadeIn(200);
     }).on('mouseleave', function () {
@@ -52,6 +52,21 @@ $(document).ready(function () {
     $('.quick-view-btn').on('click', function (e) {
         e.preventDefault();
         showQuickView($(this).data('product-id'));
+    });
+
+    // Handle add to cart buttons
+    $('.add-to-cart').on('click', function (e) {
+        e.preventDefault();
+
+        if (!isUserLoggedIn()) {
+            showAlert('Please login to add items to cart', 'warning');
+            return;
+        }
+
+        const productId = $(this).data('product-id');
+        const quantity = 1; // Default quantity
+
+        addToCart(productId, quantity);
     });
 
     // Handle rating stars

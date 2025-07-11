@@ -201,13 +201,13 @@ if (!empty($filters['category'])) {
                     <!-- Toolbar -->
                     <div class="products-toolbar">
                         <div class="view-toggle">
-                            <button type="button" data-view="grid" class="active">⊞</button>
-                            <button type="button" data-view="list">☰</button>
+                            <button type="button" data-view="grid" class="view-btn active">⊞ Grid</button>
+                            <button type="button" data-view="list" class="view-btn">☰ List</button>
                         </div>
                         
                         <div class="sort-options">
                             <label for="sort-select">Sort by:</label>
-                            <select id="sort-select" name="sort" onchange="applyFilters()">
+                            <select id="sort-select" name="sort">
                                 <option value="newest" <?php echo $filters['sort'] === 'newest' ? 'selected' : ''; ?>>Newest First</option>
                                 <option value="price_asc" <?php echo $filters['sort'] === 'price_asc' ? 'selected' : ''; ?>>Price: Low to High</option>
                                 <option value="price_desc" <?php echo $filters['sort'] === 'price_desc' ? 'selected' : ''; ?>>Price: High to Low</option>
@@ -333,22 +333,22 @@ if (!empty($filters['category'])) {
             const savedView = localStorage.getItem('product-view') || 'grid';
             toggleProductView(savedView);
             
+            // View toggle functionality
+            $('.view-btn').on('click', function() {
+                const view = $(this).data('view');
+                toggleProductView(view);
+            });
+            
             // Clear filters
             $('.clear-filters').on('click', function() {
                 window.location.href = 'products.php';
-            });
-            
-            // Mobile filter toggle
-            $('.filter-toggle').on('click', function() {
-                $('.view-toggle button').removeClass('active');
-                $(this).addClass('active');
-                $('.filters-sidebar').toggleClass('active');
             });
             
             // Handle sort changes
             $('#sort-select').on('change', function() {
                 const currentUrl = new URL(window.location);
                 currentUrl.searchParams.set('sort', $(this).val());
+                currentUrl.searchParams.set('page', '1'); // Reset to first page
                 window.location.href = currentUrl.toString();
             });
             
@@ -357,15 +357,6 @@ if (!empty($filters['category'])) {
                 $(this).closest('form').submit();
             });
         });
-        
-        function applyFilters() {
-            $('.filter-form').submit();
-        }
-        
-        function toggleProductView(view) {
-            $('.product-grid').removeClass('grid-view list-view').addClass(view + '-view');
-            localStorage.setItem('product-view', view);
-        }
     </script>
 </body>
 </html>
