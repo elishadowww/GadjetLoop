@@ -218,31 +218,33 @@
 }
 
 .product-grid.list-view {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    display: block;
 }
-
 .product-grid.list-view .product-card {
     display: flex;
     align-items: center;
-    padding: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding: 16px 0;
 }
-
 .product-grid.list-view .product-image {
-    width: 150px;
-    height: 150px;
-    flex-shrink: 0;
-    margin-right: 1.5rem;
+    width: 160px;
+    min-width: 160px;
+    margin-right: 24px;
 }
-
+.product-grid.list-view .product-image img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+}
 .product-grid.list-view .product-info {
     flex: 1;
+    padding: 0 12px;
 }
 
 .product-grid.list-view .product-actions {
     flex-direction: column;
-    width: 120px;
+    width: 500px;
     margin-left: 1rem;
 }
 
