@@ -271,10 +271,10 @@ if (!empty($filters['category'])) {
                                     
                                     <div class="product-price">
                                         <?php if ($product['discount_percentage'] > 0): ?>
-                                            <span class="original-price">$<?php echo number_format($product['price'], 2); ?></span>
-                                            <span class="sale-price">$<?php echo number_format($product['sale_price'], 2); ?></span>
+                                            <span class="original-price">RM<?php echo number_format($product['price'], 2); ?></span>
+                                            <span class="sale-price">RM<?php echo number_format($product['sale_price'], 2); ?></span>
                                         <?php else: ?>
-                                            <span class="price">$<?php echo number_format($product['price'], 2); ?></span>
+                                            <span class="price">RM<?php echo number_format($product['price'], 2); ?></span>
                                         <?php endif; ?>
                                     </div>
                                     
@@ -288,7 +288,7 @@ if (!empty($filters['category'])) {
                                         <?php endif; ?>
                                         
                                         <button class="btn btn-outline wishlist-btn" data-product-id="<?php echo $product['id']; ?>">
-                                            ♡
+                                            Buy Now
                                         </button>
                                     </div>
                                 </div>

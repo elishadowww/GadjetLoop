@@ -17,7 +17,7 @@ if (!$product) {
     style="width:200px; height:200px; object-fit:cover; display:block; margin:0 auto;"
 >
 <p><?php echo htmlspecialchars($product['description']); ?></p>
-<p>Price: $<?php echo number_format($product['sale_price'], 2); ?></p>
+<p>Price: RM<?php echo number_format($product['sale_price'], 2); ?></p>
 <?php if ($product['stock_quantity'] > 0): ?>
     <p>In Stock: <?php echo $product['stock_quantity']; ?></p>
 <?php else: ?>
