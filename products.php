@@ -323,8 +323,7 @@ if (!empty($filters['category'])) {
     </main>
     
     <?php include 'includes/footer.php'; ?>
-    
-    <script src="js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/cart.js"></script>
     <script>
@@ -345,18 +344,45 @@ if (!empty($filters['category'])) {
             });
             
             // Handle sort changes
-            $('#sort-select').on('change', function() {
-                const currentUrl = new URL(window.location);
-                currentUrl.searchParams.set('sort', $(this).val());
-                currentUrl.searchParams.set('page', '1'); // Reset to first page
-                window.location.href = currentUrl.toString();
-            });
+           $('#sort-select').on('change', function() {
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.set('sort', $(this).val());
+    currentUrl.searchParams.set('page', '1'); // Reset to first page
+    window.location.href = currentUrl.toString();
+});
             
+$(document).on('click', '.quick-view-btn', function(e) {
+    e.preventDefault();
+    const productId = $(this).data('product-id');
+    $('#quickViewContent').html('Loading...');
+    $('#quickViewModal').show();
+
+    $.ajax({
+        url: 'quick_view.php',
+        type: 'GET',
+        data: { id: productId },
+        success: function(response) {
+            $('#quickViewContent').html(response);
+        },
+        error: function() {
+            $('#quickViewContent').html('Error loading product details.');
+        }
+    });
+});
+
+$('#closeQuickView').on('click', function() {
+    $('#quickViewModal').hide();
+});
             // Handle filter changes
             $('.filter-form input, .filter-form select').on('change', function() {
                 $(this).closest('form').submit();
             });
         });
     </script>
+
+    <div id="quickViewModal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); background:#fff; z-index:9999; padding:20px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.2); min-width:300px;">
+    <span id="closeQuickView" style="cursor:pointer; float:right; font-size:20px;">&times;</span>
+    <div id="quickViewContent"></div>
+</div>
 </body>
 </html>
