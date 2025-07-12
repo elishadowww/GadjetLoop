@@ -73,7 +73,8 @@ function clearLoginAttempts($pdo, $email) {
 function getProducts($pdo, $filters = [], $page = 1, $per_page = 12) {
     $where_conditions = [];
     $params = [];
-    
+    $offset = ($page - 1) * $per_page; // <-- Add this line
+
     $sql = "SELECT p.*, c.name as category_name, 
             AVG(r.rating) as average_rating, 
             COUNT(r.id) as review_count,
@@ -129,12 +130,10 @@ function getProducts($pdo, $filters = [], $page = 1, $per_page = 12) {
 
     // Pagination
     $offset = ($page - 1) * $per_page;
-    $sql .= " LIMIT ? OFFSET ?";
-    $params[] = $per_page;
-    $params[] = $offset;
+   $sql .= " LIMIT " . (int)$per_page . " OFFSET " . (int)$offset;
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
     return $stmt->fetchAll();
 }
 
@@ -157,10 +156,7 @@ function getProductById($pdo, $product_id) {
 }
 
 function getFeaturedProducts($pdo, $limit = 8) {
-    $limit = (int)$limit;
-    if ($limit < 1) $limit = 8;
-
-    $stmt = $pdo->prepare("
+    $sql = "
         SELECT p.*, c.name as category_name,
         AVG(r.rating) as average_rating,
         COUNT(r.id) as review_count,
@@ -173,8 +169,9 @@ function getFeaturedProducts($pdo, $limit = 8) {
         WHERE p.is_featured = 1 AND p.is_active = 1
         GROUP BY p.id
         ORDER BY p.created_at DESC
-        LIMIT $limit
-    ");
+        LIMIT " . (int)$limit . "
+    ";
+    $stmt = $pdo->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
 }
