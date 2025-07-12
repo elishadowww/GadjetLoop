@@ -35,12 +35,10 @@ if ($_POST) {
             
             // Redirect based on role
             if (isAdmin()) {
-                $redirect = 'admin/dashboard.php';
+                header('Location: admin/dashboard.php');
             } else {
-                $redirect = 'member/dashboard.php';
+                header('Location: dashboard.php');
             }
-            
-            header('Location: ' . $redirect);
             exit;
         } else {
             $error = $result['message'];

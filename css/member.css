@@ -12,7 +12,7 @@
 .member-sidebar {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 100px;
     max-height: calc(100vh - 120px);
@@ -165,7 +165,7 @@
 .member-content {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
@@ -202,7 +202,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
 }
 
@@ -229,17 +229,23 @@
 
 /* Profile Sections */
 .profile-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
     padding: 2rem;
 }
 
 .profile-section {
-    margin-bottom: 2rem;
     border: 1px solid #e9ecef;
     border-radius: 8px;
     overflow: hidden;
+    width: 100%;
 }
 
 .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 1.5rem;
     background: #f8f9fa;
     border-bottom: 1px solid #e9ecef;
@@ -253,6 +259,143 @@
 
 .section-content {
     padding: 2rem;
+}
+
+/* Quick Actions Grid */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.action-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-color: #007bff;
+}
+
+.action-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.action-card h4 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.action-card p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h4 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Orders List */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.order-item:hover {
+    background-color: #f8f9fa;
+}
+
+.order-info h4 {
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+
+.order-info p {
+    margin-bottom: 0.25rem;
+    color: #666;
+    font-size: 14px;
+}
+
+.order-info small {
+    color: #999;
+    font-size: 12px;
+}
+
+/* Wishlist Preview */
+.wishlist-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.wishlist-item {
+    text-align: center;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+}
+
+.wishlist-item:hover {
+    transform: translateY(-2px);
+}
+
+.wishlist-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.wishlist-item h5 {
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    color: #333;
+}
+
+.wishlist-item .price {
+    color: #007bff;
+    font-weight: 600;
 }
 
 /* Photo Upload */
@@ -444,7 +587,7 @@
 }
 
 .order-card:hover {
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .order-header {
@@ -549,7 +692,7 @@
 
 .wishlist-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .wishlist-item-image {
@@ -591,7 +734,7 @@
         grid-template-columns: 250px 1fr;
         gap: 1.5rem;
     }
-    
+
     .profile-stats {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 1rem;
@@ -603,7 +746,7 @@
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .member-sidebar {
         position: fixed;
         top: 0;
@@ -614,37 +757,37 @@
         transition: left 0.3s ease;
         max-height: none;
     }
-    
+
     .member-sidebar.active {
         left: 0;
     }
-    
+
     .photo-upload-area {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .account-info {
         grid-template-columns: 1fr;
     }
-    
+
     .order-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
     }
-    
+
     .order-footer {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
-    
+
     .wishlist-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         padding: 1rem;
@@ -656,19 +799,19 @@
         grid-template-columns: 1fr;
         padding: 1rem;
     }
-    
+
     .profile-sections {
         padding: 1rem;
     }
-    
+
     .section-content {
         padding: 1rem;
     }
-    
+
     .wishlist-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .order-item {
         flex-direction: column;
         align-items: flex-start;

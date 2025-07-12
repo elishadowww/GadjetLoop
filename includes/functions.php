@@ -128,10 +128,10 @@ function getProducts($pdo, $filters = [], $page = 1, $per_page = 12) {
     }
 
     // Pagination
-       $offset = ($page - 1) * $per_page;
-    $per_page = (int)$per_page;
-    $offset = (int)$offset;
-    $sql .= " LIMIT $per_page OFFSET $offset";
+    $offset = ($page - 1) * $per_page;
+    $sql .= " LIMIT ? OFFSET ?";
+    $params[] = $per_page;
+    $params[] = $offset;
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);

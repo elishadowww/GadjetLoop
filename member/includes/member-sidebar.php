@@ -1,8 +1,16 @@
+<?php
+// Get user data for sidebar
+$user_id = $_SESSION['user_id'];
+$user = getUserById($pdo, $user_id);
+?>
+
 <aside class="member-sidebar">
+    <button class="member-sidebar-toggle">☰ Menu</button>
+    
     <div class="member-profile-card">
         <div class="profile-avatar">
             <?php if ($user['profile_photo']): ?>
-                <img src="../uploads/profiles/<?php echo htmlspecialchars($user['profile_photo']); ?>" 
+                <img src="uploads/profiles/<?php echo htmlspecialchars($user['profile_photo']); ?>" 
                      alt="Profile Photo">
             <?php else: ?>
                 <div class="default-avatar">
@@ -69,8 +77,6 @@
                 <a href="reviews.php">
                     <span class="nav-icon">⭐</span>
                     <span class="nav-text">My Reviews</span>
-                
-                </a>
             </li>
             
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'addresses.php' ? 'active' : ''; ?>">
@@ -99,14 +105,14 @@
             <li class="nav-divider"></li>
             
             <li class="nav-item">
-                <a href="../index.php">
-                    <span class="nav-icon">🏠</span>
+                <a href="index.php">
+                <a href="index.php">
                     <span class="nav-text">Back to Store</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a href="../logout.php" class="logout-link">
+                <a href="logout.php" class="logout-link">
                     <span class="nav-icon">🚪</span>
                     <span class="nav-text">Logout</span>
                 </a>
@@ -118,7 +124,7 @@
         <div class="help-section">
             <h4>Need Help?</h4>
             <p>Contact our customer support team</p>
-            <a href="../contact.php" class="btn btn-outline btn-sm btn-block">Contact Support</a>
+            <a href="contact.php" class="btn btn-outline btn-sm btn-block">Contact Support</a>
         </div>
     </div>
 </aside>
