@@ -123,24 +123,4 @@ $categories = getCategories($pdo);
 
     <?php include 'includes/footer.php'; ?>
     
-    <script src="js/jquery.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
-    <script>
-        // Initialize Google Maps
-        function initMap() {
-            const storeLocation = { lat: 40.7128, lng: -74.0060 };
-            const map = new google.maps.Map(document.getElementById('google-map'), {
-                zoom: 15,
-                center: storeLocation
-            });
-            const marker = new google.maps.Marker({
-                position: storeLocation,
-                map: map,
-                title: 'GadgetLoop Store'
-            });
-        }
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
-</body>
 </html>

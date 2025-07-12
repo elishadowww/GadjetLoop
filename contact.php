@@ -207,11 +207,14 @@ if ($_POST) {
         </section>
 
         <!-- Map Section -->
+        <!-- Map Section -->
         <section class="map-section">
             <div class="container">
                 <h2>Find Our Store</h2>
                 <div class="map-container">
-                    <div id="contact-map"></div>
+                    <div class="map-box">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.7534651983833!2d116.12683327581546!3d6.028537428715512!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x323b665bce325bf1%3A0xfc7bcf77c145bc5f!2sTunku%20Abdul%20Rahman%20University%20Of%20Management%20And%20Technology%2C%20Sabah%20Branch%20(TAR%20UMT)!5e0!3m2!1sen!2smy!4v1752317591804!5m2!1sen!2smy" width="1165" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
                 </div>
             </div>
         </section>
@@ -257,6 +260,7 @@ if ($_POST) {
 
     <?php include 'includes/footer.php'; ?>
     
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/main.js"></script>
     <script>
@@ -327,30 +331,6 @@ if ($_POST) {
         
         // Initialize Google Maps
         function initContactMap() {
-            const storeLocation = { lat: 40.7128, lng: -74.0060 };
-            const map = new google.maps.Map(document.getElementById('contact-map'), {
-                zoom: 15,
-                center: storeLocation,
-                styles: [
-                    {
-                        featureType: 'all',
-                        elementType: 'geometry.fill',
-                        stylers: [{ weight: '2.00' }]
-                    },
-                    {
-                        featureType: 'all',
-                        elementType: 'geometry.stroke',
-                        stylers: [{ color: '#9c9c9c' }]
-                    }
-                ]
-            });
-            
-            const marker = new google.maps.Marker({
-                position: storeLocation,
-                map: map,
-                title: 'GadgetLoop Store',
-                animation: google.maps.Animation.DROP
-            });
             
             const infoWindow = new google.maps.InfoWindow({
                 content: `
@@ -368,6 +348,6 @@ if ($_POST) {
             });
         }
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initContactMap"></script>
+    
 </body>
 </html>
