@@ -40,6 +40,16 @@
                 <p>🕒 Mon-Fri: 9AM-8PM, Sat: 10AM-6PM</p>
             </div>
         </div>
+
+        <style>
+.footer-links a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+.footer-links a {
+    text-decoration: none;
+}
+</style>
         
         <div class="footer-bottom">
             <p>&copy; <?php echo date('Y'); ?> GadgetLoop. All rights reserved.</p>
