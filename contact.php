@@ -226,32 +226,44 @@ if ($_POST) {
                 <div class="faq-grid">
                     <div class="faq-item">
                         <h4>What are your shipping options?</h4>
-                        <p>We offer free standard shipping on orders over $50. Express shipping options are available for faster delivery.</p>
+                        <div class="faq-content">
+                            <p>We offer free standard shipping on orders over $50. Express shipping options are available for faster delivery.</p>
+                        </div>
                     </div>
                     
                     <div class="faq-item">
                         <h4>What is your return policy?</h4>
-                        <p>We offer a 30-day hassle-free return policy on all products. Items must be in original condition with packaging.</p>
+                        <div class="faq-content">
+                            <p>We offer a 30-day hassle-free return policy on all products. Items must be in original condition with packaging.</p>
+                        </div>    
                     </div>
                     
                     <div class="faq-item">
                         <h4>Do you offer warranty on products?</h4>
-                        <p>Yes, all our products come with manufacturer warranties. Extended warranty options are available for select items.</p>
+                        <div class="faq-content">
+                            <p>Yes, all our products come with manufacturer warranties. Extended warranty options are available for select items.</p>
+                        </div>  
                     </div>
                     
                     <div class="faq-item">
                         <h4>How can I track my order?</h4>
-                        <p>Once your order ships, you'll receive a tracking number via email. You can also track orders in your account dashboard.</p>
+                        <div class="faq-content">
+                            <p>Once your order ships, you'll receive a tracking number via email. You can also track orders in your account dashboard.</p>
+                        </div>    
                     </div>
                     
                     <div class="faq-item">
                         <h4>Do you offer technical support?</h4>
-                        <p>Yes, our technical support team is available to help with product setup, troubleshooting, and general questions.</p>
+                        <div class="faq-content">
+                            <p>Yes, our technical support team is available to help with product setup, troubleshooting, and general questions.</p>
+                        </div>
                     </div>
                     
                     <div class="faq-item">
                         <h4>Can I cancel or modify my order?</h4>
-                        <p>Orders can be cancelled or modified within 1 hour of placement. Contact us immediately for assistance.</p>
+                        <div class="faq-content">
+                            <p>Orders can be cancelled or modified within 1 hour of placement. Contact us immediately for assistance.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -291,23 +303,31 @@ if ($_POST) {
             });
             
             // FAQ accordion
-            $('.faq-item h4').on('click', function() {
-                const $item = $(this).parent();
-                const $content = $(this).next('p');
-                
-                if ($item.hasClass('active')) {
-                    $item.removeClass('active');
-                    $content.slideUp(300);
-                } else {
-                    $('.faq-item').removeClass('active');
-                    $('.faq-item p').slideUp(300);
-                    $item.addClass('active');
-                    $content.slideDown(300);
-                }
-            });
-            
-            // Initialize FAQ - hide all answers
-            $('.faq-item p').hide();
+            $(document).ready(function () {
+    // Hide all on load
+    $('.faq-content').hide();
+
+    $('.faq-item h4').on('click', function () {
+        const $faqItem = $(this).closest('.faq-item');
+
+        if ($faqItem.hasClass('active')) {
+            // If already open, close it
+            $faqItem.removeClass('active');
+            $faqItem.find('.faq-content').slideUp(300);
+        } else {
+            // Close others
+            $('.faq-item').removeClass('active').find('.faq-content').slideUp(300);
+
+            // Open clicked
+            $faqItem.addClass('active');
+            $faqItem.find('.faq-content').slideDown(300);
+        }
+    });
+}); 
+
+
+
+
             
             // Character counter for message
             $('#message').on('input', function() {

@@ -249,15 +249,26 @@
 
 .faq-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 }
+
+@media (max-width: 768px) {
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 .faq-item {
     background: #f8f9fa;
     border-radius: 8px;
     overflow: hidden;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.faq-content {
+    overflow: hidden;
 }
 
 .faq-item h4 {
