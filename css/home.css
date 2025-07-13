@@ -1,5 +1,19 @@
 /* Home Page Specific Styles */
 
+/*Header width */
+.main-header {
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-header .container {
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 /* Hero Section */
 .hero {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
