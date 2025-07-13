@@ -244,35 +244,21 @@ INSERT INTO products (name, description, short_description, category_id, price, 
 ('Xiaomi 14 Pro', 'Flagship Xiaomi smartphone with Leica camera and Snapdragon 8 Gen 3', 'Flagship Android with Leica camera', 1, 3799.00, 5, 40, 'XM14PRO001', 'xiaomi-14-pro.jpg', TRUE),
 ('Realme 12 Pro+', 'Affordable mid-range phone with 200MP camera', 'Mid-range phone with flagship camera', 1, 1499.00, 10, 70, 'RM12P001', 'realme-12-pro-plus.jpg', FALSE),
 ('Huawei P60 Pro', 'Powerful photography smartphone with ultra-light sensor', 'Flagship Huawei with pro camera', 1, 4299.00, 15, 25, 'HWP60PRO001', 'huawei-p60-pro.jpg', TRUE),
-
--- Laptops
 ('ASUS ROG Zephyrus G14', 'Gaming laptop with AMD Ryzen 9 and RTX 4060 GPU', 'Powerful gaming laptop', 2, 6599.00, 5, 15, 'ASUSG14001', 'rog-zephyrus-g14.jpg', TRUE),
 ('Acer Swift X', 'Slim laptop with NVIDIA GPU for creators', 'Portable laptop for creators', 2, 3999.00, 10, 18, 'ACSWX001', 'acer-swift-x.jpg', FALSE),
 ('HP Spectre x360', '2-in-1 convertible laptop with OLED display', 'Convertible laptop with touch screen', 2, 5499.00, 8, 12, 'HPSX360001', 'hp-spectre-x360.jpg', TRUE),
-
--- Tablets
 ('Samsung Galaxy Tab S9', 'Premium Android tablet with AMOLED display', 'High-performance Android tablet', 3, 3899.00, 12, 22, 'SGTS9001', 'galaxy-tab-s9.jpg', TRUE),
 ('Lenovo Tab P12 Pro', 'Tablet for entertainment and productivity', 'All-in-one Android tablet', 3, 2999.00, 15, 30, 'LTP12P001', 'lenovo-tab-p12-pro.jpg', FALSE),
-
--- Audio
 ('JBL Charge 5', 'Portable Bluetooth speaker with powerful sound', 'Loud portable speaker', 4, 799.00, 20, 45, 'JBLCHG5001', 'jbl-charge-5.jpg', FALSE),
 ('Anker Soundcore Life Q30', 'Budget noise-canceling headphones with long battery life', 'Affordable ANC headphones', 4, 349.00, 25, 60, 'ANKQ3001', 'soundcore-life-q30.jpg', FALSE),
-
--- Gaming
 ('Nintendo Switch OLED', 'Hybrid console with improved display and battery life', 'Portable and docked gaming console', 5, 1599.00, 5, 18, 'NSWOLED001', 'switch-oled.jpg', TRUE),
 ('Razer Kishi V2', 'Mobile gaming controller for Android and iPhone', 'Compact mobile gaming controller', 5, 399.00, 10, 50, 'RZKISHI001', 'razer-kishi-v2.jpg', FALSE),
 ('Logitech G502 X', 'Advanced gaming mouse with adjustable DPI', 'Precision gaming mouse', 5, 299.00, 15, 30, 'LTG502X001', 'logitech-g502x.jpg', FALSE),
-
--- Wearables
 ('Xiaomi Smart Band 8', 'Fitness tracker with AMOLED screen and multiple sports modes', 'Affordable fitness tracker', 6, 199.00, 12, 75, 'XMSB8001', 'xiaomi-band-8.jpg', FALSE),
 ('Garmin Venu Sq 2', 'Smartwatch with GPS and fitness tracking features', 'Fitness smartwatch with GPS', 6, 1199.00, 10, 28, 'GRMVNSQ2001', 'garmin-venu-sq2.jpg', FALSE),
-
--- Accessories
 ('Anker PowerCore 10000mAh', 'Portable power bank with fast charging', 'Fast-charging power bank', 7, 139.00, 10, 100, 'ANKPWR10000', 'anker-powercore.jpg', FALSE),
 ('Baseus USB-C Hub 6-in-1', 'Multi-port USB-C hub for laptops', 'Essential USB-C accessory', 7, 179.00, 15, 35, 'BASUSBC001', 'baseus-usb-c-hub.jpg', FALSE),
 ('Ugreen Fast Charging Cable (1.5m)', 'Durable cable with fast data transfer', 'Reliable fast-charging cable', 7, 39.00, 20, 80, 'UGRCBL001', 'ugreen-cable.jpg', FALSE),
-
--- Smart Home
 ('Xiaomi Smart Air Purifier 4', 'Air purifier with smart app control and HEPA filter', 'Smart air purifier for home', 8, 599.00, 15, 30, 'XMPRF4001', 'xiaomi-air-purifier.jpg', TRUE),
 ('TP-Link Tapo C200', 'Smart Wi-Fi security camera with pan and tilt', 'Affordable smart home camera', 8, 139.00, 20, 45, 'TPLTPC2001', 'tapo-c200.jpg', FALSE),
 ('Philips Hue Smart Bulb', 'Customizable smart bulb with color control', 'Smart LED bulb for home', 8, 109.00, 12, 55, 'PHSHB001', 'philips-hue.jpg', FALSE);
