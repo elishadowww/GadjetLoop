@@ -240,7 +240,7 @@ INSERT INTO products (name, description, short_description, category_id, price, 
 ('AirPods Pro 2', 'Advanced wireless earbuds with ANC', 'Premium wireless earbuds', 4, 249.00, 12, 80, 'APP2001', 'airpods-pro-2.jpg', FALSE),
 ('PlayStation 5', 'Next-gen gaming console', 'Latest gaming console from Sony', 5, 499.00, 0, 15, 'PS5001', 'playstation-5.jpg', TRUE),
 ('Apple Watch Series 9', 'Advanced smartwatch with health features', 'Latest Apple smartwatch', 6, 399.00, 10, 35, 'AWS9001', 'apple-watch-s9.jpg', TRUE),
-('Google Nest Hub', 'Smart display for your home', 'Smart home control center', 8, 99.00, 25, 50, 'GNH001', 'nest-hub.jpg', FALSE);
+('Google Nest Hub', 'Smart display for your home', 'Smart home control center', 8, 99.00, 25, 50, 'GNH001', 'nest-hub.jpg', FALSE),
 ('Xiaomi 14 Pro', 'Flagship Xiaomi smartphone with Leica camera and Snapdragon 8 Gen 3', 'Flagship Android with Leica camera', 1, 3799.00, 5, 40, 'XM14PRO001', 'xiaomi-14-pro.jpg', TRUE),
 ('Realme 12 Pro+', 'Affordable mid-range phone with 200MP camera', 'Mid-range phone with flagship camera', 1, 1499.00, 10, 70, 'RM12P001', 'realme-12-pro-plus.jpg', FALSE),
 ('Huawei P60 Pro', 'Powerful photography smartphone with ultra-light sensor', 'Flagship Huawei with pro camera', 1, 4299.00, 15, 25, 'HWP60PRO001', 'huawei-p60-pro.jpg', TRUE),
