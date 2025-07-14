@@ -242,7 +242,7 @@ if ($_POST) {
                         </div>
                     </div>
                     <div class="faq-answer">
-                        <p>We offer multiple shipping options to suit your needs. Standard shipping (5-7 business days) is free on orders over $50. Express shipping (2-3 business days) is available for $9.99, and overnight shipping for $19.99. We also provide tracking information for all orders.</p>
+                        <p>We offer multiple shipping options to suit your needs. Standard shipping (5-7 business days) is free on orders over RM 50. Express shipping (2-3 business days) is available for RM 9.99, and overnight shipping for RM 19.99. We also provide tracking information for all orders.</p>
                     </div>
                 </div>
 
@@ -260,7 +260,7 @@ if ($_POST) {
                         </div>
                     </div>
                     <div class="faq-answer">
-                        <p>We offer a hassle-free 30-day return policy on all products. Items must be in original condition with all packaging and accessories. Returns are free for defective items, while customer returns have a $5.99 processing fee. Refunds are processed within 3-5 business days.</p>
+                        <p>We offer a hassle-free 30-day return policy on all products. Items must be in original condition with all packaging and accessories. Returns are free for defective items, while customer returns have a RM 5.99 processing fee. Refunds are processed within 3-5 business days.</p>
                     </div>
                 </div>
 
