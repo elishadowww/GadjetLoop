@@ -42,6 +42,8 @@
         </div>
 
         <style>
+
+           
 .footer-links a:visited {
     color: inherit;
     text-decoration: none;
@@ -49,7 +51,35 @@
 .footer-links a {
     text-decoration: none;
 }
+.back-to-top {
+            margin-top: 20px;
+            margin-right: -150px;
+            display: inline-block;
+            padding: 5px 5px;
+            background-color: #343a40;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background-color: #007bff;
+        }
+
+
 </style>
+        <button class="back-to-top" onclick="scrollToTop()">
+        <img src="images/buttonup.png" alt="Back to Top">
+</button>
+
+        <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        </script>
         
         <div class="footer-bottom">
             <p>&copy; <?php echo date('Y'); ?> GadgetLoop. All rights reserved.</p>
@@ -58,5 +88,7 @@
                 <a href="terms.php">Terms of Service</a>
             </div>
         </div>
+
+        
     </div>
 </footer>
