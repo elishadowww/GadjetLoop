@@ -220,6 +220,7 @@ if ($_POST) {
 
         <!-- FAQ Section -->
         <section class="faq-section">
+
     <div class="container">
         <div class="faq-header">
             <h2>Frequently Asked Questions</h2>
@@ -333,6 +334,7 @@ if ($_POST) {
                     </div>
                     <div class="faq-answer">
                         <p>Orders can be cancelled or modified within 1 hour of placement, as long as they haven't entered the fulfillment process. After this window, changes may not be possible. Contact our customer service team immediately for assistance with any modifications.</p>
+
                     </div>
                 </div>
             </div>
@@ -358,7 +360,55 @@ $(document).ready(function() {
                 isValid = false;
             } else {
                 $(this).removeClass('error');
-            }
+
+            });
+            
+            // FAQ accordion
+            $(document).ready(function () {
+    // Hide all on load
+    $('.faq-content').hide();
+
+    $('.faq-item h4').on('click', function () {
+        const $faqItem = $(this).closest('.faq-item');
+
+        if ($faqItem.hasClass('active')) {
+            // If already open, close it
+            $faqItem.removeClass('active');
+            $faqItem.find('.faq-content').slideUp(300);
+        } else {
+            // Close others
+            $('.faq-item').removeClass('active').find('.faq-content').slideUp(300);
+
+            // Open clicked
+            $faqItem.addClass('active');
+            $faqItem.find('.faq-content').slideDown(300);
+        }
+    });
+}); 
+
+
+
+
+            
+            // Character counter for message
+            $('#message').on('input', function() {
+                const maxLength = 1000;
+                const currentLength = $(this).val().length;
+                const remaining = maxLength - currentLength;
+                
+                if (!$('.char-counter').length) {
+                    $(this).after('<div class="char-counter"></div>');
+                }
+                
+                $('.char-counter').text(`${currentLength}/${maxLength} characters`);
+                
+                if (remaining < 50) {
+                    $('.char-counter').addClass('warning');
+                } else {
+                    $('.char-counter').removeClass('warning');
+                }
+            });
+
         });
         
         if (!isValid) {

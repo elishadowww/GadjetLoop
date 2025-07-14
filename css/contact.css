@@ -260,6 +260,7 @@
 }
 
 .faq-grid {
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -276,6 +277,25 @@
   border: 1px solid #e2e8f0;
   overflow: hidden;
   width: 100%;
+
+
+@media (max-width: 768px) {
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.faq-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-content {
+    overflow: hidden;
+
 }
 
 .faq-card:hover {
