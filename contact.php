@@ -207,7 +207,6 @@ if ($_POST) {
         </section>
 
         <!-- Map Section -->
-        <!-- Map Section -->
         <section class="map-section">
             <div class="container">
                 <h2>Find Our Store</h2>
@@ -221,52 +220,125 @@ if ($_POST) {
 
         <!-- FAQ Section -->
         <section class="faq-section">
-            <div class="container">
-                <h2>Frequently Asked Questions</h2>
-                <div class="faq-grid">
-                    <div class="faq-item">
-                        <h4>What are your shipping options?</h4>
-                        <div class="faq-content">
-                            <p>We offer free standard shipping on orders over $50. Express shipping options are available for faster delivery.</p>
+
+    <div class="container">
+        <div class="faq-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Everything you need to know about our products and services</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-grid">
+                <div class="faq-card" data-faq="1">
+                    <div class="faq-header-content">
+                        <div class="faq-icon">
+                            <span>🚚</span>
+                        </div>
+                        <div class="faq-question-wrapper">
+                            <div class="faq-category">Shipping</div>
+                            <h4 class="faq-question">What are your shipping options?</h4>
+                        </div>
+                        <div class="faq-toggle">
+                            <span class="toggle-icon">+</span>
                         </div>
                     </div>
-                    
-                    <div class="faq-item">
-                        <h4>What is your return policy?</h4>
-                        <div class="faq-content">
-                            <p>We offer a 30-day hassle-free return policy on all products. Items must be in original condition with packaging.</p>
-                        </div>    
+                    <div class="faq-answer">
+                        <p>We offer multiple shipping options to suit your needs. Standard shipping (5-7 business days) is free on orders over RM 50. Express shipping (2-3 business days) is available for RM 9.99, and overnight shipping for RM 19.99. We also provide tracking information for all orders.</p>
                     </div>
-                    
-                    <div class="faq-item">
-                        <h4>Do you offer warranty on products?</h4>
-                        <div class="faq-content">
-                            <p>Yes, all our products come with manufacturer warranties. Extended warranty options are available for select items.</p>
-                        </div>  
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h4>How can I track my order?</h4>
-                        <div class="faq-content">
-                            <p>Once your order ships, you'll receive a tracking number via email. You can also track orders in your account dashboard.</p>
-                        </div>    
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h4>Do you offer technical support?</h4>
-                        <div class="faq-content">
-                            <p>Yes, our technical support team is available to help with product setup, troubleshooting, and general questions.</p>
+                </div>
+
+                <div class="faq-card" data-faq="2">
+                    <div class="faq-header-content">
+                        <div class="faq-icon">
+                            <span>↩️</span>
+                        </div>
+                        <div class="faq-question-wrapper">
+                            <div class="faq-category">Returns</div>
+                            <h4 class="faq-question">What is your return policy?</h4>
+                        </div>
+                        <div class="faq-toggle">
+                            <span class="toggle-icon">+</span>
                         </div>
                     </div>
-                    
-                    <div class="faq-item">
-                        <h4>Can I cancel or modify my order?</h4>
-                        <div class="faq-content">
-                            <p>Orders can be cancelled or modified within 1 hour of placement. Contact us immediately for assistance.</p>
+                    <div class="faq-answer">
+                        <p>We offer a hassle-free 30-day return policy on all products. Items must be in original condition with all packaging and accessories. Returns are free for defective items, while customer returns have a RM 5.99 processing fee. Refunds are processed within 3-5 business days.</p>
+                    </div>
+                </div>
+
+                <div class="faq-card" data-faq="3">
+                    <div class="faq-header-content">
+                        <div class="faq-icon">
+                            <span>🛡️</span>
                         </div>
+                        <div class="faq-question-wrapper">
+                            <div class="faq-category">Warranty</div>
+                            <h4 class="faq-question">Do you offer warranty on products?</h4>
+                        </div>
+                        <div class="faq-toggle">
+                            <span class="toggle-icon">+</span>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! All our products come with manufacturer warranties ranging from 1-3 years depending on the item. We also offer extended warranty plans for added protection. Our warranty covers manufacturing defects and hardware failures under normal use.</p>
+                    </div>
+                </div>
+
+                <div class="faq-card" data-faq="4">
+                    <div class="faq-header-content">
+                        <div class="faq-icon">
+                            <span>⏰</span>
+                        </div>
+                        <div class="faq-question-wrapper">
+                            <div class="faq-category">Orders</div>
+                            <h4 class="faq-question">How can I track my order?</h4>
+                        </div>
+                        <div class="faq-toggle">
+                            <span class="toggle-icon">+</span>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Once your order ships, you'll receive a confirmation email with tracking information. You can also log into your account dashboard to view real-time order status. We provide tracking numbers for all carriers including FedEx, UPS, and USPS.</p>
+                    </div>
+                </div>
+
+                <div class="faq-card" data-faq="5">
+                    <div class="faq-header-content">
+                        <div class="faq-icon">
+                            <span>📞</span>
+                        </div>
+                        <div class="faq-question-wrapper">
+                            <div class="faq-category">Support</div>
+                            <h4 class="faq-question">Do you offer technical support?</h4>
+                        </div>
+                        <div class="faq-toggle">
+                            <span class="toggle-icon">+</span>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! Our certified technical support team is available Monday-Friday 9AM-8PM EST. We provide setup assistance, troubleshooting, and product guidance. You can reach us via live chat, email, or phone for immediate help.</p>
+                    </div>
+                </div>
+
+                <div class="faq-card" data-faq="6">
+                    <div class="faq-header-content">
+                        <div class="faq-icon">
+                            <span>⚙️</span>
+                        </div>
+                        <div class="faq-question-wrapper">
+                            <div class="faq-category">Orders</div>
+                            <h4 class="faq-question">Can I cancel or modify my order?</h4>
+                        </div>
+                        <div class="faq-toggle">
+                            <span class="toggle-icon">+</span>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Orders can be cancelled or modified within 1 hour of placement, as long as they haven't entered the fulfillment process. After this window, changes may not be possible. Contact our customer service team immediately for assistance with any modifications.</p>
+
                     </div>
                 </div>
             </div>
+        </div>
         </section>
     </main>
 
@@ -276,30 +348,19 @@ if ($_POST) {
     <script src="js/jquery.min.js"></script>
     <script src="js/main.js"></script>
     <script>
-        $(document).ready(function() {
-            // Form validation
-            $('.contact-form').on('submit', function(e) {
-                let isValid = true;
-                
-                // Check required fields
-                $(this).find('[required]').each(function() {
-                    if (!$(this).val().trim()) {
-                        $(this).addClass('error');
-                        isValid = false;
-                    } else {
-                        $(this).removeClass('error');
-                    }
-                });
-                
-                if (!isValid) {
-                    e.preventDefault();
-                    showAlert('Please fill in all required fields', 'error');
-                }
-            });
-            
-            // Remove error class on input
-            $('.form-control').on('input change', function() {
+$(document).ready(function() {
+    // Form validation
+    $('.contact-form').on('submit', function(e) {
+        let isValid = true;
+        
+        // Check required fields
+        $(this).find('[required]').each(function() {
+            if (!$(this).val().trim()) {
+                $(this).addClass('error');
+                isValid = false;
+            } else {
                 $(this).removeClass('error');
+
             });
             
             // FAQ accordion
@@ -347,27 +408,88 @@ if ($_POST) {
                     $('.char-counter').removeClass('warning');
                 }
             });
+
         });
         
-        // Initialize Google Maps
-        function initContactMap() {
-            
-            const infoWindow = new google.maps.InfoWindow({
-                content: `
-                    <div style="padding: 10px;">
-                        <h4>GadgetLoop Store</h4>
-                        <p>123 Tech Street<br>Digital City, DC 12345</p>
-                        <p><strong>Phone:</strong> (555) 123-4567</p>
-                        <p><strong>Hours:</strong> Mon-Fri 9AM-8PM</p>
-                    </div>
-                `
-            });
-            
-            marker.addListener('click', function() {
-                infoWindow.open(map, marker);
-            });
+        if (!isValid) {
+            e.preventDefault();
+            showAlert('Please fill in all required fields', 'error');
         }
-    </script>
+    });
     
+    // Remove error class on input
+    $('.form-control').on('input change', function() {
+        $(this).removeClass('error');
+    });
+    
+    // FAQ accordion - Only one item open at a time
+    $('.faq-card').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const $clickedCard = $(this);
+        const $clickedAnswer = $clickedCard.find('.faq-answer');
+        const $clickedToggle = $clickedCard.find('.toggle-icon');
+        
+        // Check if the clicked card is currently active
+        if ($clickedCard.hasClass('active')) {
+            // Close the clicked card
+            $clickedCard.removeClass('active');
+            $clickedAnswer.slideUp(300);
+            $clickedToggle.text('+');
+        } else {
+            // Close all other cards first
+            $('.faq-card.active').removeClass('active');
+            $('.faq-card .faq-answer').slideUp(300);
+            $('.toggle-icon').text('+');
+            
+            // Open the clicked card
+            $clickedCard.addClass('active');
+            $clickedAnswer.slideDown(300);
+            $clickedToggle.text('−');
+        }
+    });
+    
+    // Initialize FAQ - hide all answers
+    $('.faq-answer').hide();
+    
+    // Character counter for message
+    $('#message').on('input', function() {
+        const maxLength = 1000;
+        const currentLength = $(this).val().length;
+        const remaining = maxLength - currentLength;
+        
+        if (!$('.char-counter').length) {
+            $(this).after('<div class="char-counter"></div>');
+        }
+        
+        $('.char-counter').text(`${currentLength}/${maxLength} characters`);
+        
+        if (remaining < 50) {
+            $('.char-counter').addClass('warning');
+        } else {
+            $('.char-counter').removeClass('warning');
+        }
+    });
+});
+
+// Initialize Google Maps
+function initContactMap() {
+    const infoWindow = new google.maps.InfoWindow({
+        content: `
+            <div style="padding: 10px;">
+                <h4>GadgetLoop Store</h4>
+                <p>123 Tech Street<br>Digital City, DC 12345</p>
+                <p><strong>Phone:</strong> (555) 123-4567</p>
+                <p><strong>Hours:</strong> Mon-Fri 9AM-8PM</p>
+            </div>
+        `
+    });
+    
+    marker.addListener('click', function() {
+        infoWindow.open(map, marker);
+    });
+}
+</script>
 </body>
 </html>
