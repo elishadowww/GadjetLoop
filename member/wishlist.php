@@ -63,7 +63,7 @@ $wishlist_items = $stmt->fetchAll();
                                 <?php foreach ($wishlist_items as $item): ?>
                                 <div class="wishlist-item">
                                     <div class="wishlist-item-image">
-                                        <img src="../uploads/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
+                                        <img src="../images/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
                                              alt="<?php echo htmlspecialchars($item['name']); ?>">
                                         <?php if ($item['discount_percentage'] > 0): ?>
                                             <span class="discount-badge"><?php echo $item['discount_percentage']; ?>% OFF</span>
