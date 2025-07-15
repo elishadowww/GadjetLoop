@@ -406,7 +406,7 @@ function updateCartCount() {
     }).fail(function() {
         $('#cart-count').text('0');
     });
-}
+}W
 
 // Toggle wishlist
 function toggleWishlist(productId, $btn) {
