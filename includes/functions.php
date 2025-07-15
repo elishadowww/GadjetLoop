@@ -391,6 +391,11 @@ function uploadFile($file, $upload_dir, $allowed_types = ['jpg', 'jpeg', 'png', 
         return ['success' => false, 'message' => 'Invalid file type'];
     }
 
+    // Ensure the upload directory exists
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+
     $filename = uniqid() . '.' . $file_extension;
     $upload_path = $upload_dir . $filename;
 
