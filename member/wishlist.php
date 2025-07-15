@@ -42,7 +42,7 @@ $wishlist_items = $stmt->fetchAll();
     <main>
         <div class="container">
             <div class="member-layout">
-                <?php include '../includes/member-sidebar.php'; ?>
+                <?php include 'includes/member-sidebar.php'; ?>
                 
                 <div class="member-content">
                     <div class="page-header">

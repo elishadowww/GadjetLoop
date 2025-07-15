@@ -307,11 +307,14 @@ function getOrdersByUser($pdo, $user_id, $page = 1, $per_page = 10) {
     $offset = ($page - 1) * $per_page;
     $stmt = $pdo->prepare("
         SELECT * FROM orders 
-        WHERE user_id = ? 
+        WHERE user_id = :user_id 
         ORDER BY created_at DESC 
-        LIMIT ? OFFSET ?
+        LIMIT :per_page OFFSET :offset
     ");
-    $stmt->execute([$user_id, $per_page, $offset]);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindValue(':per_page', (int)$per_page, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    $stmt->execute();
     return $stmt->fetchAll();
 }
 
