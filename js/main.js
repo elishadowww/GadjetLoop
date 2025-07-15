@@ -56,18 +56,15 @@ $(document).ready(function() {
         showQuickView($(this).data('product-id'));
     });
     
-    // Handle add to cart buttons
-    $('.add-to-cart').on('click', function(e) {
+    // Handle add to cart buttons (event delegation to prevent double binding)
+    $(document).off('click', '.add-to-cart').on('click', '.add-to-cart', function(e) {
         e.preventDefault();
-        
         if (!isUserLoggedIn()) {
             showAlert('Please login to add items to cart', 'warning');
             return;
         }
-        
         const productId = $(this).data('product-id');
         const quantity = 1; // Default quantity
-        
         addToCart(productId, quantity);
     });
     
