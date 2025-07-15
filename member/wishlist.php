@@ -13,18 +13,7 @@ $user_id = $_SESSION['user_id'];
 $user = getUserById($pdo, $user_id);
 
 // Get wishlist items
-$stmt = $pdo->prepare("
-    SELECT w.*, p.name, p.price, p.main_image, p.discount_percentage, p.stock_quantity,
-    CASE WHEN p.discount_percentage > 0 
-         THEN p.price * (1 - p.discount_percentage / 100) 
-         ELSE p.price END as sale_price
-    FROM wishlist w 
-    JOIN products p ON w.product_id = p.id 
-    WHERE w.user_id = ? AND p.is_active = 1
-    ORDER BY w.created_at DESC
-");
-$stmt->execute([$user_id]);
-$wishlist_items = $stmt->fetchAll();
+$wishlist_items = getWishlistItems($pdo, $user_id);
 ?>
 
 <!DOCTYPE html>
@@ -72,17 +61,15 @@ $wishlist_items = $stmt->fetchAll();
                                     
                                     <div class="wishlist-item-info">
                                         <h3 class="wishlist-item-name">
-                                            <a href="../product-detail.php?id=<?php echo $item['product_id']; ?>">
                                                 <?php echo htmlspecialchars($item['name']); ?>
-                                            </a>
                                         </h3>
                                         
                                         <div class="wishlist-item-price">
                                             <?php if ($item['discount_percentage'] > 0): ?>
-                                                <span class="original-price">$<?php echo number_format($item['price'], 2); ?></span>
-                                                <span class="sale-price">$<?php echo number_format($item['sale_price'], 2); ?></span>
+                                                <span class="original-price">RM<?php echo number_format($item['price'], 2); ?></span>
+                                                <span class="sale-price">RM<?php echo number_format($item['sale_price'], 2); ?></span>
                                             <?php else: ?>
-                                                <span class="price">$<?php echo number_format($item['price'], 2); ?></span>
+                                                <span class="price">RM<?php echo number_format($item['price'], 2); ?></span>
                                             <?php endif; ?>
                                         </div>
                                         
@@ -111,7 +98,7 @@ $wishlist_items = $stmt->fetchAll();
     </main>
     
     <?php include '../includes/footer.php'; ?>
-    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/main.js"></script>
     <script src="../js/cart.js"></script>

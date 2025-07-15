@@ -79,14 +79,19 @@ $categories = getCategories($pdo);
                                 <span class="price">RM<?php echo number_format($product['price'], 2); ?></span>
                                 <?php endif; ?>
                             </div>
-                            <div class="product-actions">
-                                <button class="btn btn-primary add-to-cart" data-product-id="<?php echo $product['id']; ?>">
-                                    Add to Cart
-                                </button>
-                                <button class="btn btn-outline wishlist-btn" data-product-id="<?php echo $product['id']; ?>">
-                                    Buy Now
-                                </button>
-                            </div>
+                           <div class="product-actions">
+                                        <?php if ($product['stock_quantity'] > 0): ?>
+                                            <button class="btn btn-primary add-to-cart" data-product-id="<?php echo $product['id']; ?>">
+                                                Add to Cart
+                                            </button>
+                                        <?php else: ?>
+                                            <button class="btn btn-secondary" disabled>Out of Stock</button>
+                                        <?php endif; ?>
+                                        
+                                        <button class="btn btn-outline wishlist-btn" data-product-id="<?php echo $product['id']; ?>">
+                                            +Wishlist
+                                        </button>
+                                    </div>
                         </div>
                     </div>
                     <?php endforeach; ?>
@@ -122,5 +127,10 @@ $categories = getCategories($pdo);
     </main>
 
     <?php include 'includes/footer.php'; ?>
-    
+    <body class="<?php echo isLoggedIn() ? 'logged-in' : ''; ?>">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
 </html>

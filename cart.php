@@ -50,16 +50,6 @@ if ($_POST) {
 // Get cart items
 $cart_items = getCartItems($pdo, $user_id);
 
-// DEBUG: Output cart rows for this user
-if (basename($_SERVER['SCRIPT_NAME']) === 'cart.php') {
-    echo '<pre style="color:blue;">';
-    $stmt = $pdo->prepare("SELECT * FROM cart WHERE user_id = ?");
-    $stmt->execute([$user_id]);
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo 'Cart rows for user_id=' . $user_id . ":\n";
-    print_r($rows);
-    echo '</pre>';
-}
 
 // Calculate totals
 $subtotal = 0;

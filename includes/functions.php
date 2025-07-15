@@ -406,4 +406,19 @@ function generateQRCode($data) {
     // For demo purposes, we'll return a placeholder
     return "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . urlencode($data);
 }
+
+function getWishlistItems($pdo, $user_id) {
+    $stmt = $pdo->prepare("
+        SELECT w.*, p.name, p.price, p.discount_percentage, p.main_image, p.stock_quantity,
+        CASE WHEN p.discount_percentage > 0 
+             THEN p.price * (1 - p.discount_percentage / 100) 
+             ELSE p.price END as sale_price
+        FROM wishlist w
+        JOIN products p ON w.product_id = p.id
+        WHERE w.user_id = ?
+        ORDER BY w.created_at DESC
+    ");
+    $stmt->execute([$user_id]);
+    return $stmt->fetchAll();
+}
 ?>

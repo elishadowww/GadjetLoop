@@ -288,7 +288,7 @@ if (!empty($filters['category'])) {
                                         <?php endif; ?>
                                         
                                         <button class="btn btn-outline wishlist-btn" data-product-id="<?php echo $product['id']; ?>">
-                                            Buy Now
+                                            +Wishlist
                                         </button>
                                     </div>
                                 </div>
