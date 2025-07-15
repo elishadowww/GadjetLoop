@@ -226,10 +226,10 @@ $total = $subtotal + $tax + $shipping;
                                     <h4><?php echo htmlspecialchars($item['name']); ?></h4>
                                     <div class="item-price">
                                         <?php if ($item['discount_percentage'] > 0): ?>
-                                            <span style="text-decoration: line-through; color: #999;">$<?php echo number_format($item['price'], 2); ?></span>
-                                            $<?php echo number_format($item['sale_price'], 2); ?>
+                                            <span style="text-decoration: line-through; color: #999;">RM<?php echo number_format($item['price'], 2); ?></span>
+                                            RM<?php echo number_format($item['sale_price'], 2); ?>
                                         <?php else: ?>
-                                            $<?php echo number_format($item['price'], 2); ?>
+                                            RM<?php echo number_format($item['price'], 2); ?>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -243,7 +243,7 @@ $total = $subtotal + $tax + $shipping;
                                 </div>
                                 
                                 <div class="item-total">
-                                    <strong>$<?php echo number_format($item['sale_price'] * $item['quantity'], 2); ?></strong>
+                                    <strong>RM<?php echo number_format($item['sale_price'] * $item['quantity'], 2); ?></strong>
                                 </div>
                                 
                                 <div class="item-actions">
@@ -269,28 +269,28 @@ $total = $subtotal + $tax + $shipping;
                         
                         <div class="summary-row">
                             <span>Subtotal:</span>
-                            <span>$<?php echo number_format($subtotal, 2); ?></span>
+                            <span>RM<?php echo number_format($subtotal, 2); ?></span>
                         </div>
                         
                         <div class="summary-row">
                             <span>Tax:</span>
-                            <span>$<?php echo number_format($tax, 2); ?></span>
+                            <span>RM<?php echo number_format($tax, 2); ?></span>
                         </div>
                         
                         <div class="summary-row">
                             <span>Shipping:</span>
-                            <span><?php echo $shipping > 0 ? '$' . number_format($shipping, 2) : 'Free'; ?></span>
+                            <span><?php echo $shipping > 0 ? 'RM' . number_format($shipping, 2) : 'Free'; ?></span>
                         </div>
                         
                         <?php if ($subtotal < 50 && $subtotal > 0): ?>
                             <div style="background: #fff3cd; padding: 1rem; border-radius: 4px; margin: 1rem 0; font-size: 14px;">
-                                Add $<?php echo number_format(50 - $subtotal, 2); ?> more for free shipping!
+                                Add RM<?php echo number_format(50 - $subtotal, 2); ?> more for free shipping!
                             </div>
                         <?php endif; ?>
                         
                         <div class="summary-row summary-total">
                             <span>Total:</span>
-                            <span>$<?php echo number_format($total, 2); ?></span>
+                            <span>RM<?php echo number_format($total, 2); ?></span>
                         </div>
                         
                         <a href="checkout.php" class="btn btn-primary btn-block" style="margin-top: 2rem;">

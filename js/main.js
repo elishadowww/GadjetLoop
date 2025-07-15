@@ -21,21 +21,6 @@ $(document).ready(function () {
         $(this).find('.dropdown-content').fadeOut(200);
     });
 
-    // Handle mobile menu toggle
-    $('.mobile-menu-toggle').on('click', function () {
-        $('.nav-menu').toggleClass('active');
-    });
-
-    // Handle form validation
-    $('form').on('submit', function (e) {
-        if (!validateForm(this)) {
-            e.preventDefault();
-        }
-    });
-
-    // Handle file uploads with drag and drop
-    initializeDragAndDrop();
-
     // Handle AJAX forms
     $('.ajax-form').on('submit', function (e) {
         e.preventDefault();
@@ -54,20 +39,6 @@ $(document).ready(function () {
         showQuickView($(this).data('product-id'));
     });
 
-    // Handle add to cart buttons
-    $('.add-to-cart').on('click', function (e) {
-        e.preventDefault();
-
-        if (!isUserLoggedIn()) {
-            showAlert('Please login to add items to cart', 'warning');
-            return;
-        }
-
-        const productId = $(this).data('product-id');
-        const quantity = 1; // Default quantity
-
-        addToCart(productId, quantity);
-    });
 
     // Handle rating stars
     $('.rating-stars').on('click', '.star', function () {

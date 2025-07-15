@@ -331,48 +331,50 @@ if (!empty($filters['category'])) {
             // Initialize filters from localStorage
             const savedView = localStorage.getItem('product-view') || 'grid';
             toggleProductView(savedView);
-            
+
             // View toggle functionality
             $('.view-btn').on('click', function() {
                 const view = $(this).data('view');
                 toggleProductView(view);
             });
-            
+
             // Clear filters
             $('.clear-filters').on('click', function() {
                 window.location.href = 'products.php';
             });
-            
+
             // Handle sort changes
-           $('#sort-select').on('change', function() {
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.set('sort', $(this).val());
-    currentUrl.searchParams.set('page', '1'); // Reset to first page
-    window.location.href = currentUrl.toString();
-});
-            
-$(document).on('click', '.quick-view-btn', function(e) {
-    e.preventDefault();
-    const productId = $(this).data('product-id');
-    $('#quickViewContent').html('Loading...');
-    $('#quickViewModal').show();
+            $('#sort-select').on('change', function() {
+                const currentUrl = new URL(window.location);
+                currentUrl.searchParams.set('sort', $(this).val());
+                currentUrl.searchParams.set('page', '1'); // Reset to first page
+                window.location.href = currentUrl.toString();
+            });
 
-    $.ajax({
-        url: 'quick_view.php',
-        type: 'GET',
-        data: { id: productId },
-        success: function(response) {
-            $('#quickViewContent').html(response);
-        },
-        error: function() {
-            $('#quickViewContent').html('Error loading product details.');
-        }
-    });
-});
+            // Quick View modal
+            $(document).on('click', '.quick-view-btn', function(e) {
+                e.preventDefault();
+                const productId = $(this).data('product-id');
+                $('#quickViewContent').html('Loading...');
+                $('#quickViewModal').show();
 
-$('#closeQuickView').on('click', function() {
-    $('#quickViewModal').hide();
-});
+                $.ajax({
+                    url: 'quick_view.php',
+                    type: 'GET',
+                    data: { id: productId },
+                    success: function(response) {
+                        $('#quickViewContent').html(response);
+                    },
+                    error: function() {
+                        $('#quickViewContent').html('Error loading product details.');
+                    }
+                });
+            });
+
+            $('#closeQuickView').on('click', function() {
+                $('#quickViewModal').hide();
+            });
+
             // Handle filter changes
             $('.filter-form input, .filter-form select').on('change', function() {
                 $(this).closest('form').submit();
