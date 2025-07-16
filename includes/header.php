@@ -41,13 +41,13 @@ require_once __DIR__ . '/functions.php';
                                 <?php if (isAdmin()): ?>
                                     <a href="admin/dashboard.php">Admin Panel</a>
                                 <?php endif; ?>
-                                <a href="/GadjetLooplogout.php">Logout</a>
+                                <a href="/GadjetLoop/logout.php">Logout</a>
                             </div>
                         </div>
                     </div>
                     
                     <div class="cart-icon">
-                        <a href="cart.php">
+                        <a href="/GadjetLoop/cart.php">
                             🛒 <span class="cart-count" id="cart-count"><?php
                                 if (isLoggedIn()) {
                                     try {
