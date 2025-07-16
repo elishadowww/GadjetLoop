@@ -28,7 +28,7 @@ $user = getUserById($pdo, $user_id);
     <nav class="member-nav">
         <ul class="nav-menu">
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : ''; ?>">
-                <a href="/GadjetLoop/dashboard.php">
+                <a href="/GadjetLoop/member/dashboard.php">
                     <span class="nav-icon">📊</span>
                     <span class="nav-text">Dashboard</span>
                 </a>
