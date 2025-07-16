@@ -79,17 +79,17 @@ require_once 'includes/functions.php';
                         <tr>
                             <td>Standard Shipping</td>
                             <td>5-7 business days</td>
-                            <td>$9.99 (Free on orders over $50)</td>
+                            <td>RM 9.99 (Free on orders over RM 50)</td>
                         </tr>
                         <tr>
                             <td>Express Shipping</td>
                             <td>2-3 business days</td>
-                            <td>$19.99</td>
+                            <td>RM 19.99</td>
                         </tr>
                         <tr>
                             <td>Overnight Shipping</td>
                             <td>1 business day</td>
-                            <td>$39.99</td>
+                            <td>RM 39.99</td>
                         </tr>
                     </tbody>
                 </table>
