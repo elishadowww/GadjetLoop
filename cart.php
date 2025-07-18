@@ -50,6 +50,7 @@ if ($_POST) {
 // Get cart items
 $cart_items = getCartItems($pdo, $user_id);
 
+
 // Calculate totals
 $subtotal = 0;
 foreach ($cart_items as $item) {
@@ -218,7 +219,7 @@ $total = $subtotal + $tax + $shipping;
                             <?php foreach ($cart_items as $item): ?>
                             <div class="cart-item">
                                 <div class="item-image">
-                                    <img src="uploads/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
+                                    <img src="images/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
                                          alt="<?php echo htmlspecialchars($item['name']); ?>">
                                 </div>
                                 
@@ -226,10 +227,10 @@ $total = $subtotal + $tax + $shipping;
                                     <h4><?php echo htmlspecialchars($item['name']); ?></h4>
                                     <div class="item-price">
                                         <?php if ($item['discount_percentage'] > 0): ?>
-                                            <span style="text-decoration: line-through; color: #999;">$<?php echo number_format($item['price'], 2); ?></span>
-                                            $<?php echo number_format($item['sale_price'], 2); ?>
+                                            <span style="text-decoration: line-through; color: #999;">RM<?php echo number_format($item['price'], 2); ?></span>
+                                            RM<?php echo number_format($item['sale_price'], 2); ?>
                                         <?php else: ?>
-                                            $<?php echo number_format($item['price'], 2); ?>
+                                            RM<?php echo number_format($item['price'], 2); ?>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -243,7 +244,7 @@ $total = $subtotal + $tax + $shipping;
                                 </div>
                                 
                                 <div class="item-total">
-                                    <strong>$<?php echo number_format($item['sale_price'] * $item['quantity'], 2); ?></strong>
+                                    <strong>RM<?php echo number_format($item['sale_price'] * $item['quantity'], 2); ?></strong>
                                 </div>
                                 
                                 <div class="item-actions">
@@ -269,28 +270,28 @@ $total = $subtotal + $tax + $shipping;
                         
                         <div class="summary-row">
                             <span>Subtotal:</span>
-                            <span>$<?php echo number_format($subtotal, 2); ?></span>
+                            <span>RM<?php echo number_format($subtotal, 2); ?></span>
                         </div>
                         
                         <div class="summary-row">
                             <span>Tax:</span>
-                            <span>$<?php echo number_format($tax, 2); ?></span>
+                            <span>RM<?php echo number_format($tax, 2); ?></span>
                         </div>
                         
                         <div class="summary-row">
                             <span>Shipping:</span>
-                            <span><?php echo $shipping > 0 ? '$' . number_format($shipping, 2) : 'Free'; ?></span>
+                            <span><?php echo $shipping > 0 ? 'RM' . number_format($shipping, 2) : 'Free'; ?></span>
                         </div>
                         
                         <?php if ($subtotal < 50 && $subtotal > 0): ?>
                             <div style="background: #fff3cd; padding: 1rem; border-radius: 4px; margin: 1rem 0; font-size: 14px;">
-                                Add $<?php echo number_format(50 - $subtotal, 2); ?> more for free shipping!
+                                Add RM<?php echo number_format(50 - $subtotal, 2); ?> more for free shipping!
                             </div>
                         <?php endif; ?>
                         
                         <div class="summary-row summary-total">
                             <span>Total:</span>
-                            <span>$<?php echo number_format($total, 2); ?></span>
+                            <span>RM<?php echo number_format($total, 2); ?></span>
                         </div>
                         
                         <a href="checkout.php" class="btn btn-primary btn-block" style="margin-top: 2rem;">
@@ -307,7 +308,7 @@ $total = $subtotal + $tax + $shipping;
     </main>
     
     <?php include 'includes/footer.php'; ?>
-    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/main.js"></script>
     <script>

@@ -28,14 +28,14 @@ $user = getUserById($pdo, $user_id);
     <nav class="member-nav">
         <ul class="nav-menu">
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : ''; ?>">
-                <a href="dashboard.php">
+                <a href="/GadjetLoop/member/dashboard.php">
                     <span class="nav-icon">📊</span>
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
             
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'profile.php' ? 'active' : ''; ?>">
-                <a href="profile.php">
+                <a href="/GadjetLoop/member/profile.php">
                     <span class="nav-icon">👤</span>
                     <span class="nav-text">My Profile</span>
                 </a>
@@ -58,7 +58,7 @@ $user = getUserById($pdo, $user_id);
             </li>
             
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'wishlist.php' ? 'active' : ''; ?>">
-                <a href="wishlist.php">
+                <a href="/GadjetLoop/member/dashboard.php">
                     <span class="nav-icon">♡</span>
                     <span class="nav-text">Wishlist</span>
                     <?php
@@ -105,8 +105,7 @@ $user = getUserById($pdo, $user_id);
             <li class="nav-divider"></li>
             
             <li class="nav-item">
-                <a href="index.php">
-                <a href="index.php">
+                <a href="/GadjetLoop/index.php">
                     <span class="nav-text">Back to Store</span>
                 </a>
             </li>

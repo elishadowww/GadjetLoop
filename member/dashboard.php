@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'includes/config.php';
-require_once 'includes/functions.php';
+require_once '../includes/config.php';
+require_once '../includes/functions.php';
 
 // Check if user is logged in and is a member
 if (!isLoggedIn()) {
@@ -69,16 +69,16 @@ $wishlist_items = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Dashboard - GadgetLoop</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/member.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/member.css">
 </head>
 <body data-page="dashboard" class="logged-in">
-    <?php include 'includes/header.php'; ?>
+    <?php include '../includes/header.php'; ?>
     
     <main>
         <div class="container">
             <div class="member-layout">
-                <?php include 'includes/member-sidebar.php'; ?>
+                              <?php include 'includes/member-sidebar.php'; ?>
                 
                 <div class="member-content">
                     <div class="page-header">
@@ -99,7 +99,7 @@ $wishlist_items = $stmt->fetchAll();
                         <div class="stat-card">
                             <div class="stat-icon">💰</div>
                             <div class="stat-info">
-                                <h3>$<?php echo number_format($total_spent, 2); ?></h3>
+                                <h3>RM<?php echo number_format($total_spent, 2); ?></h3>
                                 <p>Total Spent</p>
                             </div>
                         </div>
@@ -175,10 +175,10 @@ $wishlist_items = $stmt->fetchAll();
                                     <div class="wishlist-preview">
                                         <?php foreach ($wishlist_items as $item): ?>
                                         <div class="wishlist-item">
-                                            <img src="uploads/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
+                                            <img src="../images/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
                                                  alt="<?php echo htmlspecialchars($item['name']); ?>">
                                             <h5><?php echo htmlspecialchars($item['name']); ?></h5>
-                                            <p class="price">$<?php echo number_format($item['sale_price'], 2); ?></p>
+                                            <p class="price">RM<?php echo number_format($item['sale_price'], 2); ?></p>
                                         </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -225,7 +225,7 @@ $wishlist_items = $stmt->fetchAll();
         </div>
     </main>
     
-    <?php include 'includes/footer.php'; ?>
+    <?php include '../includes/footer.php'; ?>
     
     <script src="js/jquery.min.js"></script>
     <script src="js/main.js"></script>

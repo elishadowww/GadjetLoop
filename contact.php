@@ -19,16 +19,13 @@ if ($_POST) {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address';
     } else {
-        // In a real application, you would send this to your email or save to database
-        // For demo purposes, we'll just show a success message
-        
+       
         try {
-            // Save contact message to database (optional)
             $stmt = $pdo->prepare("
-                INSERT INTO contact_messages (name, email, phone, subject, message, created_at) 
+                INSERT INTO messages (name, email, phone, subject, message, created_at) 
                 VALUES (?, ?, ?, ?, ?, NOW())
             ");
-            // Note: You'll need to create this table if you want to store messages
+            $stmt->execute([$name, $email, $phone, $subject, $message]);
             
             // Send email notification (in production)
             $email_subject = "New Contact Form Submission: " . $subject;

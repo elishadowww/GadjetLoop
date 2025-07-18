@@ -44,13 +44,7 @@
         <style>
 
            
-.footer-links a:visited {
-    color: inherit;
-    text-decoration: none;
-}
-.footer-links a {
-    text-decoration: none;
-}
+
 .back-to-top {
             margin-top: 20px;
             margin-right: -150px;
@@ -72,7 +66,7 @@
 
 </style>
         <button class="back-to-top" onclick="scrollToTop()">
-        <img src="images/buttonup.png" alt="Back to Top">
+        <img src="/GadjetLoop/images/buttonup.png" alt="Back to Top">
 </button>
 
         <script>
@@ -84,8 +78,8 @@
         <div class="footer-bottom">
             <p>&copy; <?php echo date('Y'); ?> GadgetLoop. All rights reserved.</p>
             <div class="footer-links">
-                <a href="privacy.php">Privacy Policy</a>
-                <a href="terms.php">Terms of Service</a>
+                <a href="/GadjetLoop/privacy.php">Privacy Policy</a>
+                <a href="/GadjetLoop/terms.php">Terms of Service</a>
             </div>
         </div>
 

@@ -1,3 +1,16 @@
+<?php
+if (!isset($pdo)) {
+    $configPath1 = __DIR__ . '/config.php';
+    $configPath2 = __DIR__ . '/../includes/config.php';
+    if (file_exists($configPath1)) {
+        require_once $configPath1;
+    } elseif (file_exists($configPath2)) {
+        require_once $configPath2;
+    }
+}
+require_once __DIR__ . '/functions.php';
+?>
+
 <header class="main-header">
     <div class="container">
         <div class="header-top">
@@ -22,20 +35,33 @@
                         <div class="dropdown">
                             <button class="dropdown-btn">Account ▼</button>
                             <div class="dropdown-content">
-                                <a href="<?php echo isAdmin() ? 'admin' : 'member'; ?>/profile.php">Profile</a>
-                                <a href="<?php echo isAdmin() ? 'admin' : 'member'; ?>/orders.php">Orders</a>
-                                <a href="<?php echo isAdmin() ? 'admin' : 'member'; ?>/wishlist.php">Wishlist</a>
+                                <a href="/GadjetLoop/member/profile.php">Profile</a>
+                                <a href="/GadjetLoop/member/orders.php">Orders</a>
+                                <a href="/GadjetLoop/member/wishlist.php">Wishlist</a>
                                 <?php if (isAdmin()): ?>
                                     <a href="admin/dashboard.php">Admin Panel</a>
                                 <?php endif; ?>
-                                <a href="logout.php">Logout</a>
+                                <a href="/GadjetLoop/logout.php">Logout</a>
                             </div>
                         </div>
                     </div>
                     
                     <div class="cart-icon">
-                        <a href="cart.php">
-                            🛒 <span class="cart-count" id="cart-count">0</span>
+                        <a href="/GadjetLoop/cart.php">
+                            🛒 <span class="cart-count" id="cart-count"><?php
+                                if (isLoggedIn()) {
+                                    try {
+                                        $stmt = $pdo->prepare("SELECT COALESCE(SUM(quantity),0) FROM cart WHERE user_id = ?");
+                                        $stmt->execute([$_SESSION['user_id']]);
+                                        $cartCount = (int)$stmt->fetchColumn();
+                                        echo $cartCount;
+                                    } catch (Exception $e) {
+                                        echo '0';
+                                    }
+                                } else {
+                                    echo '0';
+                                }
+                            ?></span>
                         </a>
                     </div>
                 <?php else: ?>
@@ -49,9 +75,9 @@
         
         <nav class="main-nav">
             <ul class="nav-menu">
-                <li><a href="index.php">Home</a></li>
+                <li><a href="/GadjetLoop/index.php">Home</a></li>
                 <li class="dropdown">
-                    <a href="products.php">Products ▼</a>
+                    <a href="/GadjetLoop/products.php">Products ▼</a>
                     <div class="dropdown-content">
                         <?php
                         $categories = getCategories($pdo);
@@ -63,8 +89,8 @@
                         <?php endforeach; ?>
                     </div>
                 </li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                <li><a href="/GadjetLoop/about.php">About</a></li>
+                <li><a href="/GadjetLoop/contact.php">Contact</a></li>
             </ul>
         </nav>
     </div>

@@ -167,7 +167,7 @@ $reviews_count = $stmt->fetchColumn();
                         <div class="stat-card">
                             <div class="stat-icon">💰</div>
                             <div class="stat-info">
-                                <h3>$<?php echo number_format($total_spent, 2); ?></h3>
+                                <h3>RM<?php echo number_format($total_spent, 2); ?></h3>
                                 <p>Total Spent</p>
                             </div>
                         </div>
