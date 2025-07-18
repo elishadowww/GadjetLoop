@@ -124,19 +124,20 @@
 }
 
 #price-range {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .price-inputs {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem;
     margin-bottom: 0.5rem;
 }
 
 .price-inputs input {
     flex: 1;
-    padding: 6px 8px;
+    padding: 6px;
     border: 1px solid #e9ecef;
     border-radius: 4px;
     font-size: 12px;
@@ -211,10 +212,16 @@
 }
 
 /* Product Grid */
+.products-container {
+    padding: 0 2rem;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
 .product-grid.grid-view {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    gap: 2.5rem;
 }
 
 .product-grid.list-view {

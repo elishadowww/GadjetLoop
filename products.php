@@ -75,8 +75,8 @@ if (!empty($filters['category'])) {
 <body data-page="products" class="<?php echo isLoggedIn() ? 'logged-in' : ''; ?>">
     <?php include 'includes/header.php'; ?>
     
-    <main>
-        <div class="container">
+    <main class="products-wrapper">
+        <div class="products-container">
             <!-- Breadcrumb -->
             <nav class="breadcrumb">
                 <a href="index.php">Home</a>
