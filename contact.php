@@ -342,6 +342,7 @@ if ($_POST) {
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="/js/backtotop.js"></script>
     <script>
 $(document).ready(function() {
     // Form validation

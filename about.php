@@ -213,6 +213,7 @@ require_once 'includes/functions.php';
     
     <script src="js/jquery.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="/js/backtotop.js"></script>
     <script>
         $(document).ready(function() {
             // Animate statistics on scroll
