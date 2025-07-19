@@ -40,35 +40,7 @@
                 <p>🕒 Mon-Fri: 9AM-8PM, Sat: 10AM-6PM</p>
             </div>
         </div>
-
-        <style>
-
-           
-
-.back-to-top {
-            margin-top: 20px;
-            margin-right: -150px;
-            display: inline-block;
-            padding: 5px 5px;
-            background-color: #343a40;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            float: right;
-            transition: background-color 0.3s ease;
-        }
-
-        .back-to-top:hover {
-            background-color: #007bff;
-        }
-
-
-</style>
-        <button class="back-to-top" onclick="scrollToTop()">
-        <img src="/GadjetLoop/images/buttonup.png" alt="Back to Top">
-</button>
-
+        
         <script>
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -86,3 +58,52 @@
         
     </div>
 </footer>
+
+<!-- Back to Top button (outside of footer block) -->
+<button class="back-to-top-floating" onclick="scrollToTop()">
+    <img src="/GadjetLoop/images/upbutton.png" alt="Back to Top" />
+</button>
+
+<style>
+.back-to-top-floating {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 999;
+    display: none;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    padding: 5px;
+}
+
+.back-to-top-floating:hover {
+    background-color: #429dffff;
+}
+
+
+.back-to-top-floating img {
+    width: 100%;
+    height: auto;
+}
+</style>
+
+<script>
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Show/hide on scroll
+window.addEventListener('scroll', function () {
+    const btn = document.querySelector('.back-to-top-floating');
+    if (window.scrollY > 300) {
+        btn.style.display = 'block';
+    } else {
+        btn.style.display = 'none';
+    }
+});
+</script>
