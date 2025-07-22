@@ -58,7 +58,7 @@ $user = getUserById($pdo, $user_id);
             </li>
             
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'wishlist.php' ? 'active' : ''; ?>">
-                <a href="/GadjetLoop/member/dashboard.php">
+                <a href="/GadjetLoop/member/wishlist.php">
                     <span class="nav-icon">♡</span>
                     <span class="nav-text">Wishlist</span>
                     <?php
@@ -86,22 +86,22 @@ $user = getUserById($pdo, $user_id);
                 </a>
             </li>
             
-            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'notifications.php' ? 'active' : ''; ?>">
-                <a href="notifications.php">
-                    <span class="nav-icon">🔔</span>
-                    <span class="nav-text">Notifications</span>
-                    <?php
-                    // Get unread notifications count
-                    $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
-                    $stmt->execute([$user_id]);
-                    $unread_notifications = $stmt->fetchColumn();
-                    if ($unread_notifications > 0):
-                    ?>
-                        <span class="nav-badge"><?php echo $unread_notifications; ?></span>
-                    <?php endif; ?>
-                </a>
-            </li>
-            
+           <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'notifications.php' ? 'active' : ''; ?>">
+    <a href="notifications.php">
+        <span class="nav-icon">🔔</span>
+        <span class="nav-text">Notifications</span>
+    </a>
+    <?php
+    // Get unread notifications count
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
+    $stmt->execute([$user_id]);
+    $unread_notifications = $stmt->fetchColumn();
+    if ($unread_notifications > 0):
+    ?>
+        <span class="nav-badge"><?php echo $unread_notifications; ?></span>
+    <?php endif; ?>
+</li>
+
             <li class="nav-divider"></li>
             
             <li class="nav-item">

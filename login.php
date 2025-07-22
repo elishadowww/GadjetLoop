@@ -37,7 +37,7 @@ if ($_POST) {
             if (isAdmin()) {
                 header('Location: admin/dashboard.php');
             } else {
-                header('Location: dashboard.php');
+                header('Location: /GadjetLoop/member/dashboard.php');
             }
             exit;
         } else {
