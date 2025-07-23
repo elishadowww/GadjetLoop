@@ -85,7 +85,12 @@ if ($_POST) {
                         
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="password" class="form-control" required>
+                            <div class="password-input-container">
+                                    <input type="password" id="password" name="password" class="form-control" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword()">
+                                    <span class="eye-icon">👁️</span>
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -149,6 +154,7 @@ if ($_POST) {
                 }
             });
             
+            
             // Generate simple math captcha
             function generateCaptcha() {
                 const num1 = Math.floor(Math.random() * 10) + 1;
@@ -171,6 +177,23 @@ if ($_POST) {
                 }
             });
         });
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.querySelector('.password-toggle');
+            const eyeIcon = toggleButton.querySelector('.eye-icon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.textContent = '🙈'; // Change to "hide" icon
+            toggleButton.setAttribute('aria-label', 'Hide password');
+    } else {
+            passwordInput.type = 'password';
+            eyeIcon.textContent = '🙉'; // Back to "show" icon
+            toggleButton.setAttribute('aria-label', 'Show password');
+    }
+}
+
     </script>
 </body>
 </html>

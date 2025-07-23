@@ -164,6 +164,36 @@
     font-weight: 500;
 }
 
+/* Password Toggle Styles */
+.password-input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-input-container input {
+    flex: 1;
+    padding-right: 40px; /* leave space for the icon */
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle .eye-icon {
+    font-size: 18px;
+}
+
+
 /* Demo Accounts */
 .demo-accounts {
     margin-top: 2rem;
