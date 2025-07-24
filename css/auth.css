@@ -167,36 +167,93 @@
 
 /* Password Toggle Styles */
 .password-input-container {
+    position: relative;
     display: flex;
     align-items: center;
-    position: relative;
 }
 
-.password-input-container input {
+.password-input-container .password-input {
     flex: 1;
-    padding-right: 40px; /* leave space for the icon */
+    padding-right: 40px; 
+    box-sizing: border-box;
 }
 
 .password-toggle {
     position: absolute;
-    right: 10px;
-    top: 50%;
+    right: 12px;
+    top: 55px;
     transform: translateY(-50%);
-    background: none;
+    background: transparent;
     border: none;
     cursor: pointer;
     font-size: 16px;
     padding: 0;
+    line-height: 1;
+    z-index: 10;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
 }
 
 .password-toggle .eye-icon {
     font-size: 18px;
+    transform: translateY(-170%);
 }
+
+/* Password Requirements Styles */
+.password-requirements {
+    margin-top: -20px;
+    margin-bottom: 1.5rem;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.requirements-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.req-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.req-text {
+    color: #6c757d;
+}
+
+.requirement.met .req-text {
+    color: #28a745;
+}
+
+.requirement.unmet .req-text {
+    color: #dc3545;
+}
+
 
 
 /* Demo Accounts */
