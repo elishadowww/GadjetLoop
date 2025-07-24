@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label for="last_name">Last Name *</label>
                             <input type="text" id="last_name" name="last_name" class="form-control" required>
                         </div>
-                    </div>
+
                     <div class="form-group">
                         <label for="email">Email Address *</label>
                         <input type="email" id="email" name="email" class="form-control" required>
@@ -127,15 +127,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="phone">Phone Number</label>
                         <input type="tel" id="phone" name="phone" class="form-control">
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="password">Password *</label>
-                            <input type="password" id="password" name="password" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm_password">Confirm Password *</label>
-                            <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
-                        </div>
+                    <div class="form-group">
+                                <label for="password">Password *</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('password', this)">👁️</button>
+                                <small class="form-text">Minimum 6 characters</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm_password">Confirm Password *</label>
+                                 <button type="button" class="password-toggle" onclick="togglePassword('confirm_password', this)">👁️</button>
+                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                            </div>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -154,14 +157,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
         </div>
-    </div>
 </main>
 <?php include 'includes/footer.php'; ?>
+
+<!-- JS Dependencies -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+<script src="js/main.js"></script>
+
 <script>
-    // ✅ Your Firebase config
+    // ✅ Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyC18Pe-WCSWPcHTWPppQ1PiRKOgFZdBtUI",
         authDomain: "gadgetloop-70fb2.firebaseapp.com",
@@ -171,50 +177,131 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         appId: "1:855930704824:web:fa018179a5f9c66ca8754d"
     };
 
-    // ✅ Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
-    // ✅ Handle registration
-    document.getElementById('registerForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
+    $(document).ready(function() {
+        // ✅ Password strength indicator
+        $('#password').on('input', function () {
+            const password = $(this).val();
+            const strength = calculatePasswordStrength(password);
+            showPasswordStrength(strength);
+        });
 
-        const form = this;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        // ✅ Confirm password validation
+        $('#confirm_password').on('blur', function () {
+            const password = $('#password').val();
+            const confirmPassword = $(this).val();
 
-        try {
-            const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-            await userCredential.user.sendEmailVerification();
-            alert("✅ Verification email sent. Please check your inbox.");
+            if (password && confirmPassword && password !== confirmPassword) {
+                showFieldError($(this), 'Passwords do not match');
+            } else {
+                $(this).removeClass('error').siblings('.error-message').remove();
+            }
+        });
 
-            const checkInterval = setInterval(async () => {
-                await userCredential.user.reload();
-                if (userCredential.user.emailVerified) {
-                    clearInterval(checkInterval);
+        // ✅ Email availability check
+        $('#email').on('blur', function () {
+            const email = $(this).val();
+            if (email && isValidEmail(email)) {
+                checkEmailAvailability(email);
+            }
+        });
 
-                    // ✅ Call PHP to update MySQL
-                    fetch('verify.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert("✅ Email verified & database updated!");
-                            form.submit(); // finally submit form
-                        } else {
-                            alert("❌ Database update failed: " + data.message);
-                        }
-                    });
-                }
-            }, 3000); // check every 3 seconds
+        // ✅ Handle Firebase registration
+        $('#registerForm').on('submit', async function (e) {
+            e.preventDefault();
 
-        } catch (error) {
-            alert("❌ Firebase error: " + error.message);
-        }
+            const form = this;
+            const email = $('#email').val();
+            const password = $('#password').val();
+
+            try {
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                await userCredential.user.sendEmailVerification();
+                alert("✅ Verification email sent. Please check your inbox.");
+
+                const checkInterval = setInterval(async () => {
+                    await userCredential.user.reload();
+                    if (userCredential.user.emailVerified) {
+                        clearInterval(checkInterval);
+
+                        // ✅ Call PHP to update MySQL
+                        fetch('verify.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert("✅ Email verified & database updated!");
+                                form.submit(); // finally submit form
+                            } else {
+                                alert("❌ Database update failed: " + data.message);
+                            }
+                        });
+                    }
+                }, 3000); // every 3 seconds
+
+            } catch (error) {
+                alert("❌ Firebase error: " + error.message);
+            }
+        });
     });
+
+    // Helper: Password Strength
+    function calculatePasswordStrength(password) {
+        let strength = 0;
+        if (password.length >= 6) strength++;
+        if (password.length >= 8) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+        return strength;
+    }
+
+    function showPasswordStrength(strength) {
+        const strengthTexts = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
+        const strengthColors = ['#ff4444', '#ff8800', '#ffaa00', '#88aa00', '#44aa44', '#00aa44'];
+
+        const strengthHtml = `
+            <div class="password-strength">
+                <div class="strength-bar">
+                    <div class="strength-fill" style="width: ${(strength / 6) * 100}%; background-color: ${strengthColors[strength - 1] || '#ddd'}"></div>
+                </div>
+                <span class="strength-text" style="color: ${strengthColors[strength - 1] || '#666'}">${strengthTexts[strength - 1] || 'Too Short'}</span>
+            </div>
+        `;
+
+        $('#password').siblings('.password-strength').remove();
+        $('#password').after(strengthHtml);
+    }
+
+    function showFieldError($field, message) {
+        $field.addClass('error').siblings('.error-message').remove();
+        $field.after('<div class="error-message" style="color: red;">' + message + '</div>');
+    }
+
+    function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function checkEmailAvailability(email) {
+        $.post('ajax/check-email.php', { email: email }, function (response) {
+            const $emailField = $('#email');
+            $emailField.siblings('.error-message, .success-message').remove();
+
+            if (response.available) {
+                $emailField.removeClass('error');
+                $emailField.after('<div class="success-message" style="color: green;">Email is available</div>');
+            } else {
+                showFieldError($emailField, 'This email is already registered');
+            }
+        }, 'json');
+    }
 </script>
-<script src="js/main.js"></script>
+
 </body>
 </html>

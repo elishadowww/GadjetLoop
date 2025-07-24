@@ -52,6 +52,7 @@
 }
 
 .form-group {
+    position: relative;
     margin-bottom: 1.5rem;
 }
 
@@ -179,14 +180,18 @@
 .password-toggle {
     position: absolute;
     right: 10px;
-    background: transparent;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
     border: none;
     cursor: pointer;
+    font-size: 16px;
     padding: 0;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
 }
 
 .password-toggle .eye-icon {
