@@ -45,6 +45,8 @@ if ($_POST) {
         }
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -120,10 +122,11 @@ if ($_POST) {
     
     <?php include 'includes/footer.php'; ?>
     
-    <script src="js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/main.js"></script>
     <script>
-        $(document).ready(function() {
+
+    $(document).ready(function() {
             // Add login attempt tracking
             let attempts = 0;
             const maxAttempts = 3;
@@ -172,5 +175,39 @@ if ($_POST) {
             });
         });
     </script>
+
+    <!-- Firebase scripts -->
+<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyC18Pe-WCSWPcHTWPppQ1PiRKOgFZdBtUI",
+    authDomain: "gadgetloop-70fb2.firebaseapp.com",
+    projectId: "gadgetloop-70fb2",
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  // Optional: Handle form submit via Firebase
+  document.querySelector('.auth-form').addEventListener('submit', async (e) => {
+    e.preventDefault(); // stop PHP form submission
+
+    const email = document.querySelector('#email').value;
+    const password = document.querySelector('#password').value;
+
+    try {
+      const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+
+
+      // ✅ Email is verified — now submit form to PHP backend
+      e.target.submit();
+
+    } catch (error) {
+      alert("Login failed: " + error.message);
+    }
+  });
+</script>
+
 </body>
 </html>
