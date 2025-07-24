@@ -122,9 +122,9 @@ require_once 'includes/functions.php';
                 <div class="team-grid">
                     <div class="team-member">
                         <div class="member-photo">
-                            <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300" alt="John Smith">
+                         <img src="/GadjetLoop/images/ceo.jpg" alt="Yuki Lai Yi Ting">
                         </div>
-                        <h4>John Smith</h4>
+                        <h4>Yuki Lai Yi Ting</h4>
                         <p>CEO & Founder</p>
                         <div class="member-bio">
                             <p>Tech entrepreneur with 15+ years of experience in e-commerce and consumer electronics.</p>
