@@ -6,6 +6,12 @@
     gap: 2rem;
     align-items: start;
     margin-top: 2rem;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: none;
+   overflow-x: hidden; /* Prevent horizontal overflow */
+   width: 100%;
+   max-width: none;
 }
 
 /* Member Sidebar */
@@ -17,10 +23,16 @@
     top: 100px;
     max-height: calc(100vh - 120px);
     overflow-y: auto;
-}
+    overflow-x: hidden;
+    width: 280px;
+    min-width: 280px;
+    overflow-x: hidden;
+    width: 280px; 
+    min-width: 280px; 
+ } 
 
 .member-profile-card {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
     text-align: center;
     border-bottom: 1px solid #e9ecef;
 }
@@ -56,12 +68,19 @@
     margin-bottom: 0.5rem;
     color: #333;
     font-size: 1.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
 }
 
 .profile-info p {
     margin-bottom: 0.5rem;
     color: #666;
     font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .member-since {
@@ -72,27 +91,36 @@
 /* Member Navigation */
 .member-nav {
     padding: 1rem 0;
+    width: 100%;
+    overflow: hidden;
 }
 
-.nav-menu {
+.member-nav .nav-menu {
     list-style: none;
     margin: 0;
     padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.nav-item {
+.member-nav .nav-item {
     margin-bottom: 0.25rem;
+    width: 100%
 }
 
-.nav-item a {
+.member-nav nav-item a {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.25rem;
     color: #333;
     text-decoration: none;
     transition: all 0.3s ease;
     border-radius: 0;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
 }
 
 .nav-item a:hover {
@@ -100,38 +128,45 @@
     color: #007bff;
 }
 
-.nav-item.active a {
+.member-nav .nav-item.active a {
     background-color: #e3f2fd;
     color: #007bff;
     border-right: 3px solid #007bff;
 }
 
-.nav-icon {
+.member-nav .nav-icon {
     font-size: 16px;
     margin-right: 0.75rem;
     width: 20px;
     text-align: center;
+    flex-shrink: 0;
 }
 
-.nav-text {
+.member-nav .nav-text {
     flex: 1;
     font-size: 14px;
     font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.nav-badge {
+.member-nav .nav-badge {
     background: #dc3545;
     color: white;
     border-radius: 10px;
     padding: 0.125rem 0.5rem;
     font-size: 11px;
     font-weight: 600;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
 }
 
-.nav-divider {
+member-nav .nav-divider {
     height: 1px;
     background-color: #e9ecef;
     margin: 1rem 0;
+    width: 100%;
 }
 
 .logout-link {
@@ -145,7 +180,7 @@
 
 /* Sidebar Footer */
 .sidebar-footer {
-    padding: 1.5rem;
+    padding: 1.5rem 1.25rem;
     border-top: 1px solid #e9ecef;
 }
 
@@ -167,6 +202,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    min-width: 0;
 }
 
 .page-header {
@@ -735,6 +771,11 @@
         gap: 1.5rem;
     }
 
+    .member-sidebar {
+        width: 250px;
+        min-width: 250px;
+    }
+
     .profile-stats {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 1rem;
@@ -745,6 +786,7 @@
     .member-layout {
         grid-template-columns: 1fr;
         gap: 1rem;
+        overflow-x: hidden;
     }
 
     .member-sidebar {
@@ -756,11 +798,28 @@
         z-index: 1000;
         transition: left 0.3s ease;
         max-height: none;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .member-sidebar.active {
         left: 0;
     }
+
+    @media (max-width: 480px) {
+   .member-layout {
+        padding: 0 1rem;
+    }
+   
+    .member-sidebar {
+        width: 100%;
+       left: -100%;
+    }
+   
+    .member-sidebar.active {
+        left: 0;
+    }
+ }
 
     .photo-upload-area {
         flex-direction: column;
