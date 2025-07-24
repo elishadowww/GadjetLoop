@@ -131,14 +131,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label for="password">Password *</label>
                                 <input type="password" id="password" name="password" class="form-control" required>
                                 <button type="button" class="password-toggle" onclick="togglePassword('password', this)">👁️</button>
-                                <small class="form-text">Minimum 6 characters</small>
                             </div>
                             
                             <div class="form-group">
                                 <label for="confirm_password">Confirm Password *</label>
-                                 <button type="button" class="password-toggle" onclick="togglePassword('confirm_password', this)">👁️</button>
                                 <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('confirm_password', this)">👁️</button>
                             </div>
+
+                            <div class="password-requirements" id="passwordRequirements" style="display: none;">
+                                    <div class="requirements-header">Password Requirements:</div>
+                                    <ul class="requirements-list">
+                                        <li id="req-length" class="requirement">
+                                            <span class="req-icon">✗</span>
+                                            <span class="req-text">At least 6 characters</span>
+                                        </li>
+                                        <li id="req-lowercase" class="requirement">
+                                            <span class="req-icon">✗</span>
+                                            <span class="req-text">One lowercase letter</span>
+                                        </li>
+                                        <li id="req-uppercase" class="requirement">
+                                            <span class="req-icon">✗</span>
+                                            <span class="req-text">One uppercase letter</span>
+                                        </li>
+                                        <li id="req-number" class="requirement">
+                                            <span class="req-icon">✗</span>
+                                            <span class="req-text">One number</span>
+                                        </li>
+                                        <li id="req-special" class="requirement">
+                                            <span class="req-icon">✗</span>
+                                            <span class="req-text">One special character</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -249,6 +275,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     });
 
+    // Unhide password 
+    function togglePassword(id, toggleBtn) {
+        const input = document.getElementById(id);
+        const isVisible = input.type === 'text';
+        input.type = isVisible ? 'password' : 'text';
+        toggleBtn.textContent = isVisible ? '👁️' : '🙈';
+    }
+
     // Helper: Password Strength
     function calculatePasswordStrength(password) {
         let strength = 0;
@@ -261,7 +295,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return strength;
     }
 
-    function showPasswordStrength(strength) {
+        function showPasswordStrength(strength) {
+        const password = $('#password').val();
         const strengthTexts = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
         const strengthColors = ['#ff4444', '#ff8800', '#ffaa00', '#88aa00', '#44aa44', '#00aa44'];
 
@@ -276,6 +311,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $('#password').siblings('.password-strength').remove();
         $('#password').after(strengthHtml);
+
+        // Show/hide and update requirements
+        const requirements = $('#passwordRequirements');
+        if (password.length > 0) {
+            requirements.show();
+            updatePasswordRequirements(password);
+        } else {
+            requirements.hide();
+        }
+    }
+
+    // Add new function to update requirements
+    function updatePasswordRequirements(password) {
+        const requirements = [
+            { id: 'req-length', test: password.length >= 6 },
+            { id: 'req-lowercase', test: /[a-z]/.test(password) },
+            { id: 'req-uppercase', test: /[A-Z]/.test(password) },
+            { id: 'req-number', test: /[0-9]/.test(password) },
+            { id: 'req-special', test: /[^A-Za-z0-9]/.test(password) }
+        ];
+
+        requirements.forEach(req => {
+            const element = $('#' + req.id);
+            const icon = element.find('.req-icon');
+            
+            if (req.test) {
+                element.addClass('met').removeClass('unmet');
+                icon.text('✓').css('color', '#28a745');
+            } else {
+                element.addClass('unmet').removeClass('met');
+                icon.text('✗').css('color', '#dc3545');
+            }
+        });
     }
 
     function showFieldError($field, message) {
