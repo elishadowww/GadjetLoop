@@ -198,6 +198,7 @@
 
 .password-toggle .eye-icon {
     font-size: 18px;
+    transform: translateY(-170%);
 }
 
 /* Password Requirements Styles */
