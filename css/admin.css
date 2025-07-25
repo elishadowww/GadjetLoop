@@ -5,6 +5,8 @@
     display: flex;
     min-height: 100vh;
     background-color: #f8f9fa;
+    margin-top: 70px;
+    flex-direction: row; 
 }
 
 /* Admin Header */
@@ -18,12 +20,46 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.dashboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-radius: 10px;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem 1.5rem 1rem;
+    margin-bottom: 2rem; /* ✅ adds gap between heading and stats */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-heading h1 {
+    font-size: 2rem;
+    color: #333;
+    margin: 0;
+}
+
 .admin-header-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 2rem;
-    max-width: none;
+    gap: 2rem;
+}
+
+.admin-header-left {
+  flex: 0 0 auto;
+}
+
+.admin-header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .admin-logo h2 {
@@ -45,20 +81,24 @@
 
 /* Admin Search */
 .admin-search {
+    margin-left: 330px;
     display: flex;
     align-items: center;
     background: #f8f9fa;
+    border: #007bff 1px solid;
     border-radius: 20px;
     padding: 0.5rem 1rem;
     min-width: 300px;
+    max-width: 100%;
+    width: 100%;
 }
 
 .admin-search input {
-    border: none;
-    background: none;
-    outline: none;
     flex: 1;
     font-size: 14px;
+    border: none;
+    outline: none;
+    background: none;
 }
 
 .admin-search button {
@@ -74,6 +114,7 @@
 }
 
 .notification-btn {
+    margin-left: 10px;
     background: none;
     border: none;
     cursor: pointer;
@@ -186,12 +227,14 @@
     font-size: 14px;
 }
 
+
 /* User Menu */
 .admin-user-menu {
     position: relative;
 }
 
 .user-menu-btn {
+    margin-left: 500px;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -208,6 +251,7 @@
 }
 
 .user-avatar {
+    margin-left: -10px;
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -264,15 +308,18 @@
 }
 
 .admin-nav {
-    flex: 1;
-    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: column; /* ✅ force vertical stacking */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .nav-menu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    display: flex;
+    flex-direction: column; /* ✅ vertical layout */
+    gap: 0.25rem;
 }
+
 
 .nav-section {
     padding: 1rem 1.5rem 0.5rem;
@@ -291,14 +338,9 @@
 }
 
 .nav-item a {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem 1.5rem;
-    color: #333;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border-radius: 0;
-    position: relative;
+    white-space: normal; /* ✅ allow wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nav-item a:hover {
@@ -333,6 +375,19 @@
     font-size: 11px;
     font-weight: 600;
 }
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px; /* or whatever */
+    z-index: 1000;
+}
+
+.admin-content {
+    padding-top: 80px; /* Adjust based on actual navbar height */
+}
+
 
 /* Sidebar Footer */
 .sidebar-footer {
@@ -394,13 +449,15 @@
 }
 
 .admin-header h1 {
-    margin: 0;
+    margin-left: 20px;
+    margin-top:20px;
     color: #333;
     font-size: 2rem;
 }
 
 .admin-actions {
     display: flex;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -445,6 +502,7 @@
 }
 
 /* Dashboard Grid */
+
 .dashboard-grid {
     display: flex;
     flex-direction: column;
@@ -598,6 +656,28 @@
     color: #721c24;
 }
 
+/* Chart-period*/
+#chart-period {
+    appearance: none;
+    padding: 8px 32px 8px 12px;
+    border: 1px solid #007bff;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #007bff;
+    background: #fff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%204%205'%3E%3Cpath%20fill='%23333'%20d='M2%205L0%200h4z'/%3E%3C/svg%3E") no-repeat right 10px center;
+    background-size: 10px 8px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#chart-period:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+
 /* Table Responsive */
 .table-responsive {
     overflow-x: auto;
@@ -740,12 +820,9 @@
     }
 
     .admin-sidebar {
-        position: fixed;
-        left: -260px;
-        top: 0;
-        height: 100vh;
-        z-index: 1000;
-        transition: left 0.3s ease;
+    overflow-x: hidden; /* ✅ important */
+    width: 260px;
+    min-width: 260px;
     }
 
     .admin-sidebar.active {

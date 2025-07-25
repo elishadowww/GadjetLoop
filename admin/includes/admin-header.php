@@ -1,17 +1,21 @@
 <header class="admin-header">
     <div class="admin-header-content">
-        <div class="admin-logo">
-            <a href="dashboard.php">
-                <h2>GadgetLoop Admin</h2>
-            </a>
+        <div class="admin-header-left">
+            <div class="admin-logo">
+                <a href="dashboard.php">
+                  <h2>GadgetLoop Admin</h2>
+                </a>
+            </div>
         </div>
         
-        <div class="admin-header-actions">
+        <div class="admin-header-center">
             <div class="admin-search">
                 <input type="text" placeholder="Search..." id="admin-search">
                 <button type="button">🔍</button>
             </div>
-            
+        </div>
+
+        <div class="admin-header-right">
             <div class="admin-notifications">
                 <button type="button" class="notification-btn" id="notification-btn">
                     🔔

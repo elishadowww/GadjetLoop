@@ -55,6 +55,17 @@ p {
     color: white;
 }
 
+.btn-primary-refresh{
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
 .btn-primary:hover {
     background-color: #0056b3;
     transform: translateY(-2px);

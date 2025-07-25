@@ -98,10 +98,12 @@ $monthly_sales = $stmt->fetchAll();
         <?php include 'includes/admin-sidebar.php'; ?>
         
         <main class="admin-content">
-            <div class="admin-header">
+            <div class="dashboard-heading" >
+                <div class="dashboard-header-left">
                 <h1>Dashboard</h1>
+                </div>
                 <div class="admin-actions">
-                    <button class="btn btn-primary" onclick="refreshDashboard()">Refresh</button>
+                    <button class="btn btn-primary-refresh" onclick="refreshDashboard()">Refresh</button>
                 </div>
             </div>
             
