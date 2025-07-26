@@ -1,3 +1,7 @@
+<?php
+$stmt = $pdo->query("SELECT COUNT(*) FROM orders");
+$order_count = $stmt->fetchColumn();
+?>
 <aside class="admin-sidebar">
     <nav class="admin-nav">
         <ul class="nav-menu">
@@ -34,7 +38,7 @@
                 <a href="orders.php">
                     <span class="nav-icon">🛒</span>
                     <span class="nav-text">Orders</span>
-                    <span class="nav-badge">5</span>
+                    <span class="nav-badge"><?php echo (int)$order_count; ?></span>
                 </a>
             </li>
             

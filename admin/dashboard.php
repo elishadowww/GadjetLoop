@@ -113,7 +113,7 @@ $monthly_sales = $stmt->fetchAll();
                     <div class="stat-icon">👥</div>
                     <div class="stat-info">
                         <h3><?php echo number_format($stats['total_users']); ?></h3>
-                        <p>Total Users</p>
+                        <p>Total Members</p>
                     </div>
                 </div>
                 
