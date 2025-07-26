@@ -208,10 +208,10 @@ $categories = getCategories($pdo);
                                     <td><?php echo htmlspecialchars($product['category_name']); ?></td>
                                     <td>
                                         <?php if ($product['discount_percentage'] > 0): ?>
-                                            <span style="text-decoration: line-through; color: #999;">$<?php echo number_format($product['price'], 2); ?></span><br>
-                                            <strong style="color: #dc3545;">$<?php echo number_format($product['price'] * (1 - $product['discount_percentage'] / 100), 2); ?></strong>
+                                            <span style="text-decoration: line-through; color: #999;">RM<?php echo number_format($product['price'], 2); ?></span><br>
+                                            <strong style="color: #dc3545;">RM<?php echo number_format($product['price'] * (1 - $product['discount_percentage'] / 100), 2); ?></strong>
                                         <?php else: ?>
-                                            <strong>$<?php echo number_format($product['price'], 2); ?></strong>
+                                            <strong>RM<?php echo number_format($product['price'], 2); ?></strong>
                                         <?php endif; ?>
                                     </td>
                                     <td>
