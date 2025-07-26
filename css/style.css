@@ -478,7 +478,7 @@ p {
 
 .wishlist-btn {
     flex: 0 0 auto;
-    width: 40px;
+    width: auto;
     padding: 10px;
     font-size: 16px;
 }

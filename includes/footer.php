@@ -82,7 +82,7 @@
 }
 
 .back-to-top-floating:hover {
-    background-color: #429dffff;
+    background-color: #007bff8c;
 }
 
 
