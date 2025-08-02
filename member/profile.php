@@ -123,6 +123,9 @@ $stmt->execute([$user_id]);
 $reviews_count = $stmt->fetchColumn();
 ?>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="../js/main.js"></script>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -362,7 +365,7 @@ $reviews_count = $stmt->fetchColumn();
     
     <?php include '../includes/footer.php'; ?>
     
-    <script src="../js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/main.js"></script>
     <script>
         $(document).ready(function() {

@@ -74,20 +74,14 @@ $user = getUserById($pdo, $user_id);
             </li>
             
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'reviews.php' ? 'active' : ''; ?>">
-                <a href="reviews.php">
+                <a href="/GadjetLoop/member/reviews.php">
                     <span class="nav-icon">⭐</span>
                     <span class="nav-text">My Reviews</span>
             </li>
             
-            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'addresses.php' ? 'active' : ''; ?>">
-                <a href="addresses.php">
-                    <span class="nav-icon">📍</span>
-                    <span class="nav-text">Addresses</span>
-                </a>
-            </li>
             
            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'notifications.php' ? 'active' : ''; ?>">
-    <a href="notifications.php">
+    <a href="/GadjetLoop/member/notification.php">
         <span class="nav-icon">🔔</span>
         <span class="nav-text">Notifications</span>
     </a>
@@ -123,7 +117,7 @@ $user = getUserById($pdo, $user_id);
         <div class="help-section">
             <h4>Need Help?</h4>
             <p>Contact our customer support team</p>
-            <a href="contact.php" class="btn btn-outline btn-sm btn-block">Contact Support</a>
+            <a href="/GadjetLoop/contact.php" class="btn btn-outline btn-sm btn-block">Contact Support</a>
         </div>
     </div>
 </aside>
