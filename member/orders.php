@@ -74,14 +74,14 @@ $total_pages = ceil($total_orders / $per_page);
                                             <?php foreach ($order_items as $item): ?>
                                             <div class="order-item">
                                                 <div class="item-image">
-                                                    <img src="../uploads/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
+                                                    <img src="../images/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
                                                          alt="<?php echo htmlspecialchars($item['name']); ?>">
                                                 </div>
                                                 <div class="item-details">
                                                     <div class="item-name"><?php echo htmlspecialchars($item['name']); ?></div>
                                                     <div class="item-quantity">Quantity: <?php echo $item['quantity']; ?></div>
                                                 </div>
-                                                <div class="item-price">$<?php echo number_format($item['total'], 2); ?></div>
+                                                <div class="item-price">RM<?php echo number_format($item['total'], 2); ?></div>
                                             </div>
                                             <?php endforeach; ?>
                                         </div>
@@ -93,7 +93,7 @@ $total_pages = ceil($total_orders / $per_page);
                                                 </span>
                                             </div>
                                             <div class="order-total">
-                                                Total: $<?php echo number_format($order['total_amount'], 2); ?>
+                                                Total: RM<?php echo number_format($order['total_amount'], 2); ?>
                                             </div>
                                             <div class="order-actions">
                                                 <a href="order-detail.php?id=<?php echo $order['id']; ?>" class="btn btn-outline btn-sm">View Details</a>
@@ -141,11 +141,20 @@ $total_pages = ceil($total_orders / $per_page);
         function cancelOrder(orderId) {
             if (confirm('Are you sure you want to cancel this order?')) {
                 // AJAX call to cancel order
-                $.post('../ajax/cancel-order.php', { order_id: orderId }, function(response) {
-                    if (response.success) {
-                        location.reload();
-                    } else {
-                        alert('Failed to cancel order: ' + response.message);
+                $.ajax({
+                    url: '../ajax/cancel-order.php',
+                    type: 'POST',
+                    data: { order_id: orderId },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Failed to cancel order: ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Failed to cancel order: Server error.');
                     }
                 });
             }

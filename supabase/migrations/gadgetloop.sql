@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 26, 2025 at 02:04 PM
+-- Generation Time: Aug 10, 2025 at 03:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -60,8 +60,10 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, 1, '2025-07-22 06:38:52', '2025-07-22 06:38:52'),
-(3, 10, 1, 1, '2025-07-24 05:28:05', '2025-07-24 05:28:05');
+(1, 2, 1, 1, '2025-07-22 06:38:52', '2025-08-10 13:15:49'),
+(3, 10, 1, 1, '2025-07-24 05:28:05', '2025-07-24 05:28:05'),
+(4, 1, 21, 1, '2025-07-26 13:25:12', '2025-07-26 13:25:12'),
+(5, 2, 26, 2, '2025-08-10 13:10:38', '2025-08-10 13:15:49');
 
 -- --------------------------------------------------------
 
@@ -84,7 +86,7 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `description`, `image`, `is_active`, `sort_order`, `created_at`) VALUES
-(1, 'Smartphone', 'Latest smartphones and mobile devices', 'smartphone.jpg', 1, 1, '2025-07-21 05:38:26'),
+(1, 'Smartphones', 'Latest smartphones and mobile devices', 'smartphone.jpg', 1, 1, '2025-07-21 05:38:26'),
 (2, 'Laptops', 'Laptops and notebooks for work and gaming', 'laptop.jpg', 1, 2, '2025-07-21 05:38:26'),
 (3, 'Tablets', 'Tablets and e-readers', 'tabletssss.jpg', 1, 3, '2025-07-21 05:38:26'),
 (4, 'Audio', 'Headphones, speakers, and audio accessories', 'audio.jpg', 1, 4, '2025-07-21 05:38:26'),
@@ -122,7 +124,8 @@ CREATE TABLE `coupons` (
 INSERT INTO `coupons` (`id`, `code`, `description`, `discount_type`, `discount_value`, `minimum_amount`, `maximum_discount`, `usage_limit`, `used_count`, `is_active`, `starts_at`, `expires_at`, `created_at`) VALUES
 (1, 'WELCOME10', 'Welcome discount for new customers', 'percentage', 10.00, 50.00, NULL, 100, 0, 1, NULL, '2025-08-20 13:38:26', '2025-07-21 05:38:26'),
 (2, 'SAVE50', 'Save $50 on orders over $200', 'fixed', 50.00, 200.00, NULL, 50, 0, 1, NULL, '2025-08-05 13:38:26', '2025-07-21 05:38:26'),
-(3, 'TECH20', '20% off on all tech products', 'percentage', 20.00, 100.00, NULL, 200, 0, 1, NULL, '2025-07-28 13:38:26', '2025-07-21 05:38:26');
+(3, 'TECH20', '20% off on all tech products', 'percentage', 20.00, 100.00, NULL, 200, 0, 1, NULL, '2025-07-28 13:38:26', '2025-07-21 05:38:26'),
+(4, '2025YAY', 'Enjoy 2025', 'percentage', 20.00, 1.00, 20.00, 1, 0, 1, NULL, '2025-12-31 23:59:00', '2025-07-26 12:30:16');
 
 -- --------------------------------------------------------
 
@@ -268,13 +271,13 @@ INSERT INTO `products` (`id`, `name`, `description`, `short_description`, `categ
 (1, 'iPhone 15 Pro', 'The latest iPhone with advanced camera system and A17 Pro chip', 'Latest iPhone with pro features', 1, 3000.00, 5, 50, 10, 'IP15PRO001', 'iphone-15-pro.png', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-24 05:50:51'),
 (2, 'Samsung Galaxy S24', 'Flagship Android smartphone with AI features', 'Premium Android smartphone', 1, 3699.00, 10, 30, 10, 'SGS24001', 'galaxy-s24.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-24 05:51:19'),
 (3, 'MacBook Pro 14\"', 'Powerful laptop with M3 chip for professionals', 'Professional laptop with M3 chip', 2, 1999.00, 0, 25, 10, 'MBP14M3001', 'macbook-pro-14.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-21 05:38:26'),
-(4, 'Dell XPS 13', 'Ultra-portable laptop with premium design', 'Premium ultrabook', 2, 6699.00, 15, 20, 10, 'DXPS13001', 'dell-xps-13.jpg', 0, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-24 05:52:07'),
+(4, 'Dell XPS 13', 'Ultra-portable laptop with premium design', 'Premium ultrabook', 2, 6699.00, 15, 20, 10, 'DXPS13001', 'dell-xps-13.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-26 13:24:45'),
 (5, 'iPad Air', 'Versatile tablet for work and creativity', 'Powerful and versatile tablet', 3, 3299.00, 8, 40, 10, 'IPADAIR001', 'ipad-air.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-24 05:52:40'),
 (6, 'Sony WH-1000XM5', 'Premium noise-canceling headphones', 'Industry-leading noise cancellation', 4, 1799.00, 20, 60, 10, 'SWXM5001', 'sony-wh1000xm5.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-24 05:51:47'),
-(7, 'AirPods Pro 2', 'Advanced wireless earbuds with ANC', 'Premium wireless earbuds', 4, 829.00, 12, 80, 10, 'APP2001', 'airpods-pro-2.jpg', 0, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-24 05:53:13'),
+(7, 'AirPods Pro 2', 'Advanced wireless earbuds with ANC', 'Premium wireless earbuds', 4, 829.00, 12, 80, 10, 'APP2001', 'airpods-pro-2.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-26 13:24:48'),
 (8, 'PlayStation 5', 'Next-gen gaming console', 'Latest gaming console from Sony', 5, 3849.00, 0, 15, 10, 'PS5001', 'playstation-5.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-24 05:53:43'),
 (9, 'Apple Watch Series 9', 'Advanced smartwatch with health features', 'Latest Apple smartwatch', 6, 999.00, 10, 35, 10, 'AWS9001', 'apple-watch-s9.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-24 05:54:17'),
-(10, 'Google Nest Hub', 'Smart display for your home', 'Smart home control center', 8, 99.00, 25, 50, 10, 'GNH001', 'nest-hub.jpg', 0, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-21 05:38:26'),
+(10, 'Google Nest Hub', 'Smart display for your home', 'Smart home control center', 8, 99.00, 25, 50, 10, 'GNH001', 'nest-hub.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-26 13:26:03'),
 (11, 'Xiaomi 14 Pro', 'Flagship Xiaomi smartphone with Leica camera and Snapdragon 8 Gen 3', 'Flagship Android with Leica camera', 1, 3799.00, 5, 40, 10, 'XM14PRO001', 'xiaomi-14-pro.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-21 05:38:26'),
 (12, 'Realme 12 Pro+', 'Affordable mid-range phone with 200MP camera', 'Mid-range phone with flagship camera', 1, 1499.00, 10, 70, 10, 'RM12P001', 'realme-12-pro-plus.jpg', 0, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-21 05:38:26'),
 (13, 'Huawei P60 Pro', 'Powerful photography smartphone with ultra-light sensor', 'Flagship Huawei with pro camera', 1, 4299.00, 15, 25, 10, 'HWP60PRO001', 'huawei-p60-pro.jpg', 1, 1, NULL, NULL, '2025-07-21 05:38:26', '2025-07-21 05:38:26'),
@@ -364,8 +367,33 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `phone`, `role`, `profile_photo`, `is_active`, `is_verified`, `verification_token`, `remember_token`, `password_reset_token`, `password_reset_expires`, `created_at`, `updated_at`) VALUES
 (1, 'Admin', 'User', 'admin@gadgetloop.com', '$2y$10$l6QBisIZAupNWdXebQvf/Oc7pR.TMSj2VXfabuVPJALOdcerUcVKC', NULL, 'admin', NULL, 1, 1, NULL, NULL, NULL, NULL, '2025-07-21 05:38:26', '2025-07-22 11:40:24'),
 (2, 'Demo', 'Member', 'member@gadgetloop.com', '$2y$10$439pdBXMvGGaHDzzKG1VCeT/cd/sjCAqlKvAJFXalUkiS5SIlZ3Nu', NULL, 'member', '687f336e7633e.jpeg', 1, 1, NULL, NULL, NULL, NULL, '2025-07-21 05:38:26', '2025-07-22 06:45:02'),
-(10, 'Elisha', 'Tiong', 'tiongepp@gmail.com', '$2y$10$fjTkJt10ZNKr2J5te.oT6uNZx6Ew7Zy.eCzqPf41ejA02/I5hz6rO', '', 'member', '6882e699ad478.jpg', 1, 0, NULL, NULL, NULL, NULL, '2025-07-24 04:58:08', '2025-07-25 02:08:46'),
-(12, 'Elisha', 'Tiong', 'elishatpp-sm23@student.tarc.edu.my', '$2y$10$vjDsM1JiXT2tD1UmWz1jeO.HF1jge0kwjW1vqlMNuP89UeRP/3Xma', '', 'member', NULL, 1, 0, NULL, NULL, NULL, NULL, '2025-07-25 07:15:24', '2025-07-25 07:15:24');
+(10, 'Elisha', 'Tiong', 'tiongepp@gmail.com', '$2y$10$fjTkJt10ZNKr2J5te.oT6uNZx6Ew7Zy.eCzqPf41ejA02/I5hz6rO', '', 'member', '6882e699ad478.jpg', 1, 1, NULL, NULL, NULL, NULL, '2025-07-24 04:58:08', '2025-07-26 12:07:03'),
+(12, 'Elisha', 'Tiong', 'elishatpp-sm23@student.tarc.edu.my', '$2y$10$vjDsM1JiXT2tD1UmWz1jeO.HF1jge0kwjW1vqlMNuP89UeRP/3Xma', '', 'member', NULL, 1, 1, NULL, NULL, NULL, NULL, '2025-07-25 07:15:24', '2025-07-26 12:07:01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_addresses`
+--
+
+CREATE TABLE `user_addresses` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `type` enum('shipping','billing') NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `address_line_1` varchar(200) NOT NULL,
+  `address_line_2` varchar(200) DEFAULT NULL,
+  `city` varchar(100) NOT NULL,
+  `state` varchar(100) NOT NULL,
+  `zip_code` varchar(20) NOT NULL,
+  `country` varchar(100) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `is_default` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -386,7 +414,8 @@ CREATE TABLE `wishlist` (
 
 INSERT INTO `wishlist` (`id`, `user_id`, `product_id`, `created_at`) VALUES
 (1, 2, 1, '2025-07-22 06:44:43'),
-(2, 10, 6, '2025-07-24 05:28:13');
+(2, 10, 6, '2025-07-24 05:28:13'),
+(3, 1, 21, '2025-07-26 13:25:14');
 
 --
 -- Indexes for dumped tables
@@ -501,6 +530,15 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_user_addresses_user` (`user_id`),
+  ADD KEY `idx_user_addresses_type` (`type`),
+  ADD KEY `idx_user_addresses_default` (`is_default`);
+
+--
 -- Indexes for table `wishlist`
 --
 ALTER TABLE `wishlist`
@@ -523,19 +561,19 @@ ALTER TABLE `admin_activity_log`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `coupons`
 --
 ALTER TABLE `coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `coupon_usage`
@@ -598,10 +636,16 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -660,6 +704,12 @@ ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
+  ADD CONSTRAINT `user_addresses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `wishlist`
