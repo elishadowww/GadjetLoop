@@ -126,7 +126,7 @@ $wishlist_items = $stmt->fetchAll();
                         <div class="dashboard-section">
                             <div class="section-header">
                                 <h3>Recent Orders</h3>
-                                <a href="member/orders.php" class="btn btn-outline btn-sm">View All</a>
+                                <a href="orders.php" class="btn btn-outline btn-sm">View All</a>
                             </div>
                             <div class="section-content">
                                 <?php if (empty($recent_orders)): ?>
@@ -161,7 +161,7 @@ $wishlist_items = $stmt->fetchAll();
                         <div class="dashboard-section">
                             <div class="section-header">
                                 <h3>Wishlist</h3>
-                                <a href="member/wishlist.php" class="btn btn-outline btn-sm">View All</a>
+                                <a href="wishlist.php" class="btn btn-outline btn-sm">View All</a>
                             </div>
                             <div class="section-content">
                                 <?php if (empty($wishlist_items)): ?>
@@ -199,7 +199,7 @@ $wishlist_items = $stmt->fetchAll();
                                         <p>Manage your personal information</p>
                                     </a>
                                     
-                                    <a href="member/orders.php" class="action-card">
+                                    <a href="orders.php" class="action-card">
                                         <div class="action-icon">📋</div>
                                         <h4>Order History</h4>
                                         <p>View all your past orders</p>
@@ -211,7 +211,7 @@ $wishlist_items = $stmt->fetchAll();
                                         <p>Manage shipping addresses</p>
                                     </a>
                                     
-                                    <a href="contact.php" class="action-card">
+                                    <a href="../contact.php" class="action-card">
                                         <div class="action-icon">💬</div>
                                         <h4>Contact Support</h4>
                                         <p>Get help with your account</p>
