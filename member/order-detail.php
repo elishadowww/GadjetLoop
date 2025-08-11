@@ -311,7 +311,7 @@ $billing_address = json_decode($order['billing_address'], true);
                             <?php endif; ?>
                             
                             <?php if ($order['status'] === 'delivered'): ?>
-                                <a href="member/reviews.php" class="btn btn-primary btn-sm">
+                                <a href="reviews.php" class="btn btn-primary btn-sm">
                                     Write Review
                                 </a>
                             <?php endif; ?>

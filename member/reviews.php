@@ -382,7 +382,7 @@ $reviewable_products = $stmt->fetchAll();
                                 <div class="reviewable-product">
                                     <div class="product-info">
                                         <div class="product-image">
-                                            <img src="uploads/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
+                                            <img src="../images/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
                                                  alt="<?php echo htmlspecialchars($product['name']); ?>">
                                         </div>
                                         <div class="product-details">
@@ -487,7 +487,8 @@ $reviewable_products = $stmt->fetchAll();
 
     <?php include '../includes/footer.php'; ?>
 
-    <script src="../js/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <script src="../js/main.js"></script>
     <script>
         $(document).ready(function() {
