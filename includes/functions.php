@@ -365,6 +365,23 @@ function formatPrice($price) {
     return '$' . number_format($price, 2);
 }
 
+    // Notification Functions
+    function createNotification($pdo, $user_id, $title, $message, $type = 'general') {
+        // Only columns: user_id, message, is_read, created_at
+        // Combine title and type into message if needed
+        if (is_array($message)) {
+            $message = json_encode($message);
+        }
+        $full_message = $title;
+        if (!empty($message)) {
+            $full_message .= ': ' . $message;
+        }
+        if (!empty($type)) {
+            $full_message .= ' [' . $type . ']';
+        }
+        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, message, created_at, is_read) VALUES (?, ?, NOW(), 0)");
+        return $stmt->execute([$user_id, $full_message]);
+    }
 function sanitizeInput($input) {
     return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
 }

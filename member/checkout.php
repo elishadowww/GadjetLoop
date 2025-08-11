@@ -600,9 +600,11 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                                 </div>
                             </div>
                         </div>
-                        
-                        <button type="submit" name="place_order" class="btn btn-primary place-order-btn">
-                            Place Order - RM<?php echo number_format($total, 2); ?>
+                     <button type="submit" name="place_order" class="btn btn-primary place-order-btn">
+                            <span class="btn-text">Place Order - RM<?php echo number_format($total, 2); ?></span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="loading"></span> Processing...
+                            </span>
                         </button>
                     </form>
                 </div>
@@ -714,6 +716,11 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
             
             // Form validation
             $('#checkout-form').on('submit', function(e) {
+                 // Show loading state
+                const $btn = $('.place-order-btn');
+                $btn.find('.btn-text').hide();
+                $btn.find('.btn-loading').show();
+                $btn.prop('disabled', true);
                 const paymentMethod = $('input[name="payment_method"]:checked').val();
                 
                 if (paymentMethod === 'credit_card') {
@@ -724,13 +731,16 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                     
                     if (!cardNumber || cardNumber.length < 13 || !expiryDate || !cvv || !cardName) {
                         e.preventDefault();
+                         $btn.find('.btn-text').show();
+                        $btn.find('.btn-loading').hide();
+                        $btn.prop('disabled', false);
                         alert('Please fill in all credit card details');
                         return false;
                     }
                 }
                 
-                // Show loading state
-                $('.place-order-btn').prop('disabled', true).html('<span class="loading"></span> Processing Order...');
+               // Change form action to payment processing page
+                $(this).attr('action', 'process-payment.php');
             });
         });
         

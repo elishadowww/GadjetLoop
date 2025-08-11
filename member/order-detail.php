@@ -337,8 +337,9 @@ $billing_address = json_decode($order['billing_address'], true);
     
     <?php include '../includes/footer.php'; ?>
     
-    <script src="js/jquery.min.js"></script>
-    <script src="js/main.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="../js/main.js"></script>
     <script>
         function cancelOrder(orderId) {
             if (confirm('Are you sure you want to cancel this order?')) {
