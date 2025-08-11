@@ -354,18 +354,19 @@ $reviews_count = $stmt->fetchColumn();
             });
             
             // Photo preview
-            $('#photo-input').on('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('.profile-photo, .default-avatar').replaceWith(
-                            `<img src="${e.target.result}" alt="Profile Photo" class="profile-photo">`
-                        );
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+                $('#photo-input').on('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            // Remove any previous preview
+                            $('.current-photo').html(
+                                `<img src="${e.target.result}" alt="Profile Photo" class="profile-photo" style="max-width:120px;max-height:120px;border-radius:50%;object-fit:cover;">`
+                            );
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
         });
         
         function calculatePasswordStrength(password) {
