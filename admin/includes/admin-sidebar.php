@@ -1,3 +1,7 @@
+<?php
+$stmt = $pdo->query("SELECT COUNT(*) FROM orders");
+$order_count = $stmt->fetchColumn();
+?>
 <aside class="admin-sidebar">
     <nav class="admin-nav">
         <ul class="nav-menu">
@@ -34,7 +38,7 @@
                 <a href="orders.php">
                     <span class="nav-icon">🛒</span>
                     <span class="nav-text">Orders</span>
-                    <span class="nav-badge">5</span>
+                    <span class="nav-badge"><?php echo (int)$order_count; ?></span>
                 </a>
             </li>
             
@@ -105,15 +109,7 @@
         </ul>
     </nav>
     
-    <div class="sidebar-footer">
-        <div class="storage-info">
-            <h4>Storage Usage</h4>
-            <div class="storage-bar">
-                <div class="storage-used" style="width: 65%"></div>
-            </div>
-            <p>6.5 GB of 10 GB used</p>
-        </div>
-        
+    <div class="sidebar-footer">        
         <div class="quick-actions">
             <a href="product-add.php" class="btn btn-primary btn-sm btn-block">Add Product</a>
             <a href="../index.php" target="_blank" class="btn btn-outline btn-sm btn-block">View Site</a>

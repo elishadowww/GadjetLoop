@@ -395,37 +395,6 @@
     border-top: 1px solid #e9ecef;
 }
 
-.storage-info {
-    margin-bottom: 1.5rem;
-}
-
-.storage-info h4 {
-    font-size: 12px;
-    margin-bottom: 0.5rem;
-    color: #666;
-    text-transform: uppercase;
-}
-
-.storage-bar {
-    height: 4px;
-    background: #e9ecef;
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
-}
-
-.storage-used {
-    height: 100%;
-    background: #007bff;
-    transition: width 0.3s ease;
-}
-
-.storage-info p {
-    font-size: 11px;
-    color: #666;
-    margin: 0;
-}
-
 .quick-actions {
     display: flex;
     flex-direction: column;

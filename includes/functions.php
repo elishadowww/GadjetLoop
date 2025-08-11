@@ -423,4 +423,10 @@ function getWishlistItems($pdo, $user_id) {
     $stmt->execute([$user_id]);
     return $stmt->fetchAll();
 }
+
+function getDefaultAddress($pdo, $user_id, $type = 'shipping') {
+    $stmt = $pdo->prepare("SELECT * FROM user_addresses WHERE user_id = ? AND type = ? AND is_default = 1 LIMIT 1");
+    $stmt->execute([$user_id, $type]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 ?>

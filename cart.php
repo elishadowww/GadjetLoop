@@ -294,7 +294,7 @@ $total = $subtotal + $tax + $shipping;
                             <span>RM<?php echo number_format($total, 2); ?></span>
                         </div>
                         
-                        <a href="checkout.php" class="btn btn-primary btn-block" style="margin-top: 2rem;">
+                        <a href="/GadjetLoop/member/checkout.php" class="btn btn-primary btn-block" style="margin-top: 2rem;">
                             Proceed to Checkout
                         </a>
                         
