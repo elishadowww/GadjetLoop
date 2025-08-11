@@ -33,19 +33,18 @@ if ($_POST && isset($_POST['update_profile'])) {
             $stmt = $pdo->prepare("
                 UPDATE users SET 
                 first_name = ?, last_name = ?, phone = ?, 
-                address = ?, city = ?, state = ?, zip_code = ?, country = ?,
                 updated_at = NOW()
                 WHERE id = ?
             ");
-            $stmt->execute([$first_name, $last_name, $phone, $address, $city, $state, $zip_code, $country, $user_id]);
-            
+            $stmt->execute([$first_name, $last_name, $phone, $user_id]);
+
             $_SESSION['user_name'] = $first_name . ' ' . $last_name;
             $success = 'Profile updated successfully';
             
             // Refresh user data
             $user = getUserById($pdo, $user_id);
         } catch (PDOException $e) {
-            $error = 'Failed to update profile';
+            $error = 'Failed to update profile: ' . $e->getMessage(); // Show actual error
         }
     }
 }
@@ -85,8 +84,8 @@ if ($_POST && isset($_POST['upload_photo'])) {
         if ($upload_result['success']) {
             try {
                 // Delete old photo if exists
-                if ($user['profile_photo'] && file_exists('uploads/profiles/' . $user['profile_photo'])) {
-                    unlink('uploads/profiles/' . $user['profile_photo']);
+                if ($user['profile_photo'] && file_exists('../images/profiles/' . $user['profile_photo'])) {
+                    unlink('../images/profiles/' . $user['profile_photo']);
                 }
                 
                 $stmt = $pdo->prepare("UPDATE users SET profile_photo = ?, updated_at = NOW() WHERE id = ?");
@@ -201,14 +200,14 @@ $reviews_count = $stmt->fetchColumn();
                             <div class="section-content">
                                 <div class="photo-upload-area">
                                     <div class="current-photo">
-                                        <?php if ($user['profile_photo']): ?>
-                                            <img src="../uploads/profiles/<?php echo htmlspecialchars($user['profile_photo']); ?>" 
-                                                 alt="Profile Photo" class="profile-photo">
-                                        <?php else: ?>
-                                            <div class="default-avatar">
-                                                <?php echo strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1)); ?>
-                                            </div>
-                                        <?php endif; ?>
+                                       <?php if ($user['profile_photo']): ?>
+                <img src="uploads/profiles/<?php echo htmlspecialchars($user['profile_photo']); ?>" 
+                     alt="Profile Photo">
+            <?php else: ?>
+                <div class="default-avatar">
+                    <?php echo strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1)); ?>
+                </div>
+            <?php endif; ?>
                                     </div>
                                     
                                     <form method="POST" enctype="multipart/form-data" class="photo-upload-form">
@@ -255,41 +254,7 @@ $reviews_count = $stmt->fetchColumn();
                                                value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>">
                                     </div>
                                     
-                                    <div class="form-group">
-                                        <label for="address">Address</label>
-                                        <textarea id="address" name="address" class="form-control" rows="3"><?php echo htmlspecialchars($user['address'] ?? ''); ?></textarea>
-                                    </div>
                                     
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label for="city">City</label>
-                                            <input type="text" id="city" name="city" class="form-control" 
-                                                   value="<?php echo htmlspecialchars($user['city'] ?? ''); ?>">
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="state">State</label>
-                                            <input type="text" id="state" name="state" class="form-control" 
-                                                   value="<?php echo htmlspecialchars($user['state'] ?? ''); ?>">
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="zip_code">ZIP Code</label>
-                                            <input type="text" id="zip_code" name="zip_code" class="form-control" 
-                                                   value="<?php echo htmlspecialchars($user['zip_code'] ?? ''); ?>">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="country">Country</label>
-                                        <select id="country" name="country" class="form-control">
-                                            <option value="">Select Country</option>
-                                            <option value="US" <?php echo ($user['country'] ?? '') === 'US' ? 'selected' : ''; ?>>United States</option>
-                                            <option value="CA" <?php echo ($user['country'] ?? '') === 'CA' ? 'selected' : ''; ?>>Canada</option>
-                                            <option value="UK" <?php echo ($user['country'] ?? '') === 'UK' ? 'selected' : ''; ?>>United Kingdom</option>
-                                            <option value="AU" <?php echo ($user['country'] ?? '') === 'AU' ? 'selected' : ''; ?>>Australia</option>
-                                        </select>
-                                    </div>
                                     
                                     <button type="submit" name="update_profile" class="btn btn-primary">Update Profile</button>
                                 </form>

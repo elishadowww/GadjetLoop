@@ -77,6 +77,7 @@ $user = getUserById($pdo, $user_id);
                 <a href="/GadjetLoop/member/reviews.php">
                     <span class="nav-icon">⭐</span>
                     <span class="nav-text">My Reviews</span>
+                    </a>
             </li>
             
             
