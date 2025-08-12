@@ -273,7 +273,7 @@ $overall_stats = $stmt->fetch();
     </div>
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="../js/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/admin.js"></script>
     <script>
         $(document).ready(function() {
@@ -286,7 +286,7 @@ $overall_stats = $stmt->fetch();
                 data: {
                     labels: salesData.map(item => item.date),
                     datasets: [{
-                        label: 'Revenue ($)',
+                        label: 'Revenue (RM)',
                         data: salesData.map(item => parseFloat(item.revenue)),
                         borderColor: '#007bff',
                         backgroundColor: 'rgba(0, 123, 255, 0.1)',
@@ -310,7 +310,7 @@ $overall_stats = $stmt->fetch();
                             position: 'left',
                             title: {
                                 display: true,
-                                text: 'Revenue ($)'
+                                text: 'Revenue (RM)'
                             }
                         },
                         y1: {

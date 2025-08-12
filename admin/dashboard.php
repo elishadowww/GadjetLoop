@@ -136,7 +136,7 @@ $monthly_sales = $stmt->fetchAll();
                 <div class="stat-card">
                     <div class="stat-icon">💰</div>
                     <div class="stat-info">
-                        <h3>$<?php echo number_format($stats['total_revenue'], 2); ?></h3>
+                        <h3>RM<?php echo number_format($stats['total_revenue'], 2); ?></h3>
                         <p>Total Revenue</p>
                     </div>
                 </div>
@@ -261,8 +261,8 @@ $monthly_sales = $stmt->fetchAll();
         </main>
     </div>
     
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/admin.js"></script>
     <script>
         $(document).ready(function() {
@@ -292,7 +292,7 @@ $monthly_sales = $stmt->fetchAll();
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Revenue ($)',
+                        label: 'Revenue (RM)',
                         data: revenueData,
                         borderColor: '#007bff',
                         backgroundColor: 'rgba(0, 123, 255, 0.1)',
@@ -327,7 +327,7 @@ $monthly_sales = $stmt->fetchAll();
                             position: 'left',
                             title: {
                                 display: true,
-                                text: 'Revenue ($)'
+                                text: 'Revenue (RM)'
                             }
                         },
                         y1: {

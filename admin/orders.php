@@ -238,7 +238,7 @@ $stats = $stmt->fetch();
                                         </div>
                                     </td>
                                     <td><?php echo $order['item_count']; ?> items</td>
-                                    <td><strong>$<?php echo number_format($order['total_amount'], 2); ?></strong></td>
+                                    <td><strong>RM<?php echo number_format($order['total_amount'], 2); ?></strong></td>
                                     <td>
                                         <form method="POST" style="display: inline;">
                                             <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
