@@ -1,19 +1,22 @@
 // Cart functionality
 $(document).ready(function () {
-    // Handle add to cart buttons
-    $('.add-to-cart').on('click', function (e) {
-        e.preventDefault();
+    // Prevent double add-to-cart on wishlist page
+    if ($('body').data('page') !== 'wishlist') {
+        // Handle add to cart buttons
+        $('.add-to-cart').on('click', function (e) {
+            e.preventDefault();
 
-        if (!isUserLoggedIn()) {
-            showAlert('Please login to add items to cart', 'warning');
-            return;
-        }
+            if (!isUserLoggedIn()) {
+                showAlert('Please login to add items to cart', 'warning');
+                return;
+            }
 
-        const productId = $(this).data('product-id');
-        const quantity = $(this).closest('.product-card, .product-detail').find('.quantity-input').val() || 1;
+            const productId = $(this).data('product-id');
+            const quantity = $(this).closest('.product-card, .product-detail').find('.quantity-input').val() || 1;
 
-        addToCart(productId, quantity);
-    });
+            addToCart(productId, quantity);
+        });
+    }
 
     // Handle cart quantity updates
     $('.cart-quantity').on('change', function () {
@@ -69,7 +72,9 @@ function addToCart(productId, quantity = 1) {
     // Show loading state
     $btn.prop('disabled', true).html('<span class="loading"></span> Adding...');
 
-    $.post('ajax/add-to-cart.php', {
+    // Use correct AJAX path depending on page location
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/add-to-cart.php' : 'ajax/add-to-cart.php';
+    $.post(ajaxPath, {
         product_id: productId,
         quantity: quantity
     }, function (response) {
@@ -99,7 +104,8 @@ function updateCartQuantity(productId, quantity, showMessage = true) {
         return;
     }
 
-    $.post('ajax/update-cart-quantity.php', {
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/update-cart-quantity.php' : 'ajax/update-cart-quantity.php';
+    $.post(ajaxPath, {
         product_id: productId,
         quantity: quantity
     }, function (response) {
@@ -123,7 +129,8 @@ function removeFromCart(productId) {
         return;
     }
 
-    $.post('ajax/remove-from-cart.php', {
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/remove-from-cart.php' : 'ajax/remove-from-cart.php';
+    $.post(ajaxPath, {
         product_id: productId
     }, function (response) {
         if (response.success) {
@@ -146,7 +153,8 @@ function removeFromCart(productId) {
 
 // Clear entire cart
 function clearCart() {
-    $.post('ajax/clear-cart.php', function (response) {
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/clear-cart.php' : 'ajax/clear-cart.php';
+    $.post(ajaxPath, function (response) {
         if (response.success) {
             showAlert('Cart cleared', 'success');
             $('.cart-items').fadeOut(300, function () {
@@ -166,7 +174,8 @@ function applyCoupon(couponCode) {
 
     $btn.prop('disabled', true).html('<span class="loading"></span> Applying...');
 
-    $.post('ajax/apply-coupon.php', {
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/apply-coupon.php' : 'ajax/apply-coupon.php';
+    $.post(ajaxPath, {
         coupon_code: couponCode
     }, function (response) {
         if (response.success) {
@@ -183,7 +192,8 @@ function applyCoupon(couponCode) {
 
 // Remove applied coupon
 function removeCoupon() {
-    $.post('ajax/remove-coupon.php', function (response) {
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/remove-coupon.php' : 'ajax/remove-coupon.php';
+    $.post(ajaxPath, function (response) {
         if (response.success) {
             showAlert('Coupon removed', 'success');
             updateCartTotals();
@@ -196,7 +206,8 @@ function removeCoupon() {
 
 // Update cart display
 function updateCartDisplay() {
-    $.get('ajax/get-cart-items.php', function (data) {
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/get-cart-items.php' : 'ajax/get-cart-items.php';
+    $.get(ajaxPath, function (data) {
         if (data.success && data.items.length > 0) {
             let cartHtml = '';
             data.items.forEach(item => {
@@ -250,7 +261,8 @@ function generateCartItemHtml(item) {
 
 // Update cart totals
 function updateCartTotals() {
-    $.get('ajax/get-cart-totals.php', function (data) {
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/get-cart-totals.php' : 'ajax/get-cart-totals.php';
+    $.get(ajaxPath, function (data) {
         if (data.success) {
             $('#subtotal').text('$' + data.subtotal.toFixed(2));
             $('#tax-amount').text('$' + data.tax.toFixed(2));
@@ -335,7 +347,8 @@ $(document).on('click', '.qty-btn', function () {
 
 // Mini cart functionality for header
 function updateMiniCart() {
-    $.get('ajax/get-cart-items.php', function (data) {
+    var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/get-cart-items.php' : 'ajax/get-cart-items.php';
+    $.get(ajaxPath, function (data) {
         if (data.success) {
             let miniCartHtml = '';
             let total = 0;
@@ -429,7 +442,8 @@ function loadGuestCart() {
 function transferGuestCart() {
     const guestCart = localStorage.getItem('guest_cart');
     if (guestCart && isUserLoggedIn()) {
-        $.post('ajax/transfer-guest-cart.php', {
+        var ajaxPath = window.location.pathname.includes('/member/') ? '../ajax/transfer-guest-cart.php' : 'ajax/transfer-guest-cart.php';
+        $.post(ajaxPath, {
             cart_data: guestCart
         }, function (response) {
             if (response.success) {

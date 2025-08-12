@@ -56,7 +56,8 @@ if ($_POST) {
         
         echo json_encode(['success' => true, 'message' => 'Item added to cart successfully']);
     } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Failed to add item to cart']);
+        error_log('Add to cart error: ' . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Failed to add item to cart: ' . $e->getMessage()]);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);

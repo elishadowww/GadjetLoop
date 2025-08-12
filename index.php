@@ -17,7 +17,7 @@ $categories = getCategories($pdo);
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body data-page="home" class="<?php echo isLoggedIn() ? 'logged-in' : ''; ?>">
     <?php include 'includes/header.php'; ?>
     
     <main>
@@ -127,11 +127,10 @@ $categories = getCategories($pdo);
     </main>
 
     <?php include 'includes/footer.php'; ?>
-    <body class="<?php echo isLoggedIn() ? 'logged-in' : ''; ?>">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script src="js/jquery.min.js"></script>
+    <!-- Removed duplicate jQuery local script -->
     <script src="js/main.js"></script>
     <script src="js/cart.js"></script>
-    <script src="/js/backtotop.js"></script>
+    <!-- Removed missing backtotop.js script -->
 </html>
