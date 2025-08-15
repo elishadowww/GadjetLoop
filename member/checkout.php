@@ -646,6 +646,19 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                             <span>Shipping:</span>
                             <span><?php echo $shipping > 0 ? 'RM' . number_format($shipping, 2) : 'Free'; ?></span>
                         </div>
+
+                           <!-- Coupon Section -->
+                        <div class="coupon-section">
+                            <div class="form-group">
+                                <label for="coupon-code">Coupon Code</label>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" id="coupon-code" name="coupon_code" class="form-control" 
+                                           placeholder="Enter coupon code" style="text-transform: uppercase;">
+                                    <button type="button" id="apply-coupon-btn" class="btn btn-outline">Apply</button>
+                                </div>
+                            </div>
+                            <div id="coupon-message" style="display: none; margin-top: 0.5rem; font-size: 14px;"></div>
+                        </div>
                         
                         <div class="summary-row summary-total">
                             <span>Total:</span>
@@ -664,6 +677,23 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
     <script src="../js/main.js"></script>
     <script>
         $(document).ready(function() {
+
+             // Coupon functionality
+            $('#apply-coupon-btn').on('click', function() {
+                applyCoupon();
+            });
+            
+            $('#coupon-code').on('keypress', function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    applyCoupon();
+                }
+            });
+            
+            // Remove applied coupon
+            $(document).on('click', '#remove-coupon', function() {
+                removeCoupon();
+            });
             // Toggle billing address
             $('#different_billing').on('change', function() {
                 if ($(this).is(':checked')) {
@@ -743,6 +773,109 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                 $(this).attr('action', 'process-payment.php');
             });
         });
+
+           function applyCoupon() {
+            const couponCode = $('#coupon-code').val().trim().toUpperCase();
+            if (!couponCode) {
+                showCouponMessage('Please enter a coupon code', 'error');
+                return;
+            }
+            
+            const $btn = $('#apply-coupon-btn');
+            const originalText = $btn.text();
+            $btn.prop('disabled', true).text('Applying...');
+            
+            $.post('ajax/apply-coupon.php', {
+                coupon_code: couponCode,
+                subtotal: <?php echo $subtotal; ?>
+            }, function(response) {
+                if (response.success) {
+                    showCouponMessage(response.message, 'success');
+                    updateTotalsWithCoupon(response.discount_amount, response.new_total);
+                    showAppliedCoupon(couponCode, response.discount_amount, response.discount_type);
+                } else {
+                    showCouponMessage(response.message, 'error');
+                }
+            }).fail(function() {
+                showCouponMessage('Failed to apply coupon', 'error');
+            }).always(function() {
+                $btn.prop('disabled', false).text(originalText);
+            });
+        }
+        
+        function removeCoupon() {
+            $.post('ajax/remove-coupon.php', function(response) {
+                if (response.success) {
+                    showCouponMessage('Coupon removed', 'success');
+                    updateTotalsWithCoupon(0, <?php echo $total; ?>);
+                    hideAppliedCoupon();
+                }
+            });
+        }
+        
+        function showCouponMessage(message, type) {
+            const $message = $('#coupon-message');
+            $message.removeClass('text-success text-danger')
+                   .addClass(type === 'success' ? 'text-success' : 'text-danger')
+                   .text(message)
+                   .show();
+            
+            setTimeout(() => {
+                $message.fadeOut();
+            }, 3000);
+        }
+        
+        function updateTotalsWithCoupon(discountAmount, newTotal) {
+            if (discountAmount > 0) {
+                $('#discount-row').show();
+                $('#discount-amount').text('-$' + discountAmount.toFixed(2));
+            } else {
+                $('#discount-row').hide();
+            }
+            $('#final-total').text('$' + newTotal.toFixed(2));
+        }
+        
+        function showAppliedCoupon(code, amount, type) {
+            const discountText = type === 'percentage' ? amount + '%' : '$' + amount.toFixed(2);
+            const couponHtml = `
+                <div class="applied-coupon" style="background: #d4edda; padding: 0.75rem; border-radius: 6px; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>${code}</strong> applied
+                        <small style="display: block; color: #155724;">Discount: ${discountText}</small>
+                    </div>
+                    <button type="button" id="remove-coupon" class="btn btn-sm" style="background: none; border: none; color: #721c24; font-size: 18px;">×</button>
+                </div>
+            `;
+            $('.coupon-section').append(couponHtml);
+            $('#coupon-code').prop('disabled', true);
+            $('#apply-coupon-btn').prop('disabled', true);
+        }
+        
+        function hideAppliedCoupon() {
+            $('.applied-coupon').remove();
+            $('#coupon-code').prop('disabled', false).val('');
+            $('#apply-coupon-btn').prop('disabled', false);
+        }
+        
+        function useAddress(type, address) {
+            const prefix = type === 'shipping' ? 'shipping_' : 'billing_';
+            
+            $(`#${prefix}first_name`).val(address.first_name);
+            $(`#${prefix}last_name`).val(address.last_name);
+            $(`#${prefix}address`).val(address.address_line_1);
+            $(`#${prefix}city`).val(address.city);
+            $(`#${prefix}state`).val(address.state);
+            $(`#${prefix}zip`).val(address.zip_code);
+            $(`#${prefix}country`).val(address.country);
+            
+            if (address.phone) {
+                $(`#${prefix}phone`).val(address.phone);
+            }
+            
+            // Visual feedback
+            $(`.saved-address`).removeClass('selected');
+            $(event.target).closest('.saved-address').addClass('selected');
+        }
         
         function useAddress(type, address) {
             const prefix = type === 'shipping' ? 'shipping_' : 'billing_';
