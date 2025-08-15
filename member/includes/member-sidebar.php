@@ -59,7 +59,7 @@ $user = getUserById($pdo, $user_id);
             
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'wishlist.php' ? 'active' : ''; ?>">
                 <a href="/GadjetLoop/member/wishlist.php">
-                    <span class="nav-icon">♡</span>
+                    <span class="nav-icon">🩶</span>
                     <span class="nav-text">Wishlist</span>
                     <?php
                     // Get wishlist count
@@ -100,7 +100,8 @@ $user = getUserById($pdo, $user_id);
             
             <li class="nav-item">
                 <a href="/GadjetLoop/index.php">
-                    <span class="nav-text">Back to Store</span>
+                    <span class="nav-icon">🏪</span>
+                    <span class="nav-text"> Back to Store</span>
                 </a>
             </li>
             

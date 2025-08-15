@@ -176,7 +176,7 @@ $reviews_count = $stmt->fetchColumn();
                         </div>
                         
                         <div class="stat-card">
-                            <div class="stat-icon">♡</div>
+                            <div class="stat-icon">🩶</div>
                             <div class="stat-info">
                                 <h3><?php echo $wishlist_count; ?></h3>
                                 <p>Wishlist Items</p>
