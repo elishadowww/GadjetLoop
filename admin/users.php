@@ -246,7 +246,7 @@ $stats = $stmt->fetch();
                                         </span>
                                     </td>
                                     <td><?php echo $user['total_orders'] ?: 0; ?></td>
-                                    <td>$<?php echo number_format($user['total_spent'] ?: 0, 2); ?></td>
+                                    <td>RM<?php echo number_format($user['total_spent'] ?: 0, 2); ?></td>
                                     <td>
                                         <div>
                                             <span class="status-badge status-<?php echo $user['is_active'] ? 'active' : 'inactive'; ?>">
@@ -284,7 +284,7 @@ $stats = $stmt->fetch();
         </main>
     </div>
     
-    <script src="../js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/admin.js"></script>
 </body>
 </html>

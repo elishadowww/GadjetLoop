@@ -6,17 +6,18 @@
     min-height: 100vh;
     background-color: #f8f9fa;
     margin-top: 70px;
-    flex-direction: row; 
+    flex-direction: row;
 }
 
 /* Admin Header */
 .admin-header {
     background: white;
     border-bottom: 1px solid #e9ecef;
+    width: ;
     padding: 0;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 100%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -28,7 +29,8 @@
     border-radius: 10px;
     border-bottom: 1px solid #e9ecef;
     padding: 1.5rem 1.5rem 1rem;
-    margin-bottom: 2rem; /* ✅ adds gap between heading and stats */
+    margin-bottom: 2rem;
+    /* ✅ adds gap between heading and stats */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -43,23 +45,24 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 2rem;
-    gap: 2rem;
+    gap: 1rem;
+    width: 100%;
 }
 
 .admin-header-left {
-  flex: 0 0 auto;
+    flex: 0 0 auto;
 }
 
 .admin-header-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
 
 .admin-header-right {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .admin-logo h2 {
@@ -77,7 +80,7 @@
     align-items: center;
     gap: 1.5rem;
     margin-left: auto;
- }
+}
 
 /* Admin Search */
 .admin-search {
@@ -309,14 +312,16 @@
 
 .admin-nav {
     display: flex;
-    flex-direction: column; /* ✅ force vertical stacking */
+    flex-direction: column;
+    /* ✅ force vertical stacking */
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .nav-menu {
     display: flex;
-    flex-direction: column; /* ✅ vertical layout */
+    flex-direction: column;
+    /* ✅ vertical layout */
     gap: 0.25rem;
 }
 
@@ -338,7 +343,8 @@
 }
 
 .nav-item a {
-    white-space: normal; /* ✅ allow wrapping */
+    white-space: normal;
+    /* ✅ allow wrapping */
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -380,12 +386,14 @@
     position: fixed;
     top: 0;
     width: 100%;
-    height: 70px; /* or whatever */
+    height: 70px;
+    /* or whatever */
     z-index: 1000;
 }
 
 .admin-content {
-    padding-top: 80px; /* Adjust based on actual navbar height */
+    padding-top: 80px;
+    /* Adjust based on actual navbar height */
 }
 
 
@@ -419,7 +427,7 @@
 
 .admin-header h1 {
     margin-left: 20px;
-    margin-top:20px;
+    margin-top: 20px;
     color: #333;
     font-size: 2rem;
 }
@@ -789,9 +797,10 @@
     }
 
     .admin-sidebar {
-    overflow-x: hidden; /* ✅ important */
-    width: 260px;
-    min-width: 260px;
+        overflow-x: hidden;
+        /* ✅ important */
+        width: 260px;
+        min-width: 260px;
     }
 
     .admin-sidebar.active {

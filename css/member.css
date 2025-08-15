@@ -442,7 +442,18 @@ member-nav .nav-divider {
 }
 
 .current-photo {
-    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #e9ecef;
+}
+
+.current-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile-photo {

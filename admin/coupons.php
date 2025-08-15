@@ -249,10 +249,10 @@ $stats = $stmt->fetch();
                                         <?php if ($coupon['discount_type'] === 'percentage'): ?>
                                             <?php echo $coupon['discount_value']; ?>%
                                         <?php else: ?>
-                                            $<?php echo number_format($coupon['discount_value'], 2); ?>
+                                            RM<?php echo number_format($coupon['discount_value'], 2); ?>
                                         <?php endif; ?>
                                         <?php if ($coupon['minimum_amount'] > 0): ?>
-                                            <br><small>Min: $<?php echo number_format($coupon['minimum_amount'], 2); ?></small>
+                                            <br><small>Min: RM<?php echo number_format($coupon['minimum_amount'], 2); ?></small>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -261,7 +261,7 @@ $stats = $stmt->fetch();
                                             / <?php echo $coupon['usage_limit']; ?>
                                         <?php endif; ?>
                                         <?php if ($coupon['total_discount_given']): ?>
-                                            <br><small>Saved: $<?php echo number_format($coupon['total_discount_given'], 2); ?></small>
+                                            <br><small>Saved: RM<?php echo number_format($coupon['total_discount_given'], 2); ?></small>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -375,7 +375,7 @@ $stats = $stmt->fetch();
         </div>
     </div>
     
-    <script src="../js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/admin.js"></script>
     <script>
         function showAddCouponModal() {

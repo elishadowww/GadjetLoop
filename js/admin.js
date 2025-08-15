@@ -414,17 +414,17 @@ function getCsrfToken() {
 // Export data
 function exportData(type, format) {
     const params = new URLSearchParams();
-    params.append('type', type);
-    params.append('format', format);
-    
-    // Add any filters
+    // Add filters from the form
     $('.filter-form input, .filter-form select').each(function() {
         if ($(this).val()) {
             params.append($(this).attr('name'), $(this).val());
         }
     });
-    
-    window.location.href = 'ajax/export-data.php?' + params.toString();
+    if (type === 'users' && format === 'csv') {
+        window.location.href = '../ajax/export-users.php?' + params.toString();
+    } else {
+        window.location.href = 'ajax/export-data.php?' + params.toString();
+    }
 }
 
 // Import data

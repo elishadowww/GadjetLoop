@@ -251,6 +251,54 @@ function clearCart($pdo, $user_id) {
     return $stmt->execute([$user_id]);
 }
 
+// Wishlist Functions
+function addToWishlist($pdo, $user_id, $product_id) {
+    try {
+        // Check if already in wishlist
+        $stmt = $pdo->prepare("SELECT id FROM wishlist WHERE user_id = ? AND product_id = ?");
+        $stmt->execute([$user_id, $product_id]);
+        
+        if ($stmt->fetch()) {
+            return false; // Already in wishlist
+        }
+        
+        $stmt = $pdo->prepare("INSERT INTO wishlist (user_id, product_id, created_at) VALUES (?, ?, NOW())");
+        return $stmt->execute([$user_id, $product_id]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+function removeFromWishlist($pdo, $user_id, $product_id) {
+    try {
+        $stmt = $pdo->prepare("DELETE FROM wishlist WHERE user_id = ? AND product_id = ?");
+        return $stmt->execute([$user_id, $product_id]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+function isInWishlist($pdo, $user_id, $product_id) {
+    $stmt = $pdo->prepare("SELECT id FROM wishlist WHERE user_id = ? AND product_id = ?");
+    $stmt->execute([$user_id, $product_id]);
+    return $stmt->fetch() !== false;
+}
+
+function getWishlistItems($pdo, $user_id) {
+    $stmt = $pdo->prepare("
+        SELECT w.*, p.name, p.price, p.main_image, p.discount_percentage, p.stock_quantity,
+        CASE WHEN p.discount_percentage > 0 
+             THEN p.price * (1 - p.discount_percentage / 100) 
+             ELSE p.price END as sale_price
+        FROM wishlist w 
+        JOIN products p ON w.product_id = p.id 
+        WHERE w.user_id = ? AND p.is_active = 1
+        ORDER BY w.created_at DESC
+    ");
+    $stmt->execute([$user_id]);
+    return $stmt->fetchAll();
+}
+
 // Order Functions
 function createOrder($pdo, $user_id, $cart_items, $shipping_address, $payment_method = 'fake') {
     try {
@@ -302,6 +350,8 @@ function createOrder($pdo, $user_id, $cart_items, $shipping_address, $payment_me
         return ['success' => false, 'message' => $e->getMessage()];
     }
 }
+
+
 
 function getOrdersByUser($pdo, $user_id, $page = 1, $per_page = 10) {
     $offset = ($page - 1) * $per_page;
@@ -365,6 +415,23 @@ function formatPrice($price) {
     return '$' . number_format($price, 2);
 }
 
+    // Notification Functions
+    function createNotification($pdo, $user_id, $title, $message, $type = 'general') {
+        // Only columns: user_id, message, is_read, created_at
+        // Combine title and type into message if needed
+        if (is_array($message)) {
+            $message = json_encode($message);
+        }
+        $full_message = $title;
+        if (!empty($message)) {
+            $full_message .= ': ' . $message;
+        }
+        if (!empty($type)) {
+            $full_message .= ' [' . $type . ']';
+        }
+        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, message, created_at, is_read) VALUES (?, ?, NOW(), 0)");
+        return $stmt->execute([$user_id, $full_message]);
+    }
 function sanitizeInput($input) {
     return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
 }
@@ -409,20 +476,6 @@ function generateQRCode($data) {
     return "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . urlencode($data);
 }
 
-function getWishlistItems($pdo, $user_id) {
-    $stmt = $pdo->prepare("
-        SELECT w.*, p.name, p.price, p.discount_percentage, p.main_image, p.stock_quantity,
-        CASE WHEN p.discount_percentage > 0 
-             THEN p.price * (1 - p.discount_percentage / 100) 
-             ELSE p.price END as sale_price
-        FROM wishlist w
-        JOIN products p ON w.product_id = p.id
-        WHERE w.user_id = ?
-        ORDER BY w.created_at DESC
-    ");
-    $stmt->execute([$user_id]);
-    return $stmt->fetchAll();
-}
 
 function getDefaultAddress($pdo, $user_id, $type = 'shipping') {
     $stmt = $pdo->prepare("SELECT * FROM user_addresses WHERE user_id = ? AND type = ? AND is_default = 1 LIMIT 1");

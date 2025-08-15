@@ -139,7 +139,7 @@ $overall_stats = $stmt->fetch();
                 <div class="stat-card">
                     <div class="stat-icon">💰</div>
                     <div class="stat-info">
-                        <h3>$<?php echo number_format($overall_stats['total_revenue'], 2); ?></h3>
+                        <h3>RM<?php echo number_format($overall_stats['total_revenue'], 2); ?></h3>
                         <p>Total Revenue</p>
                     </div>
                 </div>
@@ -147,7 +147,7 @@ $overall_stats = $stmt->fetch();
                 <div class="stat-card">
                     <div class="stat-icon">🛒</div>
                     <div class="stat-info">
-                        <h3>$<?php echo number_format($overall_stats['avg_order_value'], 2); ?></h3>
+                        <h3>RM<?php echo number_format($overall_stats['avg_order_value'], 2); ?></h3>
                         <p>Avg Order Value</p>
                     </div>
                 </div>
@@ -204,14 +204,14 @@ $overall_stats = $stmt->fetch();
                                 <tr>
                                     <td>
                                         <div style="display: flex; align-items: center; gap: 1rem;">
-                                            <img src="../uploads/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
+                                            <img src="../images/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
                                                  alt="<?php echo htmlspecialchars($product['name']); ?>" 
                                                  style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
                                             <span><?php echo htmlspecialchars($product['name']); ?></span>
                                         </div>
                                     </td>
                                     <td><?php echo number_format($product['total_sold']); ?></td>
-                                    <td>$<?php echo number_format($product['revenue'], 2); ?></td>
+                                    <td>RM<?php echo number_format($product['revenue'], 2); ?></td>
                                     <td>
                                         <?php if ($product['avg_rating']): ?>
                                             <?php echo number_format($product['avg_rating'], 1); ?> ⭐
@@ -272,8 +272,8 @@ $overall_stats = $stmt->fetch();
         </main>
     </div>
     
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/admin.js"></script>
     <script>
         $(document).ready(function() {
@@ -286,7 +286,7 @@ $overall_stats = $stmt->fetch();
                 data: {
                     labels: salesData.map(item => item.date),
                     datasets: [{
-                        label: 'Revenue ($)',
+                        label: 'Revenue (RM)',
                         data: salesData.map(item => parseFloat(item.revenue)),
                         borderColor: '#007bff',
                         backgroundColor: 'rgba(0, 123, 255, 0.1)',
@@ -310,7 +310,7 @@ $overall_stats = $stmt->fetch();
                             position: 'left',
                             title: {
                                 display: true,
-                                text: 'Revenue ($)'
+                                text: 'Revenue (RM)'
                             }
                         },
                         y1: {

@@ -29,7 +29,7 @@ if ($_POST) {
             $stmt->execute([$notification_id, $user_id]);
             $success = 'Notification marked as read';
         } catch (PDOException $e) {
-            $error = 'Failed to update notification';
+            $error = 'Failed to update notification: ' . $e->getMessage();
         }
     }
     
@@ -39,7 +39,7 @@ if ($_POST) {
             $stmt->execute([$user_id]);
             $success = 'All notifications marked as read';
         } catch (PDOException $e) {
-            $error = 'Failed to update notifications';
+            $error = 'Failed to update notifications: ' . $e->getMessage();
         }
     }
     
@@ -50,7 +50,7 @@ if ($_POST) {
             $stmt->execute([$notification_id, $user_id]);
             $success = 'Notification deleted';
         } catch (PDOException $e) {
-            $error = 'Failed to delete notification';
+            $error = 'Failed to delete notification: ' . $e->getMessage();
         }
     }
     
@@ -60,7 +60,7 @@ if ($_POST) {
             $stmt->execute([$user_id]);
             $success = 'All notifications cleared';
         } catch (PDOException $e) {
-            $error = 'Failed to clear notifications';
+            $error = 'Failed to clear notifications: ' . $e->getMessage();
         }
     }
 }
@@ -423,60 +423,59 @@ $stats = $stmt->fetch();
                         <?php else: ?>
                             <div class="notifications-list">
                                 <?php foreach ($notifications as $notification): ?>
-                                <div class="notification-card <?php echo !$notification['is_read'] ? 'unread' : ''; ?>">
-                                    <?php if (!$notification['is_read']): ?>
-                                        <div class="unread-indicator"></div>
-                                    <?php endif; ?>
-                                    
-                                    <div class="notification-header">
-                                        <div style="display: flex; align-items: flex-start;">
-                                            <div class="notification-icon">
-                                                <?php
-                                                switch ($notification['type']) {
-                                                    case 'order': echo '📦'; break;
-                                                    case 'payment': echo '💳'; break;
-                                                    case 'shipping': echo '🚚'; break;
-                                                    case 'review': echo '⭐'; break;
-                                                    case 'promotion': echo '🎉'; break;
-                                                    case 'account': echo '👤'; break;
-                                                    default: echo '🔔'; break;
-                                                }
-                                                ?>
+                                    <?php
+                                        $type = $notification['type'] ?? 'other';
+                                        $title = $notification['title'] ?? '';
+                                    ?>
+                                    <div class="notification-card <?php echo !$notification['is_read'] ? 'unread' : ''; ?>">
+                                        <?php if (!$notification['is_read']): ?>
+                                            <div class="unread-indicator"></div>
+                                        <?php endif; ?>
+                                        <div class="notification-header">
+                                            <div style="display: flex; align-items: flex-start;">
+                                                <div class="notification-icon">
+                                                    <?php
+                                                    switch ($type) {
+                                                        case 'order': echo '📦'; break;
+                                                        case 'payment': echo '💳'; break;
+                                                        case 'shipping': echo '🚚'; break;
+                                                        case 'review': echo '⭐'; break;
+                                                        case 'promotion': echo '🎉'; break;
+                                                        case 'account': echo '👤'; break;
+                                                        default: echo '🔔'; break;
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <div class="notification-content">
+                                                    <div class="notification-title"><?php echo htmlspecialchars($title); ?></div>
+                                                    <div class="notification-message"><?php echo nl2br(htmlspecialchars($notification['message'] ?? '')); ?></div>
+                                                </div>
                                             </div>
-                                            <div class="notification-content">
-                                                <div class="notification-title"><?php echo htmlspecialchars($notification['title']); ?></div>
-                                                <div class="notification-message"><?php echo nl2br(htmlspecialchars($notification['message'])); ?></div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="notification-actions">
-                                            <?php if (!$notification['is_read']): ?>
-                                                <form method="POST" style="display: inline;">
+                                            <div class="notification-actions">
+                                                <?php if (!$notification['is_read']): ?>
+                                                    <form method="POST" style="display: inline;">
+                                                        <input type="hidden" name="notification_id" value="<?php echo $notification['id']; ?>">
+                                                        <button type="submit" name="mark_read" class="btn btn-outline btn-sm">Mark Read</button>
+                                                    </form>
+                                                <?php endif; ?>
+                                                <form method="POST" style="display: inline;" onsubmit="return confirm('Delete this notification?')">
                                                     <input type="hidden" name="notification_id" value="<?php echo $notification['id']; ?>">
-                                                    <button type="submit" name="mark_read" class="btn btn-outline btn-sm">Mark Read</button>
+                                                    <button type="submit" name="delete_notification" class="btn btn-danger btn-sm">Delete</button>
                                                 </form>
-                                            <?php endif; ?>
-                                            
-                                            <form method="POST" style="display: inline;" onsubmit="return confirm('Delete this notification?')">
-                                                <input type="hidden" name="notification_id" value="<?php echo $notification['id']; ?>">
-                                                <button type="submit" name="delete_notification" class="btn btn-danger btn-sm">Delete</button>
-                                            </form>
+                                            </div>
+                                        </div>
+                                        <div class="notification-meta">
+                                            <div class="notification-date">
+                                                <span>📅 <?php echo date('M j, Y g:i A', strtotime($notification['created_at'])); ?></span>
+                                                <?php if ($notification['is_read']): ?>
+                                                    <span>• Read <?php echo date('M j, Y g:i A', strtotime($notification['read_at'])); ?></span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <span class="notification-type type-<?php echo $type; ?>">
+                                                <?php echo ucfirst($type); ?>
+                                            </span>
                                         </div>
                                     </div>
-                                    
-                                    <div class="notification-meta">
-                                        <div class="notification-date">
-                                            <span>📅 <?php echo date('M j, Y g:i A', strtotime($notification['created_at'])); ?></span>
-                                            <?php if ($notification['is_read']): ?>
-                                                <span>• Read <?php echo date('M j, Y g:i A', strtotime($notification['read_at'])); ?></span>
-                                            <?php endif; ?>
-                                        </div>
-                                        
-                                        <span class="notification-type type-<?php echo $notification['type']; ?>">
-                                            <?php echo ucfirst($notification['type']); ?>
-                                        </span>
-                                    </div>
-                                </div>
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
@@ -488,8 +487,9 @@ $stats = $stmt->fetch();
     
     <?php include '../includes/footer.php'; ?>
     
-    <script src="js/jquery.min.js"></script>
-    <script src="js/main.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="../js/main.js"></script>
     <script>
         $(document).ready(function() {
             // Auto-refresh notifications every 30 seconds

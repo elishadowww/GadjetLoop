@@ -111,7 +111,7 @@ $order_count = $stmt->fetchColumn();
     
     <div class="sidebar-footer">        
         <div class="quick-actions">
-            <a href="product-add.php" class="btn btn-primary btn-sm btn-block">Add Product</a>
+            <a href="products.php" class="btn btn-primary btn-sm btn-block">Add Product</a>
             <a href="../index.php" target="_blank" class="btn btn-outline btn-sm btn-block">View Site</a>
         </div>
     </div>

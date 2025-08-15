@@ -136,7 +136,7 @@ $monthly_sales = $stmt->fetchAll();
                 <div class="stat-card">
                     <div class="stat-icon">💰</div>
                     <div class="stat-info">
-                        <h3>$<?php echo number_format($stats['total_revenue'], 2); ?></h3>
+                        <h3>RM<?php echo number_format($stats['total_revenue'], 2); ?></h3>
                         <p>Total Revenue</p>
                     </div>
                 </div>
@@ -167,14 +167,14 @@ $monthly_sales = $stmt->fetchAll();
                         <div class="top-products-list">
                             <?php foreach ($top_products as $product): ?>
                             <div class="top-product-item">
-                                <img src="../uploads/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
+                                <img src="../images/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
                                      alt="<?php echo htmlspecialchars($product['name']); ?>">
                                 <div class="product-info">
                                     <h4><?php echo htmlspecialchars($product['name']); ?></h4>
                                     <p><?php echo $product['total_sold']; ?> sold</p>
                                 </div>
                                 <div class="product-revenue">
-                                    $<?php echo number_format($product['revenue'], 2); ?>
+                                    RM<?php echo number_format($product['revenue'], 2); ?>
                                 </div>
                             </div>
                             <?php endforeach; ?>
@@ -213,7 +213,7 @@ $monthly_sales = $stmt->fetchAll();
                                                 <?php echo ucfirst($order['status']); ?>
                                             </span>
                                         </td>
-                                        <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
+                                        <td>RM<?php echo number_format($order['total_amount'], 2); ?></td>
                                         <td><?php echo date('M j, Y', strtotime($order['created_at'])); ?></td>
                                         <td>
                                             <a href="order-detail.php?id=<?php echo $order['id']; ?>" 
@@ -239,7 +239,7 @@ $monthly_sales = $stmt->fetchAll();
                             <div class="low-stock-list">
                                 <?php foreach ($low_stock_products as $product): ?>
                                 <div class="low-stock-item">
-                                    <img src="../uploads/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
+                                    <img src="../images/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
                                          alt="<?php echo htmlspecialchars($product['name']); ?>">
                                     <div class="product-info">
                                         <h4><?php echo htmlspecialchars($product['name']); ?></h4>
@@ -261,8 +261,8 @@ $monthly_sales = $stmt->fetchAll();
         </main>
     </div>
     
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/admin.js"></script>
     <script>
         $(document).ready(function() {
@@ -292,7 +292,7 @@ $monthly_sales = $stmt->fetchAll();
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Revenue ($)',
+                        label: 'Revenue (RM)',
                         data: revenueData,
                         borderColor: '#007bff',
                         backgroundColor: 'rgba(0, 123, 255, 0.1)',
@@ -327,7 +327,7 @@ $monthly_sales = $stmt->fetchAll();
                             position: 'left',
                             title: {
                                 display: true,
-                                text: 'Revenue ($)'
+                                text: 'Revenue (RM)'
                             }
                         },
                         y1: {

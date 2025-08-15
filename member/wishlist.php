@@ -99,7 +99,6 @@ $wishlist_items = getWishlistItems($pdo, $user_id);
     
     <?php include '../includes/footer.php'; ?>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="../js/jquery.min.js"></script>
     <script src="../js/main.js"></script>
     <script src="../js/cart.js"></script>
     <script>
@@ -123,6 +122,35 @@ $wishlist_items = getWishlistItems($pdo, $user_id);
                         }
                     });
                 }
+            });
+
+            // Add to cart from wishlist
+            $('.add-to-cart').on('click', function(e) {
+                e.preventDefault();
+                const productId = $(this).data('product-id');
+                const $btn = $(this);
+                $btn.prop('disabled', true).text('Adding...');
+                $.ajax({
+                    url: '../ajax/add-to-cart.php',
+                    type: 'POST',
+                    data: { product_id: productId, quantity: 1 },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            $btn.text('Added!');
+                            setTimeout(function() {
+                                $btn.prop('disabled', false).text('Add to Cart');
+                            }, 1500);
+                        } else {
+                            $btn.prop('disabled', false).text('Add to Cart');
+                            alert(response.message || 'Failed to add item to cart');
+                        }
+                    },
+                    error: function(xhr) {
+                        $btn.prop('disabled', false).text('Add to Cart');
+                        alert('Failed to add item to cart');
+                    }
+                });
             });
         });
     </script>

@@ -142,7 +142,7 @@ $wishlist_items = $stmt->fetchAll();
                                         <div class="order-item">
                                             <div class="order-info">
                                                 <h4>Order #<?php echo htmlspecialchars($order['order_number']); ?></h4>
-                                                <p><?php echo $order['item_count']; ?> items • $<?php echo number_format($order['total_amount'], 2); ?></p>
+                                                <p><?php echo $order['item_count']; ?> items • RM<?php echo number_format($order['total_amount'], 2); ?></p>
                                                 <small><?php echo date('M j, Y', strtotime($order['created_at'])); ?></small>
                                             </div>
                                             <div class="order-status">
@@ -227,7 +227,7 @@ $wishlist_items = $stmt->fetchAll();
     
     <?php include '../includes/footer.php'; ?>
     
-    <script src="js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

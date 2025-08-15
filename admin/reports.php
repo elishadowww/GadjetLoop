@@ -231,23 +231,23 @@ switch ($report_type) {
                                         <?php if ($report_type === 'sales'): ?>
                                             <td><?php echo date('M j, Y', strtotime($row['date'])); ?></td>
                                             <td><?php echo number_format($row['total_orders']); ?></td>
-                                            <td>$<?php echo number_format($row['total_revenue'], 2); ?></td>
-                                            <td>$<?php echo number_format($row['avg_order_value'], 2); ?></td>
-                                            <td>$<?php echo number_format($row['total_tax'], 2); ?></td>
-                                            <td>$<?php echo number_format($row['total_shipping'], 2); ?></td>
+                                            <td>RM<?php echo number_format($row['total_revenue'], 2); ?></td>
+                                            <td>RM<?php echo number_format($row['avg_order_value'], 2); ?></td>
+                                            <td>RM<?php echo number_format($row['total_tax'], 2); ?></td>
+                                            <td>RM<?php echo number_format($row['total_shipping'], 2); ?></td>
                                         <?php elseif ($report_type === 'products'): ?>
                                             <td><?php echo htmlspecialchars($row['name']); ?></td>
                                             <td><?php echo htmlspecialchars($row['sku']); ?></td>
                                             <td><?php echo htmlspecialchars($row['category']); ?></td>
                                             <td><?php echo number_format($row['total_sold'] ?: 0); ?></td>
-                                            <td>$<?php echo number_format($row['total_revenue'] ?: 0, 2); ?></td>
+                                            <td>RM<?php echo number_format($row['total_revenue'] ?: 0, 2); ?></td>
                                             <td><?php echo $row['stock_quantity']; ?></td>
                                             <td><?php echo $row['avg_rating'] ? number_format($row['avg_rating'], 1) . ' ⭐' : 'No ratings'; ?></td>
                                         <?php elseif ($report_type === 'customers'): ?>
                                             <td><?php echo htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
                                             <td><?php echo htmlspecialchars($row['email']); ?></td>
                                             <td><?php echo number_format($row['total_orders'] ?: 0); ?></td>
-                                            <td>$<?php echo number_format($row['total_spent'] ?: 0, 2); ?></td>
+                                            <td>RM<?php echo number_format($row['total_spent'] ?: 0, 2); ?></td>
                                             <td><?php echo $row['last_order'] ? date('M j, Y', strtotime($row['last_order'])) : 'Never'; ?></td>
                                             <td><?php echo date('M j, Y', strtotime($row['registration_date'])); ?></td>
                                         <?php elseif ($report_type === 'inventory'): ?>
@@ -260,8 +260,8 @@ switch ($report_type) {
                                                     <?php echo $row['stock_status']; ?>
                                                 </span>
                                             </td>
-                                            <td>$<?php echo number_format($row['price'], 2); ?></td>
-                                            <td>$<?php echo number_format($row['inventory_value'], 2); ?></td>
+                                            <td>RM<?php echo number_format($row['price'], 2); ?></td>
+                                            <td>RM<?php echo number_format($row['inventory_value'], 2); ?></td>
                                         <?php endif; ?>
                                     </tr>
                                     <?php endforeach; ?>
@@ -273,20 +273,20 @@ switch ($report_type) {
                                         <?php if ($report_type === 'sales'): ?>
                                             <td>Total</td>
                                             <td><?php echo number_format(array_sum(array_column($reports, 'total_orders'))); ?></td>
-                                            <td>$<?php echo number_format(array_sum(array_column($reports, 'total_revenue')), 2); ?></td>
-                                            <td>$<?php echo number_format(array_sum(array_column($reports, 'avg_order_value')) / count($reports), 2); ?></td>
-                                            <td>$<?php echo number_format(array_sum(array_column($reports, 'total_tax')), 2); ?></td>
-                                            <td>$<?php echo number_format(array_sum(array_column($reports, 'total_shipping')), 2); ?></td>
+                                            <td>RM<?php echo number_format(array_sum(array_column($reports, 'total_revenue')), 2); ?></td>
+                                            <td>RM<?php echo number_format(array_sum(array_column($reports, 'avg_order_value')) / count($reports), 2); ?></td>
+                                            <td>RM<?php echo number_format(array_sum(array_column($reports, 'total_tax')), 2); ?></td>
+                                            <td>RM<?php echo number_format(array_sum(array_column($reports, 'total_shipping')), 2); ?></td>
                                         <?php elseif ($report_type === 'products'): ?>
                                             <td colspan="3">Total</td>
                                             <td><?php echo number_format(array_sum(array_column($reports, 'total_sold'))); ?></td>
-                                            <td>$<?php echo number_format(array_sum(array_column($reports, 'total_revenue')), 2); ?></td>
+                                            <td>RM<?php echo number_format(array_sum(array_column($reports, 'total_revenue')), 2); ?></td>
                                             <td><?php echo number_format(array_sum(array_column($reports, 'stock_quantity'))); ?></td>
                                             <td>-</td>
                                         <?php elseif ($report_type === 'inventory'): ?>
                                             <td colspan="5">Total Inventory Value</td>
                                             <td>-</td>
-                                            <td>$<?php echo number_format(array_sum(array_column($reports, 'inventory_value')), 2); ?></td>
+                                            <td>RM<?php echo number_format(array_sum(array_column($reports, 'inventory_value')), 2); ?></td>
                                         <?php endif; ?>
                                     </tr>
                                 </tfoot>
@@ -298,7 +298,7 @@ switch ($report_type) {
         </main>
     </div>
     
-    <script src="../js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/admin.js"></script>
     <script>
         function exportReport() {

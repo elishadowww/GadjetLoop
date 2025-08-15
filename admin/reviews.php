@@ -228,7 +228,7 @@ $stats = $stmt->fetch();
                             <?php foreach ($reviews as $review): ?>
                             <div style="border: 1px solid #e9ecef; border-radius: 8px; padding: 1.5rem;">
                                 <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                                    <img src="../uploads/products/<?php echo htmlspecialchars($review['product_image']); ?>" 
+                                    <img src="../images/products/<?php echo htmlspecialchars($review['product_image']); ?>" 
                                          alt="<?php echo htmlspecialchars($review['product_name']); ?>" 
                                          style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
                                     <div style="flex: 1;">
@@ -289,7 +289,7 @@ $stats = $stmt->fetch();
         </main>
     </div>
     
-    <script src="../js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/admin.js"></script>
 </body>
 </html>
