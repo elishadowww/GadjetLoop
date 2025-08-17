@@ -105,7 +105,7 @@ $wishlist_items = $stmt->fetchAll();
                         </div>
                         
                         <div class="stat-card">
-                            <div class="stat-icon">♡</div>
+                            <div class="stat-icon">🩶</div>
                             <div class="stat-info">
                                 <h3><?php echo $wishlist_count; ?></h3>
                                 <p>Wishlist Items</p>
@@ -166,7 +166,7 @@ $wishlist_items = $stmt->fetchAll();
                             <div class="section-content">
                                 <?php if (empty($wishlist_items)): ?>
                                     <div class="empty-state">
-                                        <div class="empty-icon">♡</div>
+                                        <div class="empty-icon">🩶</div>
                                         <h4>No wishlist items</h4>
                                         <p>Save products you love for later</p>
                                         <a href="products.php" class="btn btn-primary">Browse Products</a>
