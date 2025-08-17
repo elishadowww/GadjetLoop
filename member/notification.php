@@ -134,6 +134,7 @@ $stats = $stmt->fetch();
         
         .stat-item {
             text-align: center;
+            margin: 20px;
             padding: 1rem;
             background: white;
             border-radius: 8px;
@@ -154,6 +155,7 @@ $stats = $stmt->fetch();
         }
         
         .notifications-filters {
+            margin-left:20px;
             display: flex;
             gap: 1rem;
             margin-bottom: 2rem;
