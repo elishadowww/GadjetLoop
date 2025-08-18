@@ -65,18 +65,35 @@ $shipping = $subtotal > 50 ? 0 : 9.99; // Free shipping over $50
 $total = $subtotal + $tax + $shipping;
 
 // Store order data in session for processing
-$_SESSION['pending_order'] = [
-    'cart_items' => $cart_items,
-    'shipping_address' => $shipping_address,
-    'billing_address' => $billing_address,
-    'payment_method' => $payment_method,
-    'totals' => [
-        'subtotal' => $subtotal,
-        'tax' => $tax,
-        'shipping' => $shipping,
-        'total' => $total
-    ]
-];
+// Prepare payment details
+$payment_details = [];
+if ($payment_method === 'credit_card') {
+    $payment_details['card_name'] = sanitizeInput($_POST['card_name'] ?? '');
+    $payment_details['card_number'] = sanitizeInput($_POST['card_number'] ?? '');
+    $payment_details['expiry_date'] = sanitizeInput($_POST['expiry_date'] ?? '');
+    $payment_details['cvv'] = sanitizeInput($_POST['cvv'] ?? '');
+} else if ($payment_method === 'paypal' || $payment_method === 'apple_pay') {
+    $payment_details['qr_confirmed'] = true; // Simulate QR payment
+}
+
+// Save order to database
+$order_result = createOrder($pdo, $user_id, $cart_items, $shipping_address, $payment_method);
+if ($order_result['success']) {
+    // Save payment details to a new table (e.g., order_payments)
+    $stmt = $pdo->prepare("INSERT INTO order_payments (order_id, payment_method, payment_details, paid_at) VALUES (?, ?, ?, NOW())");
+    $stmt->execute([
+        $order_result['order_id'],
+        $payment_method,
+        json_encode($payment_details)
+    ]);
+    // Mark order as paid
+    $pdo->prepare("UPDATE orders SET status = 'paid' WHERE id = ?")->execute([$order_result['order_id']]);
+    $paid = true;
+    $order_number = $order_result['order_number'];
+} else {
+    $paid = false;
+    $error = $order_result['message'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -306,70 +323,40 @@ $_SESSION['pending_order'] = [
 <body>
     <div class="payment-container">
         <div class="payment-card">
-            <div class="payment-icon">💳</div>
-            <h1 class="payment-title">Processing Payment</h1>
-            <p class="payment-subtitle">Please wait while we securely process your payment...</p>
-            
-            <div class="loading-spinner"></div>
-            
-            <div class="progress-bar">
-                <div class="progress-fill"></div>
-            </div>
-            
-            <div class="payment-steps">
-                <div class="step active" id="step-1">
-                    <div class="step-icon">1</div>
-                    <span>Validating payment information</span>
+            <?php if ($paid): ?>
+                <div class="payment-icon">✅</div>
+                <h1 class="payment-title">Payment Successful!</h1>
+                <p class="payment-subtitle">Your order <strong>#<?php echo htmlspecialchars($order_number); ?></strong> has been paid and is being processed.</p>
+                <div class="order-summary">
+                    <h4 style="margin-bottom: 1rem; color: #333;">Order Summary</h4>
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>RM<?php echo number_format($subtotal, 2); ?></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax:</span>
+                        <span>RM<?php echo number_format($tax, 2); ?></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span><?php echo $shipping > 0 ? 'RM' . number_format($shipping, 2) : 'Free'; ?></span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total:</span>
+                        <span>RM<?php echo number_format($total, 2); ?></span>
+                    </div>
                 </div>
-                <div class="step" id="step-2">
-                    <div class="step-icon">2</div>
-                    <span>Processing payment</span>
+                <div class="security-badges">
+                    <div class="security-badge">🔒 SSL Encrypted</div>
+                    <div class="security-badge">🛡️ Secure Payment</div>
+                    <div class="security-badge">✅ PCI Compliant</div>
                 </div>
-                <div class="step" id="step-3">
-                    <div class="step-icon">3</div>
-                    <span>Confirming order</span>
-                </div>
-                <div class="step" id="step-4">
-                    <div class="step-icon">4</div>
-                    <span>Preparing shipment</span>
-                </div>
-            </div>
-            
-            <div class="order-summary">
-                <h4 style="margin-bottom: 1rem; color: #333;">Order Summary</h4>
-                <div class="summary-row">
-                    <span>Subtotal:</span>
-                    <span>$<?php echo number_format($subtotal, 2); ?></span>
-                </div>
-                <div class="summary-row">
-                    <span>Tax:</span>
-                    <span>$<?php echo number_format($tax, 2); ?></span>
-                </div>
-                <div class="summary-row">
-                    <span>Shipping:</span>
-                    <span><?php echo $shipping > 0 ? '$' . number_format($shipping, 2) : 'Free'; ?></span>
-                </div>
-                <div class="summary-row summary-total">
-                    <span>Total:</span>
-                    <span>$<?php echo number_format($total, 2); ?></span>
-                </div>
-            </div>
-            
-            <div class="security-badges">
-                <div class="security-badge">
-                    🔒 SSL Encrypted
-                </div>
-                <div class="security-badge">
-                    🛡️ Secure Payment
-                </div>
-                <div class="security-badge">
-                    ✅ PCI Compliant
-                </div>
-            </div>
-            
-            <p style="font-size: 12px; color: #999; margin-top: 2rem;">
-                Do not refresh or close this page during payment processing
-            </p>
+                <p style="font-size: 14px; color: #28a745; margin-top: 2rem;">Thank you for your purchase!</p>
+            <?php else: ?>
+                <div class="payment-icon">❌</div>
+                <h1 class="payment-title">Payment Failed</h1>
+                <p class="payment-subtitle" style="color:red;">Error: <?php echo htmlspecialchars($error ?? 'Unknown error'); ?></p>
+            <?php endif; ?>
         </div>
     </div>
     
