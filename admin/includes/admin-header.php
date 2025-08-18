@@ -18,7 +18,6 @@
         <div class="admin-header-right">
             <div class="admin-user-menu">
                 <button type="button" class="user-menu-btn" id="user-menu-btn">
-                    <img src="../uploads/profiles/admin-avatar.jpg" alt="Admin" class="user-avatar">
                     <span><?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
                     <span class="dropdown-arrow">▼</span>
                 </button>
@@ -31,6 +30,7 @@
     </div>
 </header>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function() {
     // Toggle notification dropdown
