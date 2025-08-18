@@ -107,7 +107,7 @@ $user = getUserById($pdo, $user_id);
             </li>
             
             <li class="nav-item">
-                <a href="logout.php" class="logout-link">
+                <a href="/GadjetLoop/logout.php" class="logout-link">
                     <span class="nav-icon">🚪</span>
                     <span class="nav-text">Logout</span>
                 </a>
