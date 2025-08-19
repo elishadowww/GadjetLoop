@@ -23,9 +23,8 @@ $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
 $stmt->execute([$product_id]);
 $product = $stmt->fetch();
 
-if (!$product) {
-    header('Location: products.php');
-    exit;
+if ($_POST && isset($_POST['update_product'])) {
+    // Handle product update
 }
 
 // Handle product update
@@ -54,18 +53,17 @@ if ($_POST && isset($_POST['update_product'])) {
             // Handle main image upload
             $main_image = $product['main_image']; // Keep existing image by default
             if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] === UPLOAD_ERR_OK) {
-                $upload_result = uploadFile($_FILES['main_image'], '../uploads/products/', ['jpg', 'jpeg', 'png', 'gif']);
+                $upload_result = uploadFile($_FILES['main_image'], '../images/products/', ['jpg', 'jpeg', 'png', 'gif']);
                 if ($upload_result['success']) {
                     // Delete old image if it exists
-                    if ($product['main_image'] && file_exists('../uploads/products/' . $product['main_image'])) {
-                        unlink('../uploads/products/' . $product['main_image']);
+                    if ($product['main_image'] && file_exists('../images/products/' . $product['main_image'])) {
+                        unlink('../images/products/' . $product['main_image']);
                     }
                     $main_image = $upload_result['filename'];
                 } else {
                     $error = $upload_result['message'];
                 }
             }
-            
             if (!$error) {
                 // Update product
                 $stmt = $pdo->prepare("
@@ -82,7 +80,6 @@ if ($_POST && isset($_POST['update_product'])) {
                     $main_image, $is_featured, $is_active, $meta_title, $meta_description,
                     $product_id
                 ]);
-                
                 // Handle additional images
                 if (isset($_FILES['additional_images'])) {
                     foreach ($_FILES['additional_images']['tmp_name'] as $key => $tmp_name) {
@@ -93,7 +90,6 @@ if ($_POST && isset($_POST['update_product'])) {
                                 'size' => $_FILES['additional_images']['size'][$key],
                                 'type' => $_FILES['additional_images']['type'][$key]
                             ];
-                            
                             $upload_result = uploadFile($file, '../uploads/products/', ['jpg', 'jpeg', 'png', 'gif']);
                             if ($upload_result['success']) {
                                 $stmt = $pdo->prepare("
@@ -105,9 +101,7 @@ if ($_POST && isset($_POST['update_product'])) {
                         }
                     }
                 }
-                
                 $success = 'Product updated successfully';
-                
                 // Refresh product data
                 $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
                 $stmt->execute([$product_id]);
@@ -153,7 +147,22 @@ if ($_POST && isset($_POST['delete_image'])) {
 $categories = getCategories($pdo);
 
 // Get product images
-$product_images = getProductImages($pdo, $product_id);
+$product_images = [];
+// Scan /GadjetLoop/images/products for images matching the product SKU or ID
+$images_dir = realpath(__DIR__ . '/../images/products');
+if ($images_dir) {
+    $image_files = glob($images_dir . '/*');
+    foreach ($image_files as $img) {
+        $filename = basename($img);
+        // Match images by SKU or product ID in filename
+        if (strpos($filename, $product['sku']) !== false || strpos($filename, (string)$product_id) !== false) {
+            $product_images[] = [
+                'image_path' => $filename,
+                'id' => $filename // Use filename as ID for deletion (if needed)
+            ];
+        }
+    }
+}
 
 // Get product reviews
 $stmt = $pdo->prepare("
@@ -526,7 +535,7 @@ $sales_stats = $stmt->fetch();
                             <h3 class="section-title">Pricing & Inventory</h3>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="price">Price ($) *</label>
+                                    <label for="price">Price (RM) *</label>
                                     <input type="number" id="price" name="price" class="form-control" 
                                            value="<?php echo $product['price']; ?>" step="0.01" min="0" required form="product-form">
                                 </div>
@@ -558,8 +567,8 @@ $sales_stats = $stmt->fetch();
                             <div style="background: #f8f9fa; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
                                 <h4>Price Preview:</h4>
                                 <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <span id="original-price" style="text-decoration: line-through; color: #999;">$<?php echo number_format($product['price'], 2); ?></span>
-                                    <span id="sale-price" style="font-size: 1.25rem; font-weight: 600; color: #dc3545;">$<?php echo number_format($product['price'] * (1 - $product['discount_percentage'] / 100), 2); ?></span>
+                                    <span id="original-price" style="text-decoration: line-through; color: #999;">RM<?php echo number_format($product['price'], 2); ?></span>
+                                    <span id="sale-price" style="font-size: 1.25rem; font-weight: 600; color: #dc3545;">RM<?php echo number_format($product['price'] * (1 - $product['discount_percentage'] / 100), 2); ?></span>
                                     <span id="savings" style="background: #28a745; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 12px;">Save <?php echo $product['discount_percentage']; ?>%</span>
                                 </div>
                             </div>
@@ -574,7 +583,7 @@ $sales_stats = $stmt->fetch();
                                 <label for="main_image">Main Product Image</label>
                                 <?php if ($product['main_image']): ?>
                                     <div style="margin-bottom: 1rem;">
-                                        <img src="../uploads/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
+                                        <img src="../images/products/<?php echo htmlspecialchars($product['main_image']); ?>" 
                                              alt="Current Image" class="current-image">
                                     </div>
                                 <?php endif; ?>
@@ -586,33 +595,6 @@ $sales_stats = $stmt->fetch();
                                 <input type="file" id="main_image" name="main_image" accept="image/*" style="display: none;" form="product-form">
                             </div>
                             
-                            <!-- Additional Images -->
-                            <div class="form-group">
-                                <label>Additional Images</label>
-                                <?php if (!empty($product_images)): ?>
-                                    <div class="additional-images">
-                                        <?php foreach ($product_images as $image): ?>
-                                        <div class="image-item">
-                                            <img src="../uploads/products/<?php echo htmlspecialchars($image['image_path']); ?>" 
-                                                 alt="Product Image">
-                                            <form method="POST" style="display: inline;">
-                                                <input type="hidden" name="image_id" value="<?php echo $image['id']; ?>">
-                                                <button type="submit" name="delete_image" class="delete-image" 
-                                                        onclick="return confirm('Delete this image?')">×</button>
-                                            </form>
-                                        </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endif; ?>
-                                
-                                <div class="image-upload-area" onclick="document.getElementById('additional_images').click()" style="margin-top: 1rem;">
-                                    <div class="upload-icon">🖼️</div>
-                                    <p>Add more product images</p>
-                                    <small>Select multiple files</small>
-                                </div>
-                                <input type="file" id="additional_images" name="additional_images[]" accept="image/*" multiple style="display: none;" form="product-form">
-                            </div>
-                        </div>
                         
                         <!-- SEO Settings -->
                         <div class="form-section">
@@ -665,7 +647,7 @@ $sales_stats = $stmt->fetch();
                                     <div class="stat-label">Units Sold</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-number">$<?php echo number_format($sales_stats['total_revenue'] ?: 0, 0); ?></div>
+                                    <div class="stat-number">RM<?php echo number_format($sales_stats['total_revenue'] ?: 0, 0); ?></div>
                                     <div class="stat-label">Revenue</div>
                                 </div>
                                 <div class="stat-item">
@@ -749,17 +731,17 @@ $sales_stats = $stmt->fetch();
                 const discount = parseInt($('#discount_percentage').val()) || 0;
                 const salePrice = price * (1 - discount / 100);
                 
-                $('#original-price').text('$' + price.toFixed(2));
-                $('#sale-price').text('$' + salePrice.toFixed(2));
-                $('#savings').text('Save ' + discount + '%');
+                        $('#original-price').text('RM' + price.toFixed(2));
+                        $('#sale-price').text('RM' + salePrice.toFixed(2));
+                        $('#savings').text('Save ' + discount + '%');
                 
-                if (discount > 0) {
-                    $('#original-price').show();
-                    $('#savings').show();
-                } else {
-                    $('#original-price').hide();
-                    $('#savings').hide();
-                }
+                    if (discount > 0) {
+                        $('#original-price').show();
+                        $('#savings').show();
+                    } else {
+                        $('#original-price').hide();
+                        $('#savings').hide();
+                    }
             }
             
             $('#price, #discount_percentage').on('input', updatePricePreview);
