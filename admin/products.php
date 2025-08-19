@@ -256,7 +256,7 @@ $categories = getCategories($pdo);
         </main>
     </div>
     
-    <script src="../js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/admin.js"></script>
 </body>
 </html>
