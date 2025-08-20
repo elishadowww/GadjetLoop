@@ -444,12 +444,7 @@ function sanitizeInput($input) {
 }
 
 
-function sendEmail($to, $subject, $message) {
-    // Implementation would depend on your email service
-    // For demo purposes, we'll just log it
-    error_log("Email to: $to, Subject: $subject, Message: $message");
-    return true;
-}
+require_once __DIR__ . '/sendEmail.php';
 
 function uploadFile($file, $upload_dir, $allowed_types = ['jpg', 'jpeg', 'png', 'gif']) {
     if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
