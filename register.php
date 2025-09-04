@@ -19,7 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
     $phone = sanitizeInput($_POST['phone'] ?? '');
+
     $agree_terms = isset($_POST['agree_terms']);
+    // Generate verification token
+    $verification_token = bin2hex(random_bytes(32));
 
     if (empty($first_name) || empty($last_name) || empty($email) || empty($password)) {
         $error = 'Please fill in all required fields';
@@ -53,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $user_id = $pdo->lastInsertId();
 
                 // Send verification email
-                $verification_link = SITE_URL . "/verify-email.php?token=" . $verification_token;
+                $verification_link = SITE_URL . "/verify.php?token=" . $verification_token;
                 $email_subject = "Verify your GadgetLoop account";
                 $email_message = "
                     <h2>Welcome to GadgetLoop!</h2>
@@ -62,15 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p>If you didn't create this account, please ignore this email.</p>
                 ";
 
+
                 sendEmail($email, $email_subject, $email_message);
 
                 $success = 'Account created successfully! Please check your email to verify your account.';
 
             
-                echo "<script>
-                        alert('Registered! Redirecting to login...');
-                        setTimeout(() => { window.location.href = 'login.php'; }, 1000);
-                      </script>";
+                                echo "<script>
+                                                alert('Registered! Please check your email to verify your account.');
+                                                setTimeout(() => { window.location.href = 'login.php'; }, 1000);
+                                            </script>";
             } catch (PDOException $e) {
                 $error = 'Registration failed. Please try again.';
             }
@@ -188,36 +192,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- JS Dependencies -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+
 <script src="js/main.js"></script>
-
 <script>
-    // ✅ Firebase Config
-    const firebaseConfig = {
-        apiKey: "AIzaSyC18Pe-WCSWPcHTWPppQ1PiRKOgFZdBtUI",
-        authDomain: "gadgetloop-70fb2.firebaseapp.com",
-        projectId: "gadgetloop-70fb2",
-        storageBucket: "gadgetloop-70fb2.appspot.com",
-        messagingSenderId: "855930704824",
-        appId: "1:855930704824:web:fa018179a5f9c66ca8754d"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
     $(document).ready(function() {
-        // ✅ Password strength indicator
+        // Password strength indicator
         $('#password').on('input', function () {
             const password = $(this).val();
             const strength = calculatePasswordStrength(password);
             showPasswordStrength(strength);
         });
 
-        // ✅ Confirm password validation
+        // Confirm password validation
         $('#confirm_password').on('blur', function () {
             const password = $('#password').val();
             const confirmPassword = $(this).val();
-
             if (password && confirmPassword && password !== confirmPassword) {
                 showFieldError($(this), 'Passwords do not match');
             } else {
@@ -225,52 +214,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
 
-        // ✅ Email availability check
+        // Email availability check
         $('#email').on('blur', function () {
             const email = $(this).val();
             if (email && isValidEmail(email)) {
                 checkEmailAvailability(email);
-            }
-        });
-
-        // ✅ Handle Firebase registration
-        $('#registerForm').on('submit', async function (e) {
-            e.preventDefault();
-
-            const form = this;
-            const email = $('#email').val();
-            const password = $('#password').val();
-
-            try {
-                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-                await userCredential.user.sendEmailVerification();
-                alert("✅ Verification email sent. Please check your inbox.");
-
-                const checkInterval = setInterval(async () => {
-                    await userCredential.user.reload();
-                    if (userCredential.user.emailVerified) {
-                        clearInterval(checkInterval);
-
-                        // ✅ Call PHP to update MySQL
-                        fetch('verify.php', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                alert("✅ Email verified & database updated!");
-                                form.submit(); // finally submit form
-                            } else {
-                                alert("❌ Database update failed: " + data.message);
-                            }
-                        });
-                    }
-                }, 3000); // every 3 seconds
-
-            } catch (error) {
-                alert("❌ Firebase error: " + error.message);
             }
         });
     });
@@ -295,11 +243,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return strength;
     }
 
-        function showPasswordStrength(strength) {
+    function showPasswordStrength(strength) {
         const password = $('#password').val();
         const strengthTexts = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
         const strengthColors = ['#ff4444', '#ff8800', '#ffaa00', '#88aa00', '#44aa44', '#00aa44'];
-
         const strengthHtml = `
             <div class="password-strength">
                 <div class="strength-bar">
@@ -308,10 +255,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span class="strength-text" style="color: ${strengthColors[strength - 1] || '#666'}">${strengthTexts[strength - 1] || 'Too Short'}</span>
             </div>
         `;
-
         $('#password').siblings('.password-strength').remove();
         $('#password').after(strengthHtml);
-
         // Show/hide and update requirements
         const requirements = $('#passwordRequirements');
         if (password.length > 0) {
@@ -322,7 +267,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Add new function to update requirements
     function updatePasswordRequirements(password) {
         const requirements = [
             { id: 'req-length', test: password.length >= 6 },
@@ -331,11 +275,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             { id: 'req-number', test: /[0-9]/.test(password) },
             { id: 'req-special', test: /[^A-Za-z0-9]/.test(password) }
         ];
-
         requirements.forEach(req => {
             const element = $('#' + req.id);
             const icon = element.find('.req-icon');
-            
             if (req.test) {
                 element.addClass('met').removeClass('unmet');
                 icon.text('✓').css('color', '#28a745');
@@ -360,7 +302,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $.post('ajax/check-email.php', { email: email }, function (response) {
             const $emailField = $('#email');
             $emailField.siblings('.error-message, .success-message').remove();
-
             if (response.available) {
                 $emailField.removeClass('error');
                 $emailField.after('<div class="success-message" style="color: green;">Email is available</div>');

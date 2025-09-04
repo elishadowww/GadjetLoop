@@ -309,21 +309,28 @@ function createOrder($pdo, $user_id, $cart_items, $shipping_address, $payment_me
         foreach ($cart_items as $item) {
             $subtotal += $item['sale_price'] * $item['quantity'];
         }
-        
         $tax = $subtotal * 0.08; // 8% tax
         $shipping = $subtotal > 50 ? 0 : 9.99; // Free shipping over $50
         $total = $subtotal + $tax + $shipping;
+
+        // Ensure payment_method is a string
+        if (is_array($payment_method)) {
+            $payment_method = isset($payment_method['method']) ? $payment_method['method'] : 'unknown';
+        }
+
+        // Allow status override (default 'pending')
+        $order_status = isset($GLOBALS['order_status']) ? $GLOBALS['order_status'] : 'pending';
 
         // Create order
         $order_number = 'GL' . date('Ymd') . rand(1000, 9999);
         $stmt = $pdo->prepare("
             INSERT INTO orders (user_id, order_number, subtotal, tax_amount, shipping_amount, total_amount, 
                                shipping_address, payment_method, status, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ");
         $stmt->execute([$user_id, $order_number, $subtotal, $tax, $shipping, $total, 
-                       json_encode($shipping_address), $payment_method]);
-        
+                       json_encode($shipping_address), $payment_method, $order_status]);
+
         $order_id = $pdo->lastInsertId();
 
         // Create order items
@@ -437,12 +444,7 @@ function sanitizeInput($input) {
 }
 
 
-function sendEmail($to, $subject, $message) {
-    // Implementation would depend on your email service
-    // For demo purposes, we'll just log it
-    error_log("Email to: $to, Subject: $subject, Message: $message");
-    return true;
-}
+require_once __DIR__ . '/sendEmail.php';
 
 function uploadFile($file, $upload_dir, $allowed_types = ['jpg', 'jpeg', 'png', 'gif']) {
     if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {

@@ -360,7 +360,7 @@ $coupon_usage = $stmt->fetch();
                                 <?php foreach ($order_items as $item): ?>
                                 <div class="order-item">
                                     <div class="item-image">
-                                        <img src="../uploads/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
+                                        <img src="../images/products/<?php echo htmlspecialchars($item['main_image']); ?>" 
                                              alt="<?php echo htmlspecialchars($item['name']); ?>">
                                     </div>
                                     <div class="item-details">

@@ -561,12 +561,10 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                                     <input type="radio" name="payment_method" value="credit_card" id="credit_card" required>
                                     <label for="credit_card">💳 Credit/Debit Card</label>
                                 </div>
-                                
                                 <div class="payment-method" data-method="paypal">
                                     <input type="radio" name="payment_method" value="paypal" id="paypal">
                                     <label for="paypal">🅿️ PayPal</label>
                                 </div>
-                                
                                 <div class="payment-method" data-method="apple_pay">
                                     <input type="radio" name="payment_method" value="apple_pay" id="apple_pay">
                                     <label for="apple_pay">🍎 Apple Pay</label>
@@ -579,7 +577,6 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                                     <input type="text" id="card_number" name="card_number" class="form-control" 
                                            placeholder="1234 5678 9012 3456" maxlength="19">
                                 </div>
-                                
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="expiry_date">Expiry Date *</label>
@@ -592,12 +589,16 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                                                placeholder="123" maxlength="4">
                                     </div>
                                 </div>
-                                
                                 <div class="form-group">
                                     <label for="card_name">Name on Card *</label>
                                     <input type="text" id="card_name" name="card_name" class="form-control" 
                                            value="<?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>">
                                 </div>
+                            </div>
+                            <div class="payment-details" id="qr_details" style="display:none; text-align:center;">
+                                <p>Scan the QR code below to pay:</p>
+                                <img src="../images/fake-qr.png" alt="Fake QR Code" style="width:180px; height:180px; margin:1rem auto; display:block; border:2px solid #007bff; border-radius:12px;">
+                                <p style="color:#007bff; font-weight:600;">Send payment to: pay@gadgetloop.com</p>
                             </div>
                         </div>
                      <button type="submit" name="place_order" class="btn btn-primary place-order-btn">
@@ -716,9 +717,11 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                 radio.prop('checked', true);
                 
                 // Show/hide payment details
-                $('.payment-details').removeClass('show');
+                $('.payment-details').removeClass('show').hide();
                 if (method === 'credit_card') {
-                    $('#credit_card_details').addClass('show');
+                    $('#credit_card_details').addClass('show').show();
+                } else if (method === 'paypal' || method === 'apple_pay') {
+                    $('#qr_details').addClass('show').show();
                 }
             });
             

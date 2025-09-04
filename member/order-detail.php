@@ -343,11 +343,20 @@ $billing_address = json_decode($order['billing_address'], true);
     <script>
         function cancelOrder(orderId) {
             if (confirm('Are you sure you want to cancel this order?')) {
-                $.post('ajax/cancel-order.php', { order_id: orderId }, function(response) {
-                    if (response.success) {
-                        location.reload();
-                    } else {
-                        alert('Failed to cancel order: ' + response.message);
+                $.ajax({
+                    url: '../ajax/cancel-order.php',
+                    type: 'POST',
+                    data: { order_id: orderId },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Failed to cancel order: ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Failed to cancel order: Server error.');
                     }
                 });
             }
