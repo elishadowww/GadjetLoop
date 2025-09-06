@@ -115,7 +115,7 @@ $stats = $stmt->fetch();
         <?php include 'includes/admin-sidebar.php'; ?>
         
         <main class="admin-content">
-            <div class="admin-header">
+            <div class="admin-page-header">
                 <h1>Users</h1>
                 <div class="admin-actions">
                     <button class="btn btn-outline" onclick="exportData('users', 'csv')">Export CSV</button>

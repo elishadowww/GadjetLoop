@@ -83,7 +83,7 @@ $settings = [
         <?php include 'includes/admin-sidebar.php'; ?>
         
         <main class="admin-content">
-            <div class="admin-header">
+            <div class="admin-page-header">
                 <h1>Settings</h1>
             </div>
             

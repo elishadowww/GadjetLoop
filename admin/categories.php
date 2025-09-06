@@ -97,7 +97,7 @@ $categories = $stmt->fetchAll();
         <?php include 'includes/admin-sidebar.php'; ?>
         
         <main class="admin-content">
-            <div class="admin-header">
+            <div class="admin-page-header"> 
                 <h1>Categories</h1>
                 <div class="admin-actions">
                     <button class="btn btn-primary" onclick="showAddCategoryModal()">Add Category</button>
