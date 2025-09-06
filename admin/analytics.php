@@ -114,13 +114,13 @@ $overall_stats = $stmt->fetch();
         <?php include 'includes/admin-sidebar.php'; ?>
         
         <main class="admin-content">
-            <div class="admin-header">
+            <div class="admin-page-header">
                 <h1>Analytics</h1>
                 <div class="admin-actions">
                     <form method="GET" style="display: flex; gap: 1rem; align-items: center;">
-                        <input type="date" name="start_date" value="<?php echo $start_date; ?>" class="form-control" style="width: auto;">
+                        <input type="date" name="start_date" value="<?php echo $start_date; ?>" class="form-control" style="width: 25%;">
                         <span>to</span>
-                        <input type="date" name="end_date" value="<?php echo $end_date; ?>" class="form-control" style="width: auto;">
+                        <input type="date" name="end_date" value="<?php echo $end_date; ?>" class="form-control" style="width: 25%;">
                         <button type="submit" class="btn btn-primary">Update</button>
                     </form>
                 </div>
