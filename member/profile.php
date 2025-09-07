@@ -138,7 +138,7 @@ $reviews_count = $stmt->fetchColumn();
     <?php include '../includes/header.php'; ?>
     
     <main>
-        <div class="container">
+        
             <div class="member-layout">
                 <?php include 'includes/member-sidebar.php'; ?>
                 
@@ -325,7 +325,7 @@ $reviews_count = $stmt->fetchColumn();
                     </div>
                 </div>
             </div>
-        </div>
+        
     </main>
     
     <?php include '../includes/footer.php'; ?>

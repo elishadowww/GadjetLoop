@@ -29,7 +29,7 @@ $wishlist_items = getWishlistItems($pdo, $user_id);
     <?php include '../includes/header.php'; ?>
     
     <main>
-        <div class="container">
+        
             <div class="member-layout">
                 <?php include 'includes/member-sidebar.php'; ?>
                 
@@ -94,7 +94,7 @@ $wishlist_items = getWishlistItems($pdo, $user_id);
                     </div>
                 </div>
             </div>
-        </div>
+        
     </main>
     
     <?php include '../includes/footer.php'; ?>

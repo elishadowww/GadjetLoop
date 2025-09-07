@@ -76,7 +76,6 @@ $wishlist_items = $stmt->fetchAll();
     <?php include '../includes/header.php'; ?>
     
     <main>
-        <div class="container">
             <div class="member-layout">
                               <?php include 'includes/member-sidebar.php'; ?>
                 
@@ -222,7 +221,6 @@ $wishlist_items = $stmt->fetchAll();
                     </div>
                 </div>
             </div>
-        </div>
     </main>
     
     <?php include '../includes/footer.php'; ?>

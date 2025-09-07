@@ -181,6 +181,7 @@ $stats = $stmt->fetch();
         }
         
         .notifications-actions {
+            margin-left: 20px;
             display: flex;
             gap: 1rem;
             margin-bottom: 2rem;
@@ -346,7 +347,7 @@ $stats = $stmt->fetch();
     <?php include '../includes/header.php'; ?>
     
     <main>
-        <div class="container">
+        
             <div class="member-layout">
                 <?php include 'includes/member-sidebar.php'; ?>
                 
@@ -484,7 +485,7 @@ $stats = $stmt->fetch();
                     </div>
                 </div>
             </div>
-        </div>
+        
     </main>
     
     <?php include '../includes/footer.php'; ?>
