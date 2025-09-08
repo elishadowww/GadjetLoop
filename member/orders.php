@@ -38,7 +38,7 @@ $total_pages = ceil($total_orders / $per_page);
     <?php include '../includes/header.php'; ?>
     
     <main>
-        <div class="container">
+        
             <div class="member-layout">
                 <?php include 'includes/member-sidebar.php'; ?>
                 
@@ -130,7 +130,7 @@ $total_pages = ceil($total_orders / $per_page);
                     </div>
                 </div>
             </div>
-        </div>
+        
     </main>
     
     <?php include '../includes/footer.php'; ?>
