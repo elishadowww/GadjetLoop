@@ -661,9 +661,13 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                             <div id="coupon-message" style="display: none; margin-top: 0.5rem; font-size: 14px;"></div>
                         </div>
                         
+                        <div class="summary-row" id="discount-row" style="display:none;">
+                            <span>Discount:</span>
+                            <span id="discount-amount"></span>
+                        </div>
                         <div class="summary-row summary-total">
                             <span>Total:</span>
-                            <span>RM<?php echo number_format($total, 2); ?></span>
+                            <span id="final-total">RM<?php echo number_format($total, 2); ?></span>
                         </div>
                     </div>
                     
@@ -783,11 +787,11 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                 showCouponMessage('Please enter a coupon code', 'error');
                 return;
             }
-            
+
             const $btn = $('#apply-coupon-btn');
             const originalText = $btn.text();
             $btn.prop('disabled', true).text('Applying...');
-            
+
             $.post('../ajax/apply-coupon.php', {
                 coupon_code: couponCode,
                 subtotal: <?php echo $subtotal; ?>
@@ -799,15 +803,15 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                 } else {
                     showCouponMessage(response.message, 'error');
                 }
+                $btn.prop('disabled', false).text(originalText); // <-- Move here
             }).fail(function() {
                 showCouponMessage('Failed to apply coupon', 'error');
-            }).always(function() {
                 $btn.prop('disabled', false).text(originalText);
             });
         }
         
         function removeCoupon() {
-            $.post('ajax/remove-coupon.php', function(response) {
+            $.post('../ajax/remove-coupon.php', function(response) {
                 if (response.success) {
                     showCouponMessage('Coupon removed', 'success');
                     updateTotalsWithCoupon(0, <?php echo $total; ?>);
@@ -829,13 +833,15 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
         }
         
         function updateTotalsWithCoupon(discountAmount, newTotal) {
+            discountAmount = Number(discountAmount) || 0;
+            newTotal = Number(newTotal) || 0;
             if (discountAmount > 0) {
                 $('#discount-row').show();
-                $('#discount-amount').text('-$' + discountAmount.toFixed(2));
+                $('#discount-amount').text('-RM' + discountAmount.toFixed(2));
             } else {
                 $('#discount-row').hide();
             }
-            $('#final-total').text('$' + newTotal.toFixed(2));
+            $('#final-total').text('RM' + newTotal.toFixed(2));
         }
         
         function showAppliedCoupon(code, amount, type) {
