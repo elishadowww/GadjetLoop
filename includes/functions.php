@@ -300,65 +300,56 @@ function getWishlistItems($pdo, $user_id) {
 }
 
 // Order Functions
-function createOrder($pdo, $user_id, $cart_items, $shipping_address, $payment_method = 'fake') {
-    try {
-        $pdo->beginTransaction();
-
-        // Calculate totals
-        $subtotal = 0;
-        foreach ($cart_items as $item) {
-            $subtotal += $item['sale_price'] * $item['quantity'];
-        }
-        $tax = $subtotal * 0.08; // 8% tax
-        $shipping = $subtotal > 50 ? 0 : 9.99; // Free shipping over $50
-        $total = $subtotal + $tax + $shipping;
-
-        // Ensure payment_method is a string
-        if (is_array($payment_method)) {
-            $payment_method = isset($payment_method['method']) ? $payment_method['method'] : 'unknown';
-        }
-
-        // Allow status override (default 'pending')
-        $order_status = isset($GLOBALS['order_status']) ? $GLOBALS['order_status'] : 'pending';
-
-        // Create order
-        $order_number = 'GL' . date('Ymd') . rand(1000, 9999);
-        $stmt = $pdo->prepare("
-            INSERT INTO orders (user_id, order_number, subtotal, tax_amount, shipping_amount, total_amount, 
-                               shipping_address, payment_method, status, created_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-        ");
-        $stmt->execute([$user_id, $order_number, $subtotal, $tax, $shipping, $total, 
-                       json_encode($shipping_address), $payment_method, $order_status]);
-
-        $order_id = $pdo->lastInsertId();
-
-        // Create order items
-        foreach ($cart_items as $item) {
-            $stmt = $pdo->prepare("
-                INSERT INTO order_items (order_id, product_id, quantity, price, total) 
-                VALUES (?, ?, ?, ?, ?)
-            ");
-            $stmt->execute([$order_id, $item['product_id'], $item['quantity'], 
-                           $item['sale_price'], $item['sale_price'] * $item['quantity']]);
-
-            // Update product stock
-            $stmt = $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ?");
-            $stmt->execute([$item['quantity'], $item['product_id']]);
-        }
-
-        // Clear cart
-        clearCart($pdo, $user_id);
-
-        $pdo->commit();
-        return ['success' => true, 'order_id' => $order_id, 'order_number' => $order_number];
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        return ['success' => false, 'message' => $e->getMessage()];
+function createOrder($pdo, $user_id, $cart_items, $shipping_address, $billing_address, $payment_method) {
+    // Calculate totals
+    $subtotal = 0;
+    foreach ($cart_items as $item) {
+        $subtotal += $item['sale_price'] * $item['quantity'];
     }
+    $tax = $subtotal * 0.08;
+    $shipping = $subtotal > 50 ? 0 : 9.99;
+    $discount = isset($_SESSION['applied_coupon']['discount_amount']) ? $_SESSION['applied_coupon']['discount_amount'] : 0;
+    $total = $subtotal - $discount + $tax + $shipping;
+
+    // Generate order number
+    $order_number = 'GL' . time() . rand(100,999);
+
+    // Set payment status
+    $payment_status = 'paid'; // or 'pending' for non-instant methods
+
+    // Prepare addresses as JSON
+    $shipping_json = json_encode($shipping_address, JSON_UNESCAPED_UNICODE);
+    $billing_json = json_encode($billing_address, JSON_UNESCAPED_UNICODE);
+
+    $stmt = $pdo->prepare("
+        INSERT INTO orders (
+            user_id, order_number, status, subtotal, tax_amount, shipping_amount, discount_amount, total_amount,
+            shipping_address, billing_address, payment_method, payment_status, created_at
+        ) VALUES (
+            :user_id, :order_number, :status, :subtotal, :tax_amount, :shipping_amount, :discount_amount, :total_amount,
+            :shipping_address, :billing_address, :payment_method, :payment_status, NOW()
+        )
+    ");
+    $stmt->execute([
+        ':user_id' => $user_id,
+        ':order_number' => $order_number,
+        ':status' => 'processing',
+        ':subtotal' => $subtotal,
+        ':tax_amount' => $tax,
+        ':shipping_amount' => $shipping,
+        ':discount_amount' => $discount,
+        ':total_amount' => $total,
+        ':shipping_address' => $shipping_json,
+        ':billing_address' => $billing_json,
+        ':payment_method' => $payment_method,
+        ':payment_status' => $payment_status
+    ]);
+
+    return [
+        'success' => true,
+        'order_number' => $order_number
+    ];
 }
-
-
 
 function getOrdersByUser($pdo, $user_id, $page = 1, $per_page = 10) {
     $offset = ($page - 1) * $per_page;
