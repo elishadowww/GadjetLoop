@@ -798,12 +798,12 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
             }, function(response) {
                 if (response.success) {
                     showCouponMessage(response.message, 'success');
-                    updateTotalsWithCoupon(response.discount_amount, response.new_total);
-                    showAppliedCoupon(couponCode, response.discount_amount, response.discount_type);
+                    updateTotalsWithCoupon(response.discount_amount, response.new_total, response.new_tax, response.new_shipping);
+                    showAppliedCoupon(couponCode, response.discount_amount, response.discount_type, response.discount_capped, response.maximum_discount);
                 } else {
                     showCouponMessage(response.message, 'error');
                 }
-                $btn.prop('disabled', false).text(originalText); // <-- Move here
+                $btn.prop('disabled', false).text(originalText);
             }).fail(function() {
                 showCouponMessage('Failed to apply coupon', 'error');
                 $btn.prop('disabled', false).text(originalText);
@@ -832,7 +832,7 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
             }, 3000);
         }
         
-        function updateTotalsWithCoupon(discountAmount, newTotal) {
+        function updateTotalsWithCoupon(discountAmount, newTotal, newTax = null, newShipping = null) {
             discountAmount = Number(discountAmount) || 0;
             newTotal = Number(newTotal) || 0;
             if (discountAmount > 0) {
@@ -842,15 +842,24 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                 $('#discount-row').hide();
             }
             $('#final-total').text('RM' + newTotal.toFixed(2));
+            if (newTax !== null) {
+                // FIXED selector below
+                $('.order-summary .summary-row').eq(1).find('span').eq(1).text('RM' + Number(newTax).toFixed(2));
+            }
+            if (newShipping !== null) {
+                $('.order-summary .summary-row').eq(2).find('span').eq(1).text(newShipping > 0 ? 'RM' + Number(newShipping).toFixed(2) : 'Free');
+            }
         }
         
-        function showAppliedCoupon(code, amount, type) {
-            const discountText = type === 'percentage' ? amount + '%' : '$' + amount.toFixed(2);
+        function showAppliedCoupon(code, amount, type, capped = false, maxDiscount = 0) {
+            let discountText = type === 'percentage' ? amount + '%' : 'RM' + Number(amount).toFixed(2);
+            let cappedText = capped ? `<br><small style="color:#d9534f;">Maximum discount applied: RM${Number(maxDiscount).toFixed(2)}</small>` : '';
             const couponHtml = `
                 <div class="applied-coupon" style="background: #d4edda; padding: 0.75rem; border-radius: 6px; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <strong>${code}</strong> applied
                         <small style="display: block; color: #155724;">Discount: ${discountText}</small>
+                        ${cappedText}
                     </div>
                     <button type="button" id="remove-coupon" class="btn btn-sm" style="background: none; border: none; color: #721c24; font-size: 18px;">×</button>
                 </div>

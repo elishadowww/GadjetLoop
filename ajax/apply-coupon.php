@@ -66,10 +66,12 @@ if ($_POST) {
         
         // Calculate discount
         $discount_amount = 0;
+        $discount_capped = false;
         if ($coupon['discount_type'] === 'percentage') {
             $discount_amount = ($subtotal * $coupon['discount_value']) / 100;
             if ($coupon['maximum_discount'] && $discount_amount > $coupon['maximum_discount']) {
                 $discount_amount = $coupon['maximum_discount'];
+                $discount_capped = true;
             }
         } else {
             $discount_amount = $coupon['discount_value'];
@@ -94,12 +96,14 @@ if ($_POST) {
         
         echo json_encode([
             'success' => true,
-            'message' => 'Coupon applied successfully!',
+            'message' => 'Coupon applied successfully!' . ($discount_capped ? ' (Maximum discount applied)' : ''),
             'discount_amount' => $discount_amount,
             'discount_type' => $coupon['discount_type'],
             'new_total' => $new_total,
             'new_tax' => $tax,
-            'new_shipping' => $shipping
+            'new_shipping' => $shipping,
+            'discount_capped' => $discount_capped,
+            'maximum_discount' => $coupon['maximum_discount']
         ]);
         
     } catch (PDOException $e) {
