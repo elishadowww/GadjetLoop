@@ -384,19 +384,23 @@ function handleAjaxForm(form) {
 
 // Show alert message
 function showAlert(message, type = 'info') {
-    const alertClass = 'alert-' + type;
-    const alertHtml = `<div class="alert ${alertClass}">${message}</div>`;
-    
-    // Remove existing alerts
-    $('.alert').remove();
-    
-    // Add new alert
-    $('main').prepend(alertHtml);
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        $('.alert').fadeOut();
-    }, 5000);
+    // Set color based on type
+    let bgColor = '#ffc'; // info/warning
+    if (type === 'success') bgColor = '#d4edda';
+    if (type === 'error') bgColor = '#f8d7da';
+    if (type === 'warning') bgColor = '#fff3cd';
+
+    $('#notification')
+        .css('background', bgColor)
+        .text(message)
+        .fadeIn();
+
+    // Smooth scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    setTimeout(function() {
+        $('#notification').fadeOut();
+    }, 3000);
 }
 
 // Update cart count

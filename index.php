@@ -18,7 +18,24 @@ $categories = getCategories($pdo);
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="home" class="<?php echo isLoggedIn() ? 'logged-in' : ''; ?>">
-    <?php include 'includes/header.php'; ?>
+    <!-- Notification bar: stays at the very top above header -->
+    <div id="notification" style="
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        background:#ffc;
+        padding:15px 10px;
+        z-index:10000;
+        text-align:center;
+        font-size:1.1em;
+        box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    "></div>
+    <!-- Add margin-top to header so it doesn't overlap notification -->
+    <div id="header-wrapper" style="margin-top:55px;">
+        <?php include 'includes/header.php'; ?>
+    </div>
     
     <main>
         <!-- Hero Section -->
@@ -133,4 +150,29 @@ $categories = getCategories($pdo);
     <script src="js/main.js"></script>
     <script src="js/cart.js"></script>
     <!-- Removed missing backtotop.js script -->
+    <script>
+        $(document).on('click', '.wishlist-btn', function() {
+    var productId = $(this).data('product-id');
+    $.post('ajax/toggle-wishlist.php', { product_id: productId }, function(response) {
+        $('#notification').text(response.message).fadeIn();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        setTimeout(function() {
+            $('#notification').fadeOut();
+        }, 3000);
+    }, 'json').fail(function(jqXHR) {
+        // Handle AJAX error
+        var message = 'Something went wrong. Please try again.';
+        if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+            message = jqXHR.responseJSON.message;
+        }
+        $('#notification').text(message).fadeIn();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        setTimeout(function() {
+            $('#notification').fadeOut();
+        }, 3000);
+    });
+});
+    </script>
 </html>
