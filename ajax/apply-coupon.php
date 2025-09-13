@@ -15,6 +15,9 @@ if ($_POST) {
     $subtotal = floatval($_POST['subtotal'] ?? 0);
     $user_id = $_SESSION['user_id'];
     
+    error_log('Coupon code: ' . $coupon_code);
+    error_log('Subtotal: ' . $subtotal);
+    
     if (empty($coupon_code) || $subtotal <= 0) {
         echo json_encode(['success' => false, 'message' => 'Invalid coupon code or order amount']);
         exit;
@@ -100,7 +103,7 @@ if ($_POST) {
         ]);
         
     } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Failed to apply coupon']);
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);

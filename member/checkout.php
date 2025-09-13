@@ -788,7 +788,7 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
             const originalText = $btn.text();
             $btn.prop('disabled', true).text('Applying...');
             
-            $.post('ajax/apply-coupon.php', {
+            $.post('../ajax/apply-coupon.php', {
                 coupon_code: couponCode,
                 subtotal: <?php echo $subtotal; ?>
             }, function(response) {
