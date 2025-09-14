@@ -20,3 +20,13 @@ Before running this project, make sure you have:
 composer require phpmailer/phpmailer
 composer install
 ```
+
+## Demo Account
+
+member:
+member@gadgetloop.com
+member123
+
+admin:
+admin@gadgetloop.com
+admin123

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 14, 2025 at 03:59 PM
+-- Generation Time: Sep 14, 2025 at 05:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,25 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `gadgetloop`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admin_activity_log`
---
-
-CREATE TABLE `admin_activity_log` (
-  `id` int(11) NOT NULL,
-  `admin_id` int(11) NOT NULL,
-  `action` varchar(100) NOT NULL,
-  `table_name` varchar(50) DEFAULT NULL,
-  `record_id` int(11) DEFAULT NULL,
-  `old_values` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`old_values`)),
-  `new_values` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`new_values`)),
-  `ip_address` varchar(45) DEFAULT NULL,
-  `user_agent` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -111,24 +92,6 @@ CREATE TABLE `coupon_usage` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `email_queue`
---
-
-CREATE TABLE `email_queue` (
-  `id` int(11) NOT NULL,
-  `to_email` varchar(100) NOT NULL,
-  `subject` varchar(200) NOT NULL,
-  `body` text NOT NULL,
-  `status` enum('pending','sent','failed') DEFAULT 'pending',
-  `attempts` int(11) DEFAULT 0,
-  `error_message` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `sent_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `login_attempts`
 --
 
@@ -194,6 +157,20 @@ CREATE TABLE `order_items` (
   `price` decimal(10,2) NOT NULL,
   `total` decimal(10,2) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -288,7 +265,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `phone`, `role`, `profile_photo`, `is_active`, `is_verified`, `verification_token`, `remember_token`, `password_reset_token`, `password_reset_expires`, `created_at`, `updated_at`) VALUES
 (1, 'Admin', 'User', 'admin@gadgetloop.com', '$2y$10$l6QBisIZAupNWdXebQvf/Oc7pR.TMSj2VXfabuVPJALOdcerUcVKC', NULL, 'admin', NULL, 1, 1, NULL, NULL, NULL, NULL, '2025-07-21 05:38:26', '2025-07-22 11:40:24'),
-(2, 'Demo', '1', 'member@gadgetloop.com', '$2y$10$439pdBXMvGGaHDzzKG1VCeT/cd/sjCAqlKvAJFXalUkiS5SIlZ3Nu', '0164361141', 'member', '689a9e2f624d3.jpeg', 1, 1, NULL, NULL, NULL, NULL, '2025-07-21 05:38:26', '2025-08-12 01:51:43');
+(2, 'Demo', '1', 'member@gadgetloop.com', '$2y$10$439pdBXMvGGaHDzzKG1VCeT/cd/sjCAqlKvAJFXalUkiS5SIlZ3Nu', '0164361141', 'member', '68c6d90fdfb46.jpg', 1, 1, NULL, NULL, NULL, NULL, '2025-07-21 05:38:26', '2025-09-14 15:02:39');
 
 -- --------------------------------------------------------
 
@@ -333,13 +310,6 @@ CREATE TABLE `wishlist` (
 --
 
 --
--- Indexes for table `admin_activity_log`
---
-ALTER TABLE `admin_activity_log`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `admin_id` (`admin_id`);
-
---
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
@@ -371,12 +341,6 @@ ALTER TABLE `coupon_usage`
   ADD KEY `order_id` (`order_id`);
 
 --
--- Indexes for table `email_queue`
---
-ALTER TABLE `email_queue`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
@@ -405,6 +369,14 @@ ALTER TABLE `order_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `token` (`token`);
 
 --
 -- Indexes for table `products`
@@ -441,15 +413,6 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `user_addresses`
---
-ALTER TABLE `user_addresses`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_user_addresses_user` (`user_id`),
-  ADD KEY `idx_user_addresses_type` (`type`),
-  ADD KEY `idx_user_addresses_default` (`is_default`);
-
---
 -- Indexes for table `wishlist`
 --
 ALTER TABLE `wishlist`
@@ -461,12 +424,6 @@ ALTER TABLE `wishlist`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `admin_activity_log`
---
-ALTER TABLE `admin_activity_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `cart`
@@ -490,12 +447,6 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `coupon_usage`
 --
 ALTER TABLE `coupon_usage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `email_queue`
---
-ALTER TABLE `email_queue`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -523,6 +474,12 @@ ALTER TABLE `order_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -547,12 +504,6 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `user_addresses`
---
-ALTER TABLE `user_addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `wishlist`
 --
 ALTER TABLE `wishlist`
@@ -561,12 +512,6 @@ ALTER TABLE `wishlist`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `admin_activity_log`
---
-ALTER TABLE `admin_activity_log`
-  ADD CONSTRAINT `admin_activity_log_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `cart`
@@ -615,12 +560,6 @@ ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE SET NULL;
-
---
--- Constraints for table `user_addresses`
---
-ALTER TABLE `user_addresses`
-  ADD CONSTRAINT `user_addresses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `wishlist`
