@@ -1,4 +1,22 @@
-# GadjetLoop
-To run this 
-go to terminal run        composer require phpmailer/phpmailer
-and                       composer install
+# GADJETLOOP
+
+## Prerequisites
+
+Before running this project, make sure you have:
+
+- The **latest version of [XAMPP](https://www.apachefriends.org/download.html)** installed
+  > ⚠️ Reinstall XAMPP if your version is outdated
+- **[Composer](https://getcomposer.org/download/)** installed on your system
+
+---
+
+## Installation
+
+1. Open your terminal
+2. Navigate to your project folder
+3. Run the following commands:
+
+```bash
+composer require phpmailer/phpmailer
+composer install
+```
