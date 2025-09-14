@@ -9,8 +9,13 @@ if (!isLoggedIn()) {
     exit;
 }
 
+
 $user_id = $_SESSION['user_id'];
 $user = getUserById($pdo, $user_id);
+
+// Get cart count for header
+$cart_items = getCartItems($pdo, $user_id);
+$cart_count = is_array($cart_items) ? count($cart_items) : 0;
 
 $success = '';
 $error = '';
@@ -124,6 +129,21 @@ $reviews_count = $stmt->fetchColumn();
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../js/main.js"></script>
+    <script>
+    // Dynamically update cart count in header
+    function updateCartCount() {
+        $.get('../ajax/get-cart-count.php', function(data) {
+            if (data && typeof data.count !== 'undefined') {
+                $('#cart-count').text(data.count);
+            }
+        });
+    }
+    $(document).ready(function() {
+        updateCartCount();
+        // Optionally, update every 30 seconds
+        setInterval(updateCartCount, 30000);
+    });
+    </script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -135,7 +155,11 @@ $reviews_count = $stmt->fetchColumn();
     <link rel="stylesheet" href="../css/member.css">
 </head>
 <body data-page="profile" class="logged-in">
-    <?php include '../includes/header.php'; ?>
+    <?php 
+        // Make cart_count available to header.php
+        $GLOBALS['cart_count'] = $cart_count;
+        include '../includes/header.php'; 
+    ?>
     
     <main>
         
@@ -201,7 +225,7 @@ $reviews_count = $stmt->fetchColumn();
                                 <div class="photo-upload-area">
                                     <div class="current-photo">
                                        <?php if ($user['profile_photo']): ?>
-                <img src="uploads/profiles/<?php echo htmlspecialchars($user['profile_photo']); ?>" 
+                <img src="../uploads/profiles/<?php echo htmlspecialchars($user['profile_photo']); ?>" 
                      alt="Profile Photo">
             <?php else: ?>
                 <div class="default-avatar">

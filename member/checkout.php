@@ -75,7 +75,10 @@ if ($_POST && isset($_POST['place_order'])) {
             // Create notification for order confirmation
             createNotification($pdo, $user_id, 'Order Confirmed', 
                 'Your order #' . $order_result['order_number'] . ' has been confirmed and is being processed.', 'order');
-            
+
+            // Clear cart after successful checkout
+            clearCart($pdo, $user_id);
+
             // Redirect to order confirmation
             header('Location: order-confirmation.php?order=' . $order_result['order_number']);
             exit;
@@ -426,6 +429,8 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                                     <select id="shipping_country" name="shipping_country" class="form-control" required>
                                         <option value="">Select Country</option>
                                         <option value="US" <?php echo ($user['country'] ?? '') === 'US' ? 'selected' : ''; ?>>United States</option>
+                                        <option value="MY" <?php echo ($user['country'] ?? '') === 'MY' ? 'selected' : ''; ?>>Malaysia</option>
+
                                         <option value="CA" <?php echo ($user['country'] ?? '') === 'CA' ? 'selected' : ''; ?>>Canada</option>
                                         <option value="UK" <?php echo ($user['country'] ?? '') === 'UK' ? 'selected' : ''; ?>>United Kingdom</option>
                                         <option value="AU" <?php echo ($user['country'] ?? '') === 'AU' ? 'selected' : ''; ?>>Australia</option>
