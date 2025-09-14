@@ -345,6 +345,25 @@ function createOrder($pdo, $user_id, $cart_items, $shipping_address, $billing_ad
         ':payment_status' => $payment_status
     ]);
 
+    // Get the inserted order ID
+    $order_id = $pdo->lastInsertId();
+
+    // Insert order items
+    $item_stmt = $pdo->prepare("
+        INSERT INTO order_items (order_id, product_id, quantity, price, total, created_at)
+        VALUES (?, ?, ?, ?, ?, NOW())
+    ");
+    foreach ($cart_items as $item) {
+        $item_total = $item['sale_price'] * $item['quantity'];
+        $item_stmt->execute([
+            $order_id,
+            $item['product_id'],
+            $item['quantity'],
+            $item['price'],
+            $item_total
+        ]);
+    }
+
     return [
         'success' => true,
         'order_number' => $order_number
