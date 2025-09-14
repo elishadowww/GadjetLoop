@@ -169,42 +169,6 @@ function generateDatabaseBackup($pdo, $backup_type) {
                 </div>
             </div>
             
-            <!-- Backup Schedule -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <h3>Automatic Backup Schedule</h3>
-                </div>
-                <div class="card-body">
-                    <form method="POST">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="auto_backup">Enable Automatic Backups</label>
-                                <select id="auto_backup" name="auto_backup" class="form-control">
-                                    <option value="disabled">Disabled</option>
-                                    <option value="daily">Daily</option>
-                                    <option value="weekly">Weekly</option>
-                                    <option value="monthly">Monthly</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="backup_time">Backup Time</label>
-                                <input type="time" id="backup_time" name="backup_time" class="form-control" value="02:00">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="retention_days">Retention Period (days)</label>
-                            <input type="number" id="retention_days" name="retention_days" class="form-control" 
-                                   value="30" min="1" max="365">
-                            <small class="form-text">Backups older than this will be automatically deleted.</small>
-                        </div>
-                        
-                        <button type="submit" name="update_schedule" class="btn btn-primary">Update Schedule</button>
-                    </form>
-                </div>
-            </div>
-            
             <!-- Existing Backups -->
             <div class="dashboard-card">
                 <div class="card-header">
@@ -249,35 +213,6 @@ function generateDatabaseBackup($pdo, $backup_type) {
                             </table>
                         </div>
                     <?php endif; ?>
-                </div>
-            </div>
-            
-            <!-- Restore Instructions -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <h3>Restore Instructions</h3>
-                </div>
-                <div class="card-body">
-                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #007bff;">
-                        <h4>How to Restore a Backup:</h4>
-                        <ol>
-                            <li>Download the backup file you want to restore</li>
-                            <li>Access your database management tool (phpMyAdmin, MySQL Workbench, etc.)</li>
-                            <li>Create a new database or select the existing one</li>
-                            <li>Import the downloaded SQL file</li>
-                            <li>Update your configuration files if necessary</li>
-                        </ol>
-                        
-                        <h4>Command Line Restore:</h4>
-                        <code style="background: #333; color: #fff; padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem;">
-                            mysql -u username -p database_name &lt; backup_file.sql
-                        </code>
-                        
-                        <div style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border-radius: 4px;">
-                            <strong>⚠️ Warning:</strong> Restoring a backup will overwrite all current data. 
-                            Make sure to create a current backup before restoring an older one.
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>

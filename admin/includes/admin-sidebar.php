@@ -93,13 +93,6 @@ $order_count = $stmt->fetchColumn();
                 <span class="section-title">System</span>
             </li>
             
-            <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'settings.php' ? 'active' : ''; ?>">
-                <a href="settings.php">
-                    <span class="nav-icon">⚙️</span>
-                    <span class="nav-text">Settings</span>
-                </a>
-            </li>
-            
             <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'backup.php' ? 'active' : ''; ?>">
                 <a href="backup.php">
                     <span class="nav-icon">💾</span>
