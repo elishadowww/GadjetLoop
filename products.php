@@ -172,24 +172,6 @@ if (!empty($filters['category'])) {
                             </div>
                         </div>
                         
-                        <!-- Rating Filter -->
-                        <div class="filter-group">
-                            <h4>Customer Rating</h4>
-                            <div class="filter-options">
-                                <label class="filter-option">
-                                    <input type="radio" name="rating" value="">
-                                    <span>All Ratings</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="radio" name="rating" value="4">
-                                    <span>★★★★☆ & up</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="radio" name="rating" value="3">
-                                    <span>★★★☆☆ & up</span>
-                                </label>
-                            </div>
-                        </div>
                         
                         <!-- Availability Filter -->
                         <div class="filter-group">
