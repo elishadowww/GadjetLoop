@@ -73,6 +73,20 @@ if (!empty($filters['category'])) {
     <link rel="stylesheet" href="css/products.css">
 </head>
 <body data-page="products" class="<?php echo isLoggedIn() ? 'logged-in' : ''; ?>">
+    <div id="notification" style="
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        background:#ffc;
+        padding:15px 10px;
+        z-index:10000;
+        text-align:center;
+        font-size:1.1em;
+        box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    "></div>
+
     <?php include 'includes/header.php'; ?>
     
     <main class="products-wrapper">
