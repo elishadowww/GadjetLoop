@@ -47,7 +47,7 @@ if ($_POST && isset($_POST['add_product'])) {
             // Handle main image upload
             $main_image = '';
             if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] === UPLOAD_ERR_OK) {
-                $upload_result = uploadFile($_FILES['main_image'], '../uploads/products/', ['jpg', 'jpeg', 'png', 'gif']);
+                $upload_result = uploadFile($_FILES['main_image'], '../images/products/', ['jpg', 'jpeg', 'png', 'gif']);
                 if ($upload_result['success']) {
                     $main_image = $upload_result['filename'];
                 } else {
@@ -69,35 +69,14 @@ if ($_POST && isset($_POST['add_product'])) {
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
                 ");
                 $stmt->execute([
-                    $name, $description, $short_description, $category_id, $price,
-                    $discount_percentage, $stock_quantity, $low_stock_threshold, $sku,
-                    $main_image, $is_featured, $is_active, $meta_title, $meta_description
+            $name, $description, $short_description, $category_id, $price,
+            $discount_percentage, $stock_quantity, $low_stock_threshold, $sku,
+            $main_image, $is_featured, $is_active, $meta_title, $meta_description
                 ]);
                 
                 $product_id = $pdo->lastInsertId();
                 
-                // Handle additional images
-                if (isset($_FILES['additional_images'])) {
-                    foreach ($_FILES['additional_images']['tmp_name'] as $key => $tmp_name) {
-                        if ($_FILES['additional_images']['error'][$key] === UPLOAD_ERR_OK) {
-                            $file = [
-                                'name' => $_FILES['additional_images']['name'][$key],
-                                'tmp_name' => $tmp_name,
-                                'size' => $_FILES['additional_images']['size'][$key],
-                                'type' => $_FILES['additional_images']['type'][$key]
-                            ];
-                            
-                            $upload_result = uploadFile($file, '../uploads/products/', ['jpg', 'jpeg', 'png', 'gif']);
-                            if ($upload_result['success']) {
-                                $stmt = $pdo->prepare("
-                                    INSERT INTO product_images (product_id, image_path, sort_order, created_at) 
-                                    VALUES (?, ?, ?, NOW())
-                                ");
-                                $stmt->execute([$product_id, $upload_result['filename'], $key]);
-                            }
-                        }
-                    }
-                }
+                
                 
                 $success = 'Product created successfully';
                 
@@ -108,7 +87,7 @@ if ($_POST && isset($_POST['add_product'])) {
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
                 $error = 'SKU already exists';
-            } else {
+                                        $upload_result = uploadFile($file, '../images/products/', ['jpg', 'jpeg', 'png', 'gif']);
                 $error = 'Failed to create product';
             }
         }
@@ -362,18 +341,10 @@ $categories = getCategories($pdo);
                             <small>JPG, PNG, GIF up to 5MB</small>
                         </div>
                         <input type="file" id="main_image" name="main_image" accept="image/*" style="display: none;" form="product-form" required>
+                        <div id="main-image-preview-area"></div>
                     </div>
                     
-                    <!-- Additional Images -->
-                    <div class="form-group">
-                        <label>Additional Images (Optional)</label>
-                        <div class="image-upload-area" onclick="document.getElementById('additional_images').click()">
-                            <div class="upload-icon">🖼️</div>
-                            <p>Add more product images</p>
-                            <small>Select multiple files</small>
-                        </div>
-                        <input type="file" id="additional_images" name="additional_images[]" accept="image/*" multiple style="display: none;" form="product-form">
-                    </div>
+                    
                 </div>
                 
                 <!-- SEO Settings -->
@@ -431,11 +402,9 @@ $categories = getCategories($pdo);
                 const price = parseFloat($('#price').val()) || 0;
                 const discount = parseInt($('#discount_percentage').val()) || 0;
                 const salePrice = price * (1 - discount / 100);
-                
                 $('#original-price').text('$' + price.toFixed(2));
                 $('#sale-price').text('$' + salePrice.toFixed(2));
                 $('#savings').text('Save ' + discount + '%');
-                
                 if (discount > 0) {
                     $('#original-price').show();
                     $('#savings').show();
@@ -444,21 +413,33 @@ $categories = getCategories($pdo);
                     $('#savings').hide();
                 }
             }
-            
             $('#price, #discount_percentage').on('input', updatePricePreview);
             updatePricePreview(); // Initial calculation
+
+            // Main image preview
+            $('#main_image').on('change', function(e) {
+                const input = this;
+                const previewArea = $('#main-image-preview-area');
+                previewArea.empty();
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewArea.append('<div style="margin-top:1rem;font-weight:500;">Preview:</div>');
+                        previewArea.append('<img style="max-width:200px;display:block;margin:0.5rem 0 1rem 0;border-radius:8px;" src="' + e.target.result + '" />');
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
             
             // Character counters
             $('#short_description').on('input', function() {
                 const maxLength = 500;
                 const currentLength = $(this).val().length;
-                
                 if (!$(this).siblings('.char-counter').length) {
                     $(this).after('<div class="char-counter"></div>');
                 }
-                
                 $(this).siblings('.char-counter').text(currentLength + '/' + maxLength + ' characters');
-                
                 if (currentLength > maxLength) {
                     $(this).siblings('.char-counter').css('color', '#dc3545');
                 } else if (currentLength > 450) {
@@ -467,7 +448,6 @@ $categories = getCategories($pdo);
                     $(this).siblings('.char-counter').css('color', '#666');
                 }
             });
-            
             // Auto-generate meta title from product name
             $('#name').on('blur', function() {
                 const name = $(this).val();
@@ -475,11 +455,9 @@ $categories = getCategories($pdo);
                     $('#meta_title').val(name + ' - GadgetLoop');
                 }
             });
-            
             // Form validation
             $('#product-form').on('submit', function(e) {
                 let isValid = true;
-                
                 // Check required fields
                 $(this).find('[required]').each(function() {
                     if (!$(this).val().trim()) {
@@ -489,13 +467,11 @@ $categories = getCategories($pdo);
                         $(this).removeClass('error');
                     }
                 });
-                
                 if (!isValid) {
                     e.preventDefault();
                     showAlert('Please fill in all required fields', 'error');
                 }
             });
-            
             // Remove error class on input
             $('.form-control').on('input change', function() {
                 $(this).removeClass('error');

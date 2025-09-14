@@ -3,17 +3,11 @@
         <div class="admin-header-left">
             <div class="admin-logo">
                 <a href="dashboard.php">
-                  <h2>GadgetLoop,  Admin</h2>
+                  <h2>GadgetLoop Admin</h2>
                 </a>
             </div>
         </div>
         
-        <div class="admin-header-center">
-            <div class="admin-search">
-                <input type="text" placeholder="Search..." id="admin-search">
-                <button type="button">🔍</button>
-            </div>
-        </div>
 
         <div class="admin-header-right">
             <div class="admin-user-menu">
@@ -58,14 +52,5 @@ $(document).ready(function() {
         $('.notification-count').text('0').hide();
     });
     
-    // Admin search functionality
-    $('#admin-search').on('keypress', function(e) {
-        if (e.which === 13) {
-            const query = $(this).val();
-            if (query.trim()) {
-                window.location.href = 'search.php?q=' + encodeURIComponent(query);
-            }
-        }
-    });
 });
 </script>

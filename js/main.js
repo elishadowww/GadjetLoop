@@ -255,17 +255,13 @@ function initializeAdminPage() {
             order: [[0, 'desc']]
         });
     }
-    
-    // Initialize charts
-    if ($('#sales-chart').length) {
-        initializeSalesChart();
-    }
-    
+
+
     // Handle bulk actions
     $('#bulk-action-form').on('submit', function(e) {
         const action = $('#bulk-action').val();
         const selected = $('.item-checkbox:checked').length;
-        
+
         if (!action || selected === 0) {
             e.preventDefault();
             showAlert('Please select an action and at least one item', 'warning');
@@ -384,19 +380,23 @@ function handleAjaxForm(form) {
 
 // Show alert message
 function showAlert(message, type = 'info') {
-    const alertClass = 'alert-' + type;
-    const alertHtml = `<div class="alert ${alertClass}">${message}</div>`;
-    
-    // Remove existing alerts
-    $('.alert').remove();
-    
-    // Add new alert
-    $('main').prepend(alertHtml);
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        $('.alert').fadeOut();
-    }, 5000);
+    // Set color based on type
+    let bgColor = '#ffc'; // info/warning
+    if (type === 'success') bgColor = '#d4edda';
+    if (type === 'error') bgColor = '#f8d7da';
+    if (type === 'warning') bgColor = '#fff3cd';
+
+    $('#notification')
+        .css('background', bgColor)
+        .text(message)
+        .fadeIn();
+
+    // Smooth scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    setTimeout(function() {
+        $('#notification').fadeOut();
+    }, 3000);
 }
 
 // Update cart count
@@ -614,6 +614,99 @@ function initializePriceRange() {
     });
     
     $('#price-display').text('$' + currentMin + ' - $' + currentMax);
+}
+
+// Sales chart instance
+let salesChartInstance = null;
+
+function initializeSalesChart(salesData) {
+    const ctx = document.getElementById('sales-chart').getContext('2d');
+    
+    // Destroy previous chart instance if exists
+    if (salesChartInstance) {
+        salesChartInstance.destroy();
+    }
+
+    const labels = salesData.map(item => {
+        // If the label is a day (Y-m-d), show as day/month
+        if (item.month.length === 10) {
+            // Y-m-d
+            const date = new Date(item.month);
+            return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+        } else {
+            // Y-m
+            const date = new Date(item.month + '-01');
+            return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        }
+    });
+    const revenueData = salesData.map(item => parseFloat(item.revenue));
+    const orderData = salesData.map(item => parseInt(item.order_count));
+    
+    salesChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Revenue (RM)',
+                data: revenueData,
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                tension: 0.4,
+                yAxisID: 'y'
+            }, {
+                label: 'Orders',
+                data: orderData,
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4,
+                yAxisID: 'y1'
+            }]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Revenue (RM)'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Orders'
+                    },
+                    grid: {
+                        drawOnChartArea: false,
+                    },
+                }
+            }
+        }
+    });
+}
+
+function updateSalesChart(period) {
+    $.get('../ajax/get-sales-data.php', { period: period }, function(data) {
+        // Destroy and re-initialize chart with new data
+        initializeSalesChart(data);
+    });
 }
 
 // Utility functions

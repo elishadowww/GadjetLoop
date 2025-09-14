@@ -15,7 +15,7 @@ require_once __DIR__ . '/functions.php';
     <div class="container">
         <div class="header-top">
             <div class="logo">
-                <a href="index.php">
+                <a href="/GadjetLoop/index.php">
                     <h1>GadgetLoop</h1>
                 </a>
             </div>

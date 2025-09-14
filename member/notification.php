@@ -494,7 +494,18 @@ $stats = $stmt->fetch();
 
     <script src="../js/main.js"></script>
     <script>
+        // Dynamically update cart count in header
+        function updateCartCount() {
+            $.get('../ajax/get-cart-count.php', function(data) {
+                if (data && typeof data.count !== 'undefined') {
+                    $('#cart-count').text(data.count);
+                }
+            });
+        }
         $(document).ready(function() {
+            updateCartCount();
+            setInterval(updateCartCount, 30000);
+
             // Auto-refresh notifications every 30 seconds
             setInterval(function() {
                 // Check for new notifications

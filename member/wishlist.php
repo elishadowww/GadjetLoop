@@ -102,7 +102,18 @@ $wishlist_items = getWishlistItems($pdo, $user_id);
     <script src="../js/main.js"></script>
     <script src="../js/cart.js"></script>
     <script>
+        // Dynamically update cart count in header
+        function updateCartCount() {
+            $.get('../ajax/get-cart-count.php', function(data) {
+                if (data && typeof data.count !== 'undefined') {
+                    $('#cart-count').text(data.count);
+                }
+            });
+        }
         $(document).ready(function() {
+            updateCartCount();
+            setInterval(updateCartCount, 30000);
+
             // Remove from wishlist
             $('.remove-from-wishlist').on('click', function() {
                 const productId = $(this).data('product-id');

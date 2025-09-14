@@ -75,7 +75,10 @@ if ($_POST && isset($_POST['place_order'])) {
             // Create notification for order confirmation
             createNotification($pdo, $user_id, 'Order Confirmed', 
                 'Your order #' . $order_result['order_number'] . ' has been confirmed and is being processed.', 'order');
-            
+
+            // Clear cart after successful checkout
+            clearCart($pdo, $user_id);
+
             // Redirect to order confirmation
             header('Location: order-confirmation.php?order=' . $order_result['order_number']);
             exit;
@@ -426,6 +429,8 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                                     <select id="shipping_country" name="shipping_country" class="form-control" required>
                                         <option value="">Select Country</option>
                                         <option value="US" <?php echo ($user['country'] ?? '') === 'US' ? 'selected' : ''; ?>>United States</option>
+                                        <option value="MY" <?php echo ($user['country'] ?? '') === 'MY' ? 'selected' : ''; ?>>Malaysia</option>
+
                                         <option value="CA" <?php echo ($user['country'] ?? '') === 'CA' ? 'selected' : ''; ?>>Canada</option>
                                         <option value="UK" <?php echo ($user['country'] ?? '') === 'UK' ? 'selected' : ''; ?>>United Kingdom</option>
                                         <option value="AU" <?php echo ($user['country'] ?? '') === 'AU' ? 'selected' : ''; ?>>Australia</option>
@@ -661,9 +666,13 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                             <div id="coupon-message" style="display: none; margin-top: 0.5rem; font-size: 14px;"></div>
                         </div>
                         
+                        <div class="summary-row" id="discount-row" style="display:none;">
+                            <span>Discount:</span>
+                            <span id="discount-amount"></span>
+                        </div>
                         <div class="summary-row summary-total">
                             <span>Total:</span>
-                            <span>RM<?php echo number_format($total, 2); ?></span>
+                            <span id="final-total">RM<?php echo number_format($total, 2); ?></span>
                         </div>
                     </div>
                     
@@ -783,31 +792,31 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
                 showCouponMessage('Please enter a coupon code', 'error');
                 return;
             }
-            
+
             const $btn = $('#apply-coupon-btn');
             const originalText = $btn.text();
             $btn.prop('disabled', true).text('Applying...');
-            
-            $.post('ajax/apply-coupon.php', {
+
+            $.post('../ajax/apply-coupon.php', {
                 coupon_code: couponCode,
                 subtotal: <?php echo $subtotal; ?>
             }, function(response) {
                 if (response.success) {
                     showCouponMessage(response.message, 'success');
-                    updateTotalsWithCoupon(response.discount_amount, response.new_total);
-                    showAppliedCoupon(couponCode, response.discount_amount, response.discount_type);
+                    updateTotalsWithCoupon(response.discount_amount, response.new_total, response.new_tax, response.new_shipping);
+                    showAppliedCoupon(couponCode, response.discount_amount, response.discount_type, response.discount_capped, response.maximum_discount);
                 } else {
                     showCouponMessage(response.message, 'error');
                 }
+                $btn.prop('disabled', false).text(originalText);
             }).fail(function() {
                 showCouponMessage('Failed to apply coupon', 'error');
-            }).always(function() {
                 $btn.prop('disabled', false).text(originalText);
             });
         }
         
         function removeCoupon() {
-            $.post('ajax/remove-coupon.php', function(response) {
+            $.post('../ajax/remove-coupon.php', function(response) {
                 if (response.success) {
                     showCouponMessage('Coupon removed', 'success');
                     updateTotalsWithCoupon(0, <?php echo $total; ?>);
@@ -828,23 +837,34 @@ $default_billing = getDefaultAddress($pdo, $user_id, 'billing');
             }, 3000);
         }
         
-        function updateTotalsWithCoupon(discountAmount, newTotal) {
+        function updateTotalsWithCoupon(discountAmount, newTotal, newTax = null, newShipping = null) {
+            discountAmount = Number(discountAmount) || 0;
+            newTotal = Number(newTotal) || 0;
             if (discountAmount > 0) {
                 $('#discount-row').show();
-                $('#discount-amount').text('-$' + discountAmount.toFixed(2));
+                $('#discount-amount').text('-RM' + discountAmount.toFixed(2));
             } else {
                 $('#discount-row').hide();
             }
-            $('#final-total').text('$' + newTotal.toFixed(2));
+            $('#final-total').text('RM' + newTotal.toFixed(2));
+            if (newTax !== null) {
+                // FIXED selector below
+                $('.order-summary .summary-row').eq(1).find('span').eq(1).text('RM' + Number(newTax).toFixed(2));
+            }
+            if (newShipping !== null) {
+                $('.order-summary .summary-row').eq(2).find('span').eq(1).text(newShipping > 0 ? 'RM' + Number(newShipping).toFixed(2) : 'Free');
+            }
         }
         
-        function showAppliedCoupon(code, amount, type) {
-            const discountText = type === 'percentage' ? amount + '%' : '$' + amount.toFixed(2);
+        function showAppliedCoupon(code, amount, type, capped = false, maxDiscount = 0) {
+            let discountText = type === 'percentage' ? amount + '%' : 'RM' + Number(amount).toFixed(2);
+            let cappedText = capped ? `<br><small style="color:#d9534f;">Maximum discount applied: RM${Number(maxDiscount).toFixed(2)}</small>` : '';
             const couponHtml = `
                 <div class="applied-coupon" style="background: #d4edda; padding: 0.75rem; border-radius: 6px; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <strong>${code}</strong> applied
                         <small style="display: block; color: #155724;">Discount: ${discountText}</small>
+                        ${cappedText}
                     </div>
                     <button type="button" id="remove-coupon" class="btn btn-sm" style="background: none; border: none; color: #721c24; font-size: 18px;">×</button>
                 </div>

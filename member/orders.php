@@ -139,6 +139,19 @@ $total_pages = ceil($total_orders / $per_page);
 
     <script src="../js/main.js"></script>
     <script>
+        // Dynamically update cart count in header
+        function updateCartCount() {
+            $.get('../ajax/get-cart-count.php', function(data) {
+                if (data && typeof data.count !== 'undefined') {
+                    $('#cart-count').text(data.count);
+                }
+            });
+        }
+        $(document).ready(function() {
+            updateCartCount();
+            setInterval(updateCartCount, 30000);
+        });
+
         function cancelOrder(orderId) {
             if (confirm('Are you sure you want to cancel this order?')) {
                 // AJAX call to cancel order

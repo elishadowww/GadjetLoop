@@ -491,7 +491,18 @@ $reviewable_products = $stmt->fetchAll();
 
     <script src="../js/main.js"></script>
     <script>
+        // Dynamically update cart count in header
+        function updateCartCount() {
+            $.get('../ajax/get-cart-count.php', function(data) {
+                if (data && typeof data.count !== 'undefined') {
+                    $('#cart-count').text(data.count);
+                }
+            });
+        }
         $(document).ready(function() {
+            updateCartCount();
+            setInterval(updateCartCount, 30000);
+
             // Tab switching
             $('.tab-btn').on('click', function() {
                 const tab = $(this).data('tab');

@@ -110,16 +110,6 @@ if ($_POST) {
                         <p>Don't have an account? <a href="register.php">Sign up here</a></p>
                     </div>
                     
-                    <!-- Demo accounts info -->
-                    <div class="demo-accounts">
-                        <h4>Demo Accounts</h4>
-                        <div class="demo-account">
-                            <strong>Admin:</strong> admin@gadgetloop.com / admin123
-                        </div>
-                        <div class="demo-account">
-                            <strong>Member:</strong> member@gadgetloop.com / member123
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
