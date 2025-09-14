@@ -25,10 +25,6 @@ $product = $stmt->fetch();
 
 if ($_POST && isset($_POST['update_product'])) {
     // Handle product update
-}
-
-// Handle product update
-if ($_POST && isset($_POST['update_product'])) {
     $name = sanitizeInput($_POST['name']);
     $description = sanitizeInput($_POST['description']);
     $short_description = sanitizeInput($_POST['short_description']);
@@ -37,82 +33,52 @@ if ($_POST && isset($_POST['update_product'])) {
     $discount_percentage = intval($_POST['discount_percentage']);
     $stock_quantity = intval($_POST['stock_quantity']);
     $low_stock_threshold = intval($_POST['low_stock_threshold']);
-    $sku = sanitizeInput($_POST['sku']);
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
     $is_active = isset($_POST['is_active']) ? 1 : 0;
-    $meta_title = sanitizeInput($_POST['meta_title']);
-    $meta_description = sanitizeInput($_POST['meta_description']);
-    
+
     // Validation
     if (empty($name) || empty($description) || $category_id <= 0 || $price <= 0) {
         $error = 'Please fill in all required fields';
     } elseif ($discount_percentage < 0 || $discount_percentage > 100) {
         $error = 'Discount percentage must be between 0 and 100';
     } else {
-        try {
-            // Handle main image upload
-            $main_image = $product['main_image']; // Keep existing image by default
-            if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] === UPLOAD_ERR_OK) {
-                $upload_result = uploadFile($_FILES['main_image'], '../images/products/', ['jpg', 'jpeg', 'png', 'gif']);
-                if ($upload_result['success']) {
-                    // Delete old image if it exists
-                    if ($product['main_image'] && file_exists('../images/products/' . $product['main_image'])) {
-                        unlink('../images/products/' . $product['main_image']);
-                    }
-                    $main_image = $upload_result['filename'];
-                } else {
-                    $error = $upload_result['message'];
+        // Handle main image upload
+        $main_image_filename = $product['main_image'];
+        if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] === UPLOAD_ERR_OK) {
+            $upload_result = uploadFile($_FILES['main_image'], '../images/products/');
+            if ($upload_result['success']) {
+                // Delete old image if exists
+                if ($product['main_image'] && file_exists('../images/products/' . $product['main_image'])) {
+                    unlink('../images/products/' . $product['main_image']);
                 }
-            }
-            if (!$error) {
-                // Update product
-                $stmt = $pdo->prepare("
-                    UPDATE products SET 
-                    name = ?, description = ?, short_description = ?, category_id = ?, price = ?, 
-                    discount_percentage = ?, stock_quantity = ?, low_stock_threshold = ?, sku = ?, 
-                    main_image = ?, is_featured = ?, is_active = ?, meta_title = ?, meta_description = ?,
-                    updated_at = NOW()
-                    WHERE id = ?
-                ");
-                $stmt->execute([
-                    $name, $description, $short_description, $category_id, $price,
-                    $discount_percentage, $stock_quantity, $low_stock_threshold, $sku,
-                    $main_image, $is_featured, $is_active, $meta_title, $meta_description,
-                    $product_id
-                ]);
-                // Handle additional images
-                if (isset($_FILES['additional_images'])) {
-                    foreach ($_FILES['additional_images']['tmp_name'] as $key => $tmp_name) {
-                        if ($_FILES['additional_images']['error'][$key] === UPLOAD_ERR_OK) {
-                            $file = [
-                                'name' => $_FILES['additional_images']['name'][$key],
-                                'tmp_name' => $tmp_name,
-                                'size' => $_FILES['additional_images']['size'][$key],
-                                'type' => $_FILES['additional_images']['type'][$key]
-                            ];
-                            $upload_result = uploadFile($file, '../uploads/products/', ['jpg', 'jpeg', 'png', 'gif']);
-                            if ($upload_result['success']) {
-                                $stmt = $pdo->prepare("
-                                    INSERT INTO product_images (product_id, image_path, sort_order, created_at) 
-                                    VALUES (?, ?, ?, NOW())
-                                ");
-                                $stmt->execute([$product_id, $upload_result['filename'], $key]);
-                            }
-                        }
-                    }
-                }
-                $success = 'Product updated successfully';
-                // Refresh product data
-                $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
-                $stmt->execute([$product_id]);
-                $product = $stmt->fetch();
-            }
-        } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-                $error = 'SKU already exists';
+                $main_image_filename = $upload_result['filename'];
             } else {
-                $error = 'Failed to update product';
+                $error = 'Image upload failed: ' . $upload_result['message'];
             }
+        }
+
+        if (empty($error)) {
+            // Update product in database
+            $stmt = $pdo->prepare("UPDATE products SET name = ?, description = ?, short_description = ?, category_id = ?, price = ?, discount_percentage = ?, stock_quantity = ?, low_stock_threshold = ?, is_featured = ?, is_active = ?, main_image = ? WHERE id = ?");
+            $stmt->execute([
+                $name,
+                $description,
+                $short_description,
+                $category_id,
+                $price,
+                $discount_percentage,
+                $stock_quantity,
+                $low_stock_threshold,
+                $is_featured,
+                $is_active,
+                $main_image_filename,
+                $product_id
+            ]);
+            $success = 'Product updated successfully';
+            // Refresh product data
+            $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+            $stmt->execute([$product_id]);
+            $product = $stmt->fetch();
         }
     }
 }
@@ -148,19 +114,13 @@ $categories = getCategories($pdo);
 
 // Get product images
 $product_images = [];
-// Scan /GadjetLoop/images/products for images matching the product SKU or ID
+
 $images_dir = realpath(__DIR__ . '/../images/products');
 if ($images_dir) {
     $image_files = glob($images_dir . '/*');
     foreach ($image_files as $img) {
         $filename = basename($img);
-        // Match images by SKU or product ID in filename
-        if (strpos($filename, $product['sku']) !== false || strpos($filename, (string)$product_id) !== false) {
-            $product_images[] = [
-                'image_path' => $filename,
-                'id' => $filename // Use filename as ID for deletion (if needed)
-            ];
-        }
+
     }
 }
 
@@ -507,11 +467,6 @@ $sales_stats = $stmt->fetch();
                                         </select>
                                     </div>
                                     
-                                    <div class="form-group">
-                                        <label for="sku">SKU *</label>
-                                        <input type="text" id="sku" name="sku" class="form-control" 
-                                               value="<?php echo htmlspecialchars($product['sku']); ?>" required>
-                                    </div>
                                 </div>
                                 
                                 <div class="form-group">
@@ -594,25 +549,7 @@ $sales_stats = $stmt->fetch();
                                 </div>
                                 <input type="file" id="main_image" name="main_image" accept="image/*" style="display: none;" form="product-form">
                             </div>
-                            
                         
-                        <!-- SEO Settings -->
-                        <div class="form-section">
-                            <h3 class="section-title">SEO Settings</h3>
-                            <div class="form-group">
-                                <label for="meta_title">Meta Title</label>
-                                <input type="text" id="meta_title" name="meta_title" class="form-control" 
-                                       value="<?php echo htmlspecialchars($product['meta_title']); ?>" form="product-form">
-                                <small class="form-text">Recommended: 50-60 characters</small>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="meta_description">Meta Description</label>
-                                <textarea id="meta_description" name="meta_description" class="form-control" rows="3" 
-                                          form="product-form"><?php echo htmlspecialchars($product['meta_description']); ?></textarea>
-                                <small class="form-text">Recommended: 150-160 characters</small>
-                            </div>
-                        </div>
                         
                         <!-- Product Settings -->
                         <div class="form-section">
@@ -710,9 +647,12 @@ $sales_stats = $stmt->fetch();
                             <h4>Quick Actions</h4>
                             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                                 <button type="button" class="btn btn-outline btn-sm" onclick="duplicateProduct()">Duplicate Product</button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="generateSKU()">Generate SKU</button>
                                 <button type="button" class="btn btn-outline btn-sm" onclick="bulkUpdateStock()">Bulk Update Stock</button>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteProduct()">Delete Product</button>
+                                <form method="POST" action="products.php" onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone.');" style="display:inline;">
+                                    <input type="hidden" name="delete_product" value="1">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete Product</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -730,52 +670,52 @@ $sales_stats = $stmt->fetch();
                 const price = parseFloat($('#price').val()) || 0;
                 const discount = parseInt($('#discount_percentage').val()) || 0;
                 const salePrice = price * (1 - discount / 100);
-                
-                        $('#original-price').text('RM' + price.toFixed(2));
-                        $('#sale-price').text('RM' + salePrice.toFixed(2));
-                        $('#savings').text('Save ' + discount + '%');
-                
-                    if (discount > 0) {
-                        $('#original-price').show();
-                        $('#savings').show();
-                    } else {
-                        $('#original-price').hide();
-                        $('#savings').hide();
-                    }
+
+                $('#original-price').text('RM' + price.toFixed(2));
+                $('#sale-price').text('RM' + salePrice.toFixed(2));
+                $('#savings').text('Save ' + discount + '%');
+
+                if (discount > 0) {
+                    $('#original-price').show();
+                    $('#savings').show();
+                } else {
+                    $('#original-price').hide();
+                    $('#savings').hide();
+                }
             }
-            
+
             $('#price, #discount_percentage').on('input', updatePricePreview);
             updatePricePreview(); // Initial calculation
-            
+
             // Character counters
             $('#short_description').on('input', function() {
                 const maxLength = 500;
                 const currentLength = $(this).val().length;
                 const remaining = maxLength - currentLength;
-                
+
                 if (!$(this).siblings('.char-counter').length) {
                     $(this).after('<div class="char-counter"></div>');
                 }
-                
+
                 $(this).siblings('.char-counter').text(currentLength + '/' + maxLength + ' characters');
-                
+
                 if (remaining < 50) {
                     $(this).siblings('.char-counter').css('color', '#dc3545');
                 } else {
                     $(this).siblings('.char-counter').css('color', '#666');
                 }
             });
-            
+
             $('#meta_title').on('input', function() {
                 const maxLength = 60;
                 const currentLength = $(this).val().length;
-                
+
                 if (!$(this).siblings('.char-counter').length) {
                     $(this).after('<div class="char-counter"></div>');
                 }
-                
+
                 $(this).siblings('.char-counter').text(currentLength + '/' + maxLength + ' characters');
-                
+
                 if (currentLength > maxLength) {
                     $(this).siblings('.char-counter').css('color', '#dc3545');
                 } else if (currentLength > 50) {
@@ -784,17 +724,17 @@ $sales_stats = $stmt->fetch();
                     $(this).siblings('.char-counter').css('color', '#666');
                 }
             });
-            
+
             $('#meta_description').on('input', function() {
                 const maxLength = 160;
                 const currentLength = $(this).val().length;
-                
+
                 if (!$(this).siblings('.char-counter').length) {
                     $(this).after('<div class="char-counter"></div>');
                 }
-                
+
                 $(this).siblings('.char-counter').text(currentLength + '/' + maxLength + ' characters');
-                
+
                 if (currentLength > maxLength) {
                     $(this).siblings('.char-counter').css('color', '#dc3545');
                 } else if (currentLength > 150) {
@@ -803,11 +743,11 @@ $sales_stats = $stmt->fetch();
                     $(this).siblings('.char-counter').css('color', '#666');
                 }
             });
-            
+
             // Form validation
             $('#product-form').on('submit', function(e) {
                 let isValid = true;
-                
+
                 // Check required fields
                 $(this).find('[required]').each(function() {
                     if (!$(this).val().trim()) {
@@ -817,34 +757,39 @@ $sales_stats = $stmt->fetch();
                         $(this).removeClass('error');
                     }
                 });
-                
+
                 if (!isValid) {
                     e.preventDefault();
                     showAlert('Please fill in all required fields', 'error');
                 }
             });
-            
+
             // Remove error class on input
             $('.form-control').on('input change', function() {
                 $(this).removeClass('error');
             });
+
+            // Main image preview
+            $('#main_image').on('change', function(e) {
+                const input = this;
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Remove any previous preview
+                        $(input).closest('.form-group').find('.main-image-preview, .main-image-preview-label').remove();
+                        // Insert 'Preview:' label and new preview
+                        $('<div class="main-image-preview-label" style="margin-top:1rem;font-weight:500;">Preview:</div>')
+                            .insertAfter($(input).closest('.form-group').find('.image-upload-area'));
+                        $('<img class="main-image-preview" style="max-width:200px;display:block;margin:0.5rem 0 1rem 0;border-radius:8px;">')
+                            .attr('src', e.target.result)
+                            .insertAfter($(input).closest('.form-group').find('.main-image-preview-label'));
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
         });
         
-        function generateSKU() {
-            const name = $('#name').val();
-            const category = $('#category_id option:selected').text();
-            
-            if (name && category !== 'Select Category') {
-                const nameCode = name.substring(0, 3).toUpperCase();
-                const categoryCode = category.substring(0, 3).toUpperCase();
-                const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-                const sku = nameCode + categoryCode + randomNum;
-                
-                $('#sku').val(sku);
-            } else {
-                alert('Please enter product name and select category first');
-            }
-        }
+    
         
         function duplicateProduct() {
             if (confirm('Create a duplicate of this product?')) {
@@ -861,16 +806,7 @@ $sales_stats = $stmt->fetch();
         }
         
         function deleteProduct() {
-            if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
-                $.post('ajax/delete-product.php', { product_id: <?php echo $product['id']; ?> }, function(response) {
-                    if (response.success) {
-                        window.location.href = 'products.php';
-                    } else {
-                        alert('Failed to delete product: ' + response.message);
-                    }
-                });
-            }
-        }
+        // ...existing code...
     </script>
 </body>
 </html>

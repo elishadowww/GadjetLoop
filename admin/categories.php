@@ -5,68 +5,43 @@ require_once '../includes/functions.php';
 
 // Check if user is admin
 if (!isLoggedIn() || !isAdmin()) {
-    header('Location: ../login.php');
-    exit;
-}
 
 $success = '';
 $error = '';
 
-// Handle category actions
-if ($_POST) {
-    if (isset($_POST['add_category'])) {
-        $name = sanitizeInput($_POST['name']);
-        $description = sanitizeInput($_POST['description']);
-        $sort_order = intval($_POST['sort_order']);
-        
-        if (empty($name)) {
-            $error = 'Category name is required';
+if (isset($_POST['update_category'])) {
+    $id = intval($_POST['category_id']);
+    $name = sanitizeInput($_POST['name']);
+    $description = sanitizeInput($_POST['description']);
+    $sort_order = intval($_POST['sort_order']);
+    $is_active = isset($_POST['is_active']) ? 1 : 0;
+    try {
+        $stmt = $pdo->prepare("UPDATE categories SET name = ?, description = ?, sort_order = ?, is_active = ? WHERE id = ?");
+        $stmt->execute([$name, $description, $sort_order, $is_active, $id]);
+        $success = 'Category updated successfully';
+    } catch (PDOException $e) {
+        $error = 'Failed to update category';
+    }
+}
+
+if (isset($_POST['delete_category'])) {
+    $id = intval($_POST['category_id']);
+    try {
+        // Check if category has products
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM products WHERE category_id = ?");
+        $stmt->execute([$id]);
+        $product_count = $stmt->fetchColumn();
+        if ($product_count > 0) {
+            $error = 'Cannot delete category with existing products';
         } else {
-            try {
-                $stmt = $pdo->prepare("INSERT INTO categories (name, description, sort_order, created_at) VALUES (?, ?, ?, NOW())");
-                $stmt->execute([$name, $description, $sort_order]);
-                $success = 'Category added successfully';
-            } catch (PDOException $e) {
-                $error = 'Failed to add category';
-            }
-        }
-    }
-    
-    if (isset($_POST['update_category'])) {
-        $id = intval($_POST['category_id']);
-        $name = sanitizeInput($_POST['name']);
-        $description = sanitizeInput($_POST['description']);
-        $sort_order = intval($_POST['sort_order']);
-        $is_active = isset($_POST['is_active']) ? 1 : 0;
-        
-        try {
-            $stmt = $pdo->prepare("UPDATE categories SET name = ?, description = ?, sort_order = ?, is_active = ? WHERE id = ?");
-            $stmt->execute([$name, $description, $sort_order, $is_active, $id]);
-            $success = 'Category updated successfully';
-        } catch (PDOException $e) {
-            $error = 'Failed to update category';
-        }
-    }
-    
-    if (isset($_POST['delete_category'])) {
-        $id = intval($_POST['category_id']);
-        try {
-            // Check if category has products
-            $stmt = $pdo->prepare("SELECT COUNT(*) FROM products WHERE category_id = ?");
+            $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
             $stmt->execute([$id]);
-            $product_count = $stmt->fetchColumn();
-            
-            if ($product_count > 0) {
-                $error = 'Cannot delete category with existing products';
-            } else {
-                $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
-                $stmt->execute([$id]);
-                $success = 'Category deleted successfully';
-            }
-        } catch (PDOException $e) {
-            $error = 'Failed to delete category';
+            $success = 'Category deleted successfully';
         }
+    } catch (PDOException $e) {
+        $error = 'Failed to delete category';
     }
+}
 }
 
 // Get categories with product counts
@@ -99,9 +74,7 @@ $categories = $stmt->fetchAll();
         <main class="admin-content">
             <div class="admin-page-header"> 
                 <h1>Categories</h1>
-                <div class="admin-actions">
-                    <button class="btn btn-primary" onclick="showAddCategoryModal()">Add Category</button>
-                </div>
+                
             </div>
             
             <?php if ($error): ?>
@@ -165,30 +138,6 @@ $categories = $stmt->fetchAll();
         </main>
     </div>
     
-    <!-- Add Category Modal -->
-    <div id="add-category-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 8px; width: 90%; max-width: 500px;">
-            <h3>Add Category</h3>
-            <form method="POST">
-                <div class="form-group">
-                    <label for="name">Name *</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" class="form-control" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="sort_order">Sort Order</label>
-                    <input type="number" id="sort_order" name="sort_order" class="form-control" value="0">
-                </div>
-                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                    <button type="button" class="btn btn-outline" onclick="hideAddCategoryModal()">Cancel</button>
-                    <button type="submit" name="add_category" class="btn btn-primary">Add Category</button>
-                </div>
-            </form>
-        </div>
-    </div>
     
     <!-- Edit Category Modal -->
     <div id="edit-category-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
@@ -224,13 +173,8 @@ $categories = $stmt->fetchAll();
     <script src="../js/jquery.min.js"></script>
     <script src="../js/admin.js"></script>
     <script>
-        function showAddCategoryModal() {
-            document.getElementById('add-category-modal').style.display = 'block';
-        }
-        
-        function hideAddCategoryModal() {
-            document.getElementById('add-category-modal').style.display = 'none';
-        }
+
+
         
         function editCategory(category) {
             document.getElementById('edit-category-id').value = category.id;
@@ -247,11 +191,9 @@ $categories = $stmt->fetchAll();
         
         // Close modals when clicking outside
         window.onclick = function(event) {
-            const addModal = document.getElementById('add-category-modal');
+
             const editModal = document.getElementById('edit-category-modal');
-            if (event.target === addModal) {
-                hideAddCategoryModal();
-            }
+
             if (event.target === editModal) {
                 hideEditCategoryModal();
             }

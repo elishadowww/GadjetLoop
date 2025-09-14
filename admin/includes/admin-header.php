@@ -3,7 +3,7 @@
         <div class="admin-header-left">
             <div class="admin-logo">
                 <a href="dashboard.php">
-                  <h2>GadgetLoop,  Admin</h2>
+                  <h2>GadgetLoop Admin</h2>
                 </a>
             </div>
         </div>

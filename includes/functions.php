@@ -462,14 +462,19 @@ function uploadFile($file, $upload_dir, $allowed_types = ['jpg', 'jpeg', 'png', 
     }
 
     $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    
+
     if (!in_array($file_extension, $allowed_types)) {
         return ['success' => false, 'message' => 'Invalid file type'];
     }
 
-    // Ensure the upload directory exists
+    // Ensure the upload directory exists and is writable
     if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0777, true);
+        if (!mkdir($upload_dir, 0777, true)) {
+            return ['success' => false, 'message' => 'Failed to create upload directory: ' . $upload_dir];
+        }
+    }
+    if (!is_writable($upload_dir)) {
+        return ['success' => false, 'message' => 'Upload directory is not writable: ' . $upload_dir];
     }
 
     $filename = uniqid() . '.' . $file_extension;
@@ -478,7 +483,11 @@ function uploadFile($file, $upload_dir, $allowed_types = ['jpg', 'jpeg', 'png', 
     if (move_uploaded_file($file['tmp_name'], $upload_path)) {
         return ['success' => true, 'filename' => $filename];
     } else {
-        return ['success' => false, 'message' => 'Upload failed'];
+        $error_message = 'Upload failed. Path: ' . $upload_path;
+        if (!is_writable($upload_dir)) {
+            $error_message .= ' (Directory not writable)';
+        }
+        return ['success' => false, 'message' => $error_message];
     }
 }
 

@@ -46,13 +46,13 @@ if ($_POST) {
             $stmt->execute([$product_id]);
             
             // Delete image files
-            if ($product['main_image'] && file_exists('../uploads/products/' . $product['main_image'])) {
-                unlink('../uploads/products/' . $product['main_image']);
+            if ($product['main_image'] && file_exists('../images/products/' . $product['main_image'])) {
+                unlink('../images/products/' . $product['main_image']);
             }
             
             foreach ($additional_images as $image) {
-                if (file_exists('../uploads/products/' . $image['image_path'])) {
-                    unlink('../uploads/products/' . $image['image_path']);
+                if (file_exists('../images/products/' . $image['image_path'])) {
+                    unlink('../images/products/' . $image['image_path']);
                 }
             }
             

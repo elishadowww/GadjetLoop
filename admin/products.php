@@ -17,8 +17,18 @@ if ($_POST) {
     if (isset($_POST['delete_product'])) {
         $product_id = intval($_POST['product_id']);
         try {
-            $stmt = $pdo->prepare("UPDATE products SET is_active = 0 WHERE id = ?");
+            // Delete product images from product_images table
+            $stmt = $pdo->prepare("DELETE FROM product_images WHERE product_id = ?");
             $stmt->execute([$product_id]);
+
+            // Delete product reviews from reviews table
+            $stmt = $pdo->prepare("DELETE FROM reviews WHERE product_id = ?");
+            $stmt->execute([$product_id]);
+
+            // Delete product from products table
+            $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
+            $stmt->execute([$product_id]);
+
             $success = 'Product deleted successfully';
         } catch (PDOException $e) {
             $error = 'Failed to delete product';
@@ -108,7 +118,6 @@ $categories = getCategories($pdo);
                 <h1>Products</h1>
                 <div class="admin-actions">
                     <a href="product-add.php" class="btn btn-primary">Add Product</a>
-                    <button class="btn btn-outline" onclick="exportData('products', 'csv')">Export CSV</button>
                 </div>
             </div>
             
