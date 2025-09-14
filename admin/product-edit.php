@@ -806,7 +806,10 @@ $sales_stats = $stmt->fetch();
         }
         
         function deleteProduct() {
-        // ...existing code...
+            if (confirm('Are you sure you want to delete this product?')) {
+                window.location.href = 'product-delete.php?id=<?php echo $product['id']; ?>';
+            }
+        }
     </script>
 </body>
 </html>

@@ -3,11 +3,14 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 
-// Check if user is admin
-if (!isLoggedIn() || !isAdmin()) {
-
 $success = '';
 $error = '';
+
+// Check if user is admin
+if (!isLoggedIn() || !isAdmin()) {
+    header('Location: ../login.php');
+    exit;
+}
 
 if (isset($_POST['update_category'])) {
     $id = intval($_POST['category_id']);
@@ -41,7 +44,6 @@ if (isset($_POST['delete_category'])) {
     } catch (PDOException $e) {
         $error = 'Failed to delete category';
     }
-}
 }
 
 // Get categories with product counts

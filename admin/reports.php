@@ -123,7 +123,6 @@ switch ($report_type) {
             <div class="admin-page-header">
                 <h1>Reports</h1>
                 <div class="admin-actions">
-                    <button class="btn btn-outline" onclick="exportReport()">Export CSV</button>
                     <button class="btn btn-primary" onclick="printReport()">Print Report</button>
                 </div>
             </div>

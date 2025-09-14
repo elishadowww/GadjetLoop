@@ -111,9 +111,6 @@ $stats = $stmt->fetch();
         <main class="admin-content">
             <div class="admin-page-header">
                 <h1>Orders</h1>
-                <div class="admin-actions">
-                    <button class="btn btn-outline" onclick="exportData('orders', 'csv')">Export CSV</button>
-                </div>
             </div>
             
             <?php if ($error): ?>

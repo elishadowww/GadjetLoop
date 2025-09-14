@@ -53,18 +53,7 @@ if ($_POST) {
         }
     }
     
-    if (isset($_POST['add_tracking'])) {
-        $tracking_number = sanitizeInput($_POST['tracking_number']);
-        $carrier = sanitizeInput($_POST['carrier']);
-        
-        try {
-            $stmt = $pdo->prepare("UPDATE orders SET tracking_number = ?, carrier = ?, updated_at = NOW() WHERE id = ?");
-            $stmt->execute([$tracking_number, $carrier, $order_id]);
-            $success = 'Tracking information added successfully';
-        } catch (PDOException $e) {
-            $error = 'Failed to add tracking information';
-        }
-    }
+    // Tracking information logic removed
 }
 
 // Get order details
@@ -346,7 +335,7 @@ $coupon_usage = $stmt->fetch();
                         </div>
                         <div class="info-item">
                             <span class="info-label">Total Amount</span>
-                            <span class="info-value"><strong>$<?php echo number_format($order['total_amount'], 2); ?></strong></span>
+                            <span class="info-value"><strong>RM<?php echo number_format($order['total_amount'], 2); ?></strong></span>
                         </div>
                     </div>
                 </div>
@@ -366,7 +355,7 @@ $coupon_usage = $stmt->fetch();
                                     <div class="item-details">
                                         <div class="item-name"><?php echo htmlspecialchars($item['name']); ?></div>
                                         <div class="item-meta">Quantity: <?php echo $item['quantity']; ?></div>
-                                        <div class="item-meta">Unit Price: $<?php echo number_format($item['price'], 2); ?></div>
+                                        <div class="item-meta">Unit Price: RM<?php echo number_format($item['price'], 2); ?></div>
                                     </div>
                                     <div class="item-price">
                                         $<?php echo number_format($item['total'], 2); ?>
@@ -406,31 +395,7 @@ $coupon_usage = $stmt->fetch();
                                 </form>
                             </div>
                             
-                            <?php if ($order['status'] === 'shipped' || $order['status'] === 'processing'): ?>
-                            <div class="tracking-form">
-                                <h4>Tracking Information</h4>
-                                <form method="POST">
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                                        <div class="form-group">
-                                            <label for="tracking_number">Tracking Number</label>
-                                            <input type="text" id="tracking_number" name="tracking_number" class="form-control" 
-                                                   value="<?php echo htmlspecialchars($order['tracking_number'] ?? ''); ?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="carrier">Carrier</label>
-                                            <select id="carrier" name="carrier" class="form-control">
-                                                <option value="">Select Carrier</option>
-                                                <option value="ups" <?php echo ($order['carrier'] ?? '') === 'ups' ? 'selected' : ''; ?>>UPS</option>
-                                                <option value="fedex" <?php echo ($order['carrier'] ?? '') === 'fedex' ? 'selected' : ''; ?>>FedEx</option>
-                                                <option value="usps" <?php echo ($order['carrier'] ?? '') === 'usps' ? 'selected' : ''; ?>>USPS</option>
-                                                <option value="dhl" <?php echo ($order['carrier'] ?? '') === 'dhl' ? 'selected' : ''; ?>>DHL</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <button type="submit" name="add_tracking" class="btn btn-primary">Update Tracking</button>
-                                </form>
-                            </div>
-                            <?php endif; ?>
+                            <!-- Tracking information UI removed -->
                         </div>
                     </div>
                     
@@ -440,25 +405,25 @@ $coupon_usage = $stmt->fetch();
                             <h4>Order Summary</h4>
                             <div class="summary-row">
                                 <span>Subtotal:</span>
-                                <span>$<?php echo number_format($order['subtotal'], 2); ?></span>
+                                <span>RM<?php echo number_format($order['subtotal'], 2); ?></span>
                             </div>
                             <div class="summary-row">
                                 <span>Tax:</span>
-                                <span>$<?php echo number_format($order['tax_amount'], 2); ?></span>
+                                <span>RM<?php echo number_format($order['tax_amount'], 2); ?></span>
                             </div>
                             <div class="summary-row">
                                 <span>Shipping:</span>
-                                <span><?php echo $order['shipping_amount'] > 0 ? '$' . number_format($order['shipping_amount'], 2) : 'Free'; ?></span>
+                                <span><?php echo $order['shipping_amount'] > 0 ? 'RM' . number_format($order['shipping_amount'], 2) : 'Free'; ?></span>
                             </div>
                             <?php if ($coupon_usage): ?>
                             <div class="summary-row" style="color: #28a745;">
                                 <span>Coupon (<?php echo htmlspecialchars($coupon_usage['code']); ?>):</span>
-                                <span>-$<?php echo number_format($coupon_usage['discount_amount'], 2); ?></span>
+                                <span>-RM<?php echo number_format($coupon_usage['discount_amount'], 2); ?></span>
                             </div>
                             <?php endif; ?>
                             <div class="summary-row summary-total">
                                 <span>Total:</span>
-                                <span>$<?php echo number_format($order['total_amount'], 2); ?></span>
+                                <span>RM<?php echo number_format($order['total_amount'], 2); ?></span>
                             </div>
                         </div>
                         
@@ -530,15 +495,7 @@ $coupon_usage = $stmt->fetch();
                                 </div>
                                 <?php endif; ?>
                                 
-                                <?php if ($order['tracking_number']): ?>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <span style="width: 8px; height: 8px; background: #ffc107; border-radius: 50%;"></span>
-                                    <div>
-                                        <strong>Tracking Added</strong><br>
-                                        <small><?php echo htmlspecialchars($order['carrier']); ?>: <?php echo htmlspecialchars($order['tracking_number']); ?></small>
-                                    </div>
-                                </div>
-                                <?php endif; ?>
+                                <!-- Tracking timeline removed -->
                             </div>
                         </div>
                     </div>
