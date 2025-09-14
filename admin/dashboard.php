@@ -67,19 +67,47 @@ $stmt = $pdo->prepare("
 $stmt->execute();
 $top_products = $stmt->fetchAll();
 
-// Monthly sales data for chart
+// Monthly sales data for chart (default: last 30 days, daily data)
+$startDate = (new DateTime())->modify('-29 days')->format('Y-m-d');
+$days = [];
+for ($i = 0; $i < 30; $i++) {
+    $day = (new DateTime($startDate))->modify("+$i days");
+    $days[] = $day->format('Y-m-d');
+}
 $stmt = $pdo->prepare("
     SELECT 
-        DATE_FORMAT(created_at, '%Y-%m') as month,
+        DATE(created_at) as day,
         COUNT(*) as order_count,
         SUM(total_amount) as revenue
     FROM orders 
-    WHERE created_at >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
-    GROUP BY DATE_FORMAT(created_at, '%Y-%m')
-    ORDER BY month
+    WHERE created_at >= :startDate
+    GROUP BY DATE(created_at)
+    ORDER BY day
 ");
-$stmt->execute();
-$monthly_sales = $stmt->fetchAll();
+$stmt->execute(['startDate' => $startDate]);
+$data = $stmt->fetchAll();
+// Index data by day
+$dataByDay = [];
+foreach ($data as $row) {
+    $dataByDay[$row['day']] = $row;
+}
+// Fill missing days with zeros
+$monthly_sales = [];
+foreach ($days as $day) {
+    if (isset($dataByDay[$day])) {
+        $monthly_sales[] = [
+            'month' => $day,
+            'order_count' => $dataByDay[$day]['order_count'],
+            'revenue' => $dataByDay[$day]['revenue']
+        ];
+    } else {
+        $monthly_sales[] = [
+            'month' => $day,
+            'order_count' => 0,
+            'revenue' => 0
+        ];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -148,9 +176,10 @@ $monthly_sales = $stmt->fetchAll();
                     <div class="card-header">
                         <h3>Sales Overview</h3>
                         <select id="chart-period">
-                            <option value="12">Last 12 Months</option>
-                            <option value="6">Last 6 Months</option>
+                            <option value="1" selected>Last 1 Month</option>
                             <option value="3">Last 3 Months</option>
+                            <option value="6">Last 6 Months</option>
+                            <option value="12">Last 12 Months</option>
                         </select>
                     </div>
                     <div class="card-body">
@@ -261,102 +290,26 @@ $monthly_sales = $stmt->fetchAll();
         </main>
     </div>
     
+    <script>
+        window.initialMonthlySales = <?php echo json_encode($monthly_sales); ?>;
+    </script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/admin.js"></script>
+    <script src="../js/main.js"></script>
     <script>
         $(document).ready(function() {
-            // Initialize sales chart
-            initializeSalesChart();
-            
+            // Initialize sales chart with initial data from PHP
+            initializeSalesChart(window.initialMonthlySales);
+
             // Handle chart period change
             $('#chart-period').on('change', function() {
                 updateSalesChart($(this).val());
             });
         });
-        
-        function initializeSalesChart() {
-            const ctx = document.getElementById('sales-chart').getContext('2d');
-            const salesData = <?php echo json_encode($monthly_sales); ?>;
-            
-            const labels = salesData.map(item => {
-                const date = new Date(item.month + '-01');
-                return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-            });
-            
-            const revenueData = salesData.map(item => parseFloat(item.revenue));
-            const orderData = salesData.map(item => parseInt(item.order_count));
-            
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Revenue (RM)',
-                        data: revenueData,
-                        borderColor: '#007bff',
-                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                        tension: 0.4,
-                        yAxisID: 'y'
-                    }, {
-                        label: 'Orders',
-                        data: orderData,
-                        borderColor: '#28a745',
-                        backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                        tension: 0.4,
-                        yAxisID: 'y1'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    scales: {
-                        x: {
-                            display: true,
-                            title: {
-                                display: true,
-                                text: 'Month'
-                            }
-                        },
-                        y: {
-                            type: 'linear',
-                            display: true,
-                            position: 'left',
-                            title: {
-                                display: true,
-                                text: 'Revenue (RM)'
-                            }
-                        },
-                        y1: {
-                            type: 'linear',
-                            display: true,
-                            position: 'right',
-                            title: {
-                                display: true,
-                                text: 'Orders'
-                            },
-                            grid: {
-                                drawOnChartArea: false,
-                            },
-                        }
-                    }
-                }
-            });
-        }
-        
+
         function refreshDashboard() {
             location.reload();
-        }
-        
-        function updateSalesChart(period) {
-            // AJAX call to get updated chart data
-            $.get('ajax/get-sales-data.php', { period: period }, function(data) {
-                // Update chart with new data
-                // Implementation would depend on Chart.js update methods
-            });
         }
     </script>
 </body>
